@@ -83,7 +83,7 @@ export function LecteurChapitre({ slug, etapes }: { slug: string; etapes: Etape[
       <div ref={haut} tabIndex={-1} className="scroll-mt-16 outline-none" />
       <nav
         aria-label="Étapes du chapitre"
-        className="sticky top-14 z-20 -mx-4 mb-8 border-b border-line bg-bg/85 px-4 pb-3 pt-3 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:border sm:px-3"
+        className="sticky top-14 z-20 -mx-4 mb-8 border-b border-line bg-bg/95 px-4 pb-3 pt-3 sm:mx-0 sm:rounded-2xl sm:border sm:px-3"
       >
         <div className="mb-2.5 flex items-center justify-between gap-3 px-1 text-xs">
           <span className="font-medium text-ink">

@@ -11,9 +11,11 @@ import { ressource, urlSite } from "@/lib/chemin";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin", "latin-ext"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-// Titres : Sora, géométrique et précise. Mot d'accent : Instrument Serif italique, chargé sans préchargement.
-const sora = Sora({ variable: "--font-sora", subsets: ["latin", "latin-ext"], weight: ["500", "600", "700"] });
+// Seule la police du texte courant est préchargée : elle porte le premier rendu utile (LCP). Les autres arrivent
+// ensuite, sur des polices de secours aux mêmes métriques (ajustement automatique de next/font).
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], preload: false });
+// Titres : Sora, géométrique et précise. Mot d'accent : Instrument Serif italique.
+const sora = Sora({ variable: "--font-sora", subsets: ["latin", "latin-ext"], weight: ["500", "600", "700"], preload: false });
 const instrument = Instrument_Serif({ variable: "--font-instrument", subsets: ["latin", "latin-ext"], weight: "400", style: "italic", preload: false });
 
 export const metadata: Metadata = {

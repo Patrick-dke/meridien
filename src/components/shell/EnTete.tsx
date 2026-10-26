@@ -5,7 +5,7 @@ import { Recherche } from "./Recherche";
 
 export function EnTete() {
   return (
-    <header className="sticky top-0 z-30 border-b border-line/70 bg-bg/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-line/70 bg-bg/90 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="lg:hidden" aria-label="Méridien, accueil">
           <Logo />

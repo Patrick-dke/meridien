@@ -1,0 +1,169 @@
+{
+  "libelle": "apres",
+  "date": "2026-10-26T22:03:41.652Z",
+  "lighthouse": [
+    {
+      "profil": "mobile",
+      "chemin": "/",
+      "performance": 80,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 1525,
+      "lcp": 3351,
+      "tbt": 482,
+      "cls": 0,
+      "si": 1835,
+      "poidsKo": 383,
+      "jsKo": 199
+    },
+    {
+      "profil": "mobile",
+      "chemin": "/academies/",
+      "performance": 75,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 1547,
+      "lcp": 3365,
+      "tbt": 707,
+      "cls": 0,
+      "si": 1672,
+      "poidsKo": 315,
+      "jsKo": 169
+    },
+    {
+      "profil": "mobile",
+      "chemin": "/parcours/premiers-pas/",
+      "performance": 75,
+      "accessibilite": 98,
+      "bonnesPratiques": 100,
+      "fcp": 1378,
+      "lcp": 3320,
+      "tbt": 690,
+      "cls": 0,
+      "si": 1678,
+      "poidsKo": 444,
+      "jsKo": 229
+    },
+    {
+      "profil": "mobile",
+      "chemin": "/chapitre/quest-ce-que-le-trading/",
+      "performance": 80,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 1364,
+      "lcp": 3313,
+      "tbt": 460,
+      "cls": 0,
+      "si": 1364,
+      "poidsKo": 410,
+      "jsKo": 229
+    },
+    {
+      "profil": "mobile",
+      "chemin": "/tableau-de-bord/",
+      "performance": 78,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 1241,
+      "lcp": 3002,
+      "tbt": 646,
+      "cls": 0,
+      "si": 1429,
+      "poidsKo": 305,
+      "jsKo": 170
+    },
+    {
+      "profil": "ordinateur",
+      "chemin": "/",
+      "performance": 94,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 418,
+      "lcp": 735,
+      "tbt": 119,
+      "cls": 0.101,
+      "si": 1354,
+      "poidsKo": 323,
+      "jsKo": 170
+    },
+    {
+      "profil": "ordinateur",
+      "chemin": "/academies/",
+      "performance": 100,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 410,
+      "lcp": 732,
+      "tbt": 36,
+      "cls": 0.008,
+      "si": 732,
+      "poidsKo": 315,
+      "jsKo": 169
+    },
+    {
+      "profil": "ordinateur",
+      "chemin": "/parcours/premiers-pas/",
+      "performance": 99,
+      "accessibilite": 98,
+      "bonnesPratiques": 100,
+      "fcp": 346,
+      "lcp": 689,
+      "tbt": 30,
+      "cls": 0.012,
+      "si": 842,
+      "poidsKo": 466,
+      "jsKo": 229
+    },
+    {
+      "profil": "ordinateur",
+      "chemin": "/chapitre/quest-ce-que-le-trading/",
+      "performance": 99,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 415,
+      "lcp": 795,
+      "tbt": 83,
+      "cls": 0.006,
+      "si": 745,
+      "poidsKo": 324,
+      "jsKo": 186
+    },
+    {
+      "profil": "ordinateur",
+      "chemin": "/tableau-de-bord/",
+      "performance": 91,
+      "accessibilite": 100,
+      "bonnesPratiques": 100,
+      "fcp": 388,
+      "lcp": 723,
+      "tbt": 92,
+      "cls": 0.183,
+      "si": 775,
+      "poidsKo": 306,
+      "jsKo": 170
+    }
+  ],
+  "fluidite": {
+    "blocageReel": {
+      "/": 62,
+      "/academies/": 271,
+      "/parcours/premiers-pas/": 124,
+      "/chapitre/quest-ce-que-le-trading/": 120,
+      "/tableau-de-bord/": 124
+    },
+    "accueil": {
+      "ips": 57.5,
+      "p95ms": 16.8,
+      "imagesLentes": 1,
+      "tachesLongues": 1
+    },
+    "capsule": {
+      "ips": 59.8,
+      "p95ms": 16.8,
+      "imagesLentes": 0,
+      "tachesLongues": 0
+    },
+    "navigationMs": 163,
+    "etapeMs": 64
+  }
+}

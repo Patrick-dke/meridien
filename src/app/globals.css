@@ -219,7 +219,6 @@ h3,
     border-color 200ms,
     box-shadow 260ms var(--ease-out-soft);
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0));
-  will-change: transform;
 }
 .carte-vive::before {
   content: "";
@@ -247,6 +246,13 @@ h3,
 .carte-vive:active {
   transform: scale(0.985);
   transition-duration: 120ms;
+}
+
+/* Section hors de l'écran : ni mise en page ni peinture tant qu'on n'en approche pas (le contenu reste lisible
+   par les lecteurs d'écran et la recherche dans la page). */
+.hors-ecran {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
 }
 
 /* ——— Apparition au défilement (composant Apparition) ——— */
@@ -486,8 +492,9 @@ h3,
     transform: translateY(5px);
   }
 }
+/* La houle attend que la page soit chargée (délai de 2,5 s) avant de commencer. */
 .houle {
-  animation: houle 3s ease-in-out infinite alternate;
+  animation: houle 4s ease-in-out 2.5s infinite alternate both;
 }
 
 /* Squelette de chargement. */

@@ -260,7 +260,7 @@ export function TableauDeBord({
         </section>
       </div>
 
-      <section aria-labelledby="titre-concepts">
+      <section aria-labelledby="titre-concepts" className="hors-ecran">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 id="titre-concepts" className="text-xl font-semibold text-ink">
@@ -322,7 +322,7 @@ export function TableauDeBord({
         ) : null}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="hors-ecran grid gap-6 lg:grid-cols-2">
         <section aria-labelledby="titre-activite" className="carte p-5">
           <h2 id="titre-activite" className="mb-4 text-lg font-semibold text-ink">
             Activité récente

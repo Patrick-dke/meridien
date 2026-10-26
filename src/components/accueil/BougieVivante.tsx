@@ -34,11 +34,27 @@ export function BougieVivante() {
   const [pause, setPause] = useState(false);
   const alea = useRef(aleatoire(42));
   const tick = useRef(0);
+  const cadre = useRef<HTMLDivElement>(null);
+  const visible = useRef(false);
+  const [prete, setPrete] = useState(false);
+
+  // Les cotations ne commencent qu'une fois la page au repos, et ne tournent que si la carte est à l'écran.
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => (visible.current = e.isIntersecting));
+    if (cadre.current) io.observe(cadre.current);
+    const demarrer = () => setPrete(true);
+    const id = typeof requestIdleCallback === "function" ? requestIdleCallback(demarrer, { timeout: 3000 }) : globalThis.setTimeout(demarrer, 1500);
+    return () => {
+      io.disconnect();
+      if (typeof cancelIdleCallback === "function") cancelIdleCallback(id as number);
+      else clearTimeout(id as ReturnType<typeof setTimeout>);
+    };
+  }, []);
 
   useEffect(() => {
-    if (pause || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!prete || pause || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = window.setInterval(() => {
-      if (document.hidden) return;
+      if (document.hidden || !visible.current) return;
       tick.current += 1;
       const clore = tick.current >= TICKS;
       if (clore) tick.current = 0;
@@ -55,7 +71,7 @@ export function BougieVivante() {
       });
     }, 260);
     return () => window.clearInterval(id);
-  }, [pause]);
+  }, [pause, prete]);
 
   const min = Math.min(...serie.map((b) => b.l)) - 1;
   const max = Math.max(...serie.map((b) => b.h)) + 1;
@@ -82,7 +98,7 @@ export function BougieVivante() {
     }, []);
 
   return (
-    <div className="carte overflow-hidden p-3 sm:p-4">
+    <div ref={cadre} className="carte overflow-hidden p-3 sm:p-4">
       <div className="mb-2 flex items-center justify-between gap-2 px-1">
         <p className="flex items-center gap-2 text-sm font-medium text-ink">
           <span className={`size-2 rounded-full ${pause ? "bg-ink-3" : "animate-pulse bg-cyan"}`} aria-hidden="true" />

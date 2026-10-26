@@ -32,18 +32,23 @@ function bougies(alea: () => number, n: number, x0: number, x1: number, y0: numb
   return brut.map((b, i) => ({ x: x0 + pas * (i + 0.5), largeur: pas * 0.56, ...b, yo: y(b.o), yc: y(b.c), yh: y(b.h), yl: y(b.l) }));
 }
 
+/** Les bougies d'une vignette en quatre tracés (mèches et corps, hausse et baisse) : peu d'éléments à dessiner. */
 function Bougies({ liste }: { liste: ReturnType<typeof bougies> }) {
+  const f = (v: number) => v.toFixed(1);
+  const t = { meches: { h: "", b: "" }, corps: { h: "", b: "" } };
+  for (const b of liste) {
+    const k = b.c >= b.o ? "h" : "b";
+    const haut = Math.min(b.yo, b.yc);
+    const hauteur = Math.max(1.5, Math.abs(b.yo - b.yc));
+    t.meches[k] += `M${f(b.x)} ${f(b.yh)}V${f(b.yl)}`;
+    t.corps[k] += `M${f(b.x - b.largeur / 2)} ${f(haut)}h${f(b.largeur)}v${f(hauteur)}h${f(-b.largeur)}Z`;
+  }
   return (
-    <g>
-      {liste.map((b, i) => {
-        const couleur = b.c >= b.o ? "var(--bull)" : "var(--bear)";
-        return (
-          <g key={i} opacity={0.9}>
-            <line x1={b.x} x2={b.x} y1={b.yh} y2={b.yl} stroke={couleur} strokeWidth={1.4} />
-            <rect x={b.x - b.largeur / 2} y={Math.min(b.yo, b.yc)} width={b.largeur} height={Math.max(1.5, Math.abs(b.yo - b.yc))} rx={1} fill={couleur} />
-          </g>
-        );
-      })}
+    <g opacity={0.9}>
+      <path d={t.meches.h} stroke="var(--bull)" strokeWidth={1.4} fill="none" />
+      <path d={t.meches.b} stroke="var(--bear)" strokeWidth={1.4} fill="none" />
+      <path d={t.corps.h} fill="var(--bull)" />
+      <path d={t.corps.b} fill="var(--bear)" />
     </g>
   );
 }

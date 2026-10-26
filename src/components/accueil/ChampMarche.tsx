@@ -22,7 +22,13 @@ export function ChampMarche() {
     const memoire = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
     if (innerWidth < 768 || memoire < 4 || (navigator.hardwareConcurrency ?? 8) < 4) return;
     const test = document.createElement("canvas");
-    if (!test.getContext("webgl2")) return;
+    const gl = test.getContext("webgl2");
+    if (!gl) return;
+    // Rendu logiciel (pas d'accélération graphique) : la 3D occuperait tout le processeur, l'affiche suffit.
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    const moteur = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    if (/swiftshader|llvmpipe|software|basic render/i.test(moteur)) return;
 
     let arret = () => {};
     let annule = false;
@@ -177,25 +183,31 @@ function AfficheChamp({ masque }: { masque: boolean }) {
       className="absolute inset-0 h-full w-full transition-opacity duration-1000"
       style={{ opacity: masque ? 0 : 1 }}
     >
-      {/* Une houle par rangée (7 groupes animés, pas 154) : le dessin reste léger à repeindre. */}
-      {Array.from({ length: rangs }, (_, r) => (
-        <g key={r} opacity={r2(0.25 + (r / rangs) * 0.6)} className="houle" style={{ animationDelay: `${(-r * 0.45).toFixed(2)}s`, animationPlayState: masque ? "paused" : undefined }}>
-          {Array.from({ length: cols }, (_, c) => {
-            const echelle = 0.45 + (r / rangs) * 0.75;
-            const x = r2(400 + (c - cols / 2) * 38 * echelle);
-            const base = 120 + r * 34;
-            const onde = Math.sin(c * 0.5 + r * 0.8) * 18 + Math.cos(c * 0.31 - r) * 12;
-            const haut = Math.abs(Math.sin(c * 1.7 + r * 2.3)) * 22 + 5;
-            const monte = Math.sin(c * 0.9 + r * 1.3) > 0;
-            return (
-              <g key={c}>
-                <line x1={x} x2={x} y1={r2(base - onde - haut * echelle - 6)} y2={r2(base - onde + 6)} stroke={monte ? "var(--bull)" : "var(--bear)"} strokeWidth={r2(1.2 * echelle)} />
-                <rect x={r2(x - 5 * echelle)} y={r2(base - onde - haut * echelle)} width={r2(10 * echelle)} height={r2(haut * echelle)} fill={monte ? "var(--bull)" : "var(--bear)"} />
-              </g>
-            );
-          })}
-        </g>
-      ))}
+      {/* Une houle par rangée, et chaque rangée en quatre tracés (mèches et corps, hausse et baisse) :
+          28 éléments au lieu de 462, le premier affichage reste rapide sur un téléphone modeste. */}
+      {Array.from({ length: rangs }, (_, r) => {
+        const echelle = 0.45 + (r / rangs) * 0.75;
+        const traces = { meches: { hausse: "", baisse: "" }, corps: { hausse: "", baisse: "" } };
+        for (let c = 0; c < cols; c++) {
+          const x = r2(400 + (c - cols / 2) * 38 * echelle);
+          const base = 120 + r * 34;
+          const onde = Math.sin(c * 0.5 + r * 0.8) * 18 + Math.cos(c * 0.31 - r) * 12;
+          const haut = Math.abs(Math.sin(c * 1.7 + r * 2.3)) * 22 + 5;
+          const sens = Math.sin(c * 0.9 + r * 1.3) > 0 ? "hausse" : "baisse";
+          const demi = r2(5 * echelle);
+          const yHaut = r2(base - onde - haut * echelle);
+          traces.meches[sens] += `M${x} ${r2(yHaut - 6)}V${r2(base - onde + 6)}`;
+          traces.corps[sens] += `M${r2(x - demi)} ${yHaut}h${r2(demi * 2)}v${r2(haut * echelle)}h${-r2(demi * 2)}Z`;
+        }
+        return (
+          <g key={r} opacity={r2(0.25 + (r / rangs) * 0.6)} className="houle" style={{ animationDelay: `${(2.5 - r * 0.45).toFixed(2)}s`, animationPlayState: masque ? "paused" : undefined }}>
+            <path d={traces.meches.hausse} stroke="var(--bull)" strokeWidth={r2(1.2 * echelle)} fill="none" />
+            <path d={traces.meches.baisse} stroke="var(--bear)" strokeWidth={r2(1.2 * echelle)} fill="none" />
+            <path d={traces.corps.hausse} fill="var(--bull)" />
+            <path d={traces.corps.baisse} fill="var(--bear)" />
+          </g>
+        );
+      })}
       <path d="M330 360 C 360 260, 300 190, 352 110" fill="none" stroke="url(#degrade-meridien)" strokeWidth="2" opacity="0.8" />
     </svg>
   );

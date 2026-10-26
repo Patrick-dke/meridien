@@ -25,17 +25,16 @@ test("la capsule est narrée : le son se lit, se coupe, et suit les sauts de sc�
   const sousTitre = await page.locator("#etape-capsule [data-sous-titre]").innerText();
   expect(n.scenes.flatMap((s) => s.phrases.map((p) => p.texte.replace(/\s+/g, " ")))).toContain(sousTitre.replace(/\s+/g, " "));
 
-  // Un saut de scène replace la voix au début de cette scène.
+  // En pause, un saut de scène replace la voix exactement au début de cette scène.
+  await page.getByRole("button", { name: "Mettre en pause" }).click();
+  expect(await audio.evaluate((a: HTMLAudioElement) => a.paused)).toBe(true);
   await page.getByRole("button", { name: "Aller à la scène 4" }).click();
   const t = await audio.evaluate((a: HTMLAudioElement) => a.currentTime);
-  expect(t).toBeGreaterThanOrEqual(n.scenes[3].debut - 0.1);
-  expect(t).toBeLessThan(n.scenes[3].debut + 1.5);
+  expect(t).toBeCloseTo(n.scenes[3].debut, 1);
   await expect(page.getByRole("button", { name: "Aller à la scène 4" })).toHaveAttribute("aria-current", "step");
 
   await page.getByRole("button", { name: "Couper le son" }).click();
   expect(await audio.evaluate((a: HTMLAudioElement) => a.muted)).toBe(true);
-  await page.getByRole("button", { name: "Mettre en pause" }).click();
-  expect(await audio.evaluate((a: HTMLAudioElement) => a.paused)).toBe(true);
 });
 
 test("les quatorze capsules ont une narration qui se charge et se lit", async ({ page, isMobile }) => {

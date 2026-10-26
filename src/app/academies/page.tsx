@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { CarteEnsemble } from "@/components/catalogue/Cartes";
+import { CarteEnsemble } from "@/components/catalogue/CarteEnsemble";
 import { Explorateur } from "@/components/catalogue/Explorateur";
 import { CarteParcours } from "@/components/catalogue/Parcours";
+import { MonterAuBesoin } from "@/components/ui/MonterAuBesoin";
 import { academies, etapesParChapitre, fiche, fiches, parcours } from "@/content";
 import { motifsAcademies, teintesAcademies } from "@/content/identite";
 import { typographie } from "@/lib/typographie";
@@ -34,7 +35,7 @@ export default function PageAcademies() {
         />
       </div>
 
-      <section aria-labelledby="titre-academies" className="mt-14">
+      <section aria-labelledby="titre-academies" className="hors-ecran mt-14">
         <h2 id="titre-academies" className="text-2xl font-semibold text-ink">
           Les académies
         </h2>
@@ -63,7 +64,9 @@ export default function PageAcademies() {
       </section>
 
       <div className="mt-14">
-        <Explorateur fiches={fiches} etapes={etapesParChapitre} />
+        <MonterAuBesoin hauteur={1400} libelle="Chargement de l'explorateur des chapitres…">
+          <Explorateur fiches={fiches} etapes={etapesParChapitre} />
+        </MonterAuBesoin>
       </div>
     </div>
   );

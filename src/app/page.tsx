@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BougieVivante } from "@/components/accueil/BougieVivante";
 import { ChampMarche } from "@/components/accueil/ChampMarche";
-import { CarteEnsemble } from "@/components/catalogue/Cartes";
+import { CarteEnsemble } from "@/components/catalogue/CarteEnsemble";
 import { CarteParcours } from "@/components/catalogue/Parcours";
 import { BoutonReprendre } from "@/components/progression/Indicateurs";
 import { IconeBouclier, IconeBoussole, IconeCible, IconeEclair, IconeGraphique, IconeLivre, IconeOeil, IconeOutils } from "@/components/ui/Icones";
@@ -46,7 +46,7 @@ export default function Accueil() {
     <div>
       <section className="relative isolate overflow-hidden">
         {/* Le champ forme un horizon sous le texte et la démonstration, fondu vers le haut et sur les côtés. */}
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-[46%] opacity-80 [mask-image:linear-gradient(to_top,#000_35%,transparent)] lg:h-[52%]">
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-[46%] opacity-80 [mask-image:linear-gradient(to_top,#000_35%,transparent)] lg:h-[38%]">
           <ChampMarche />
         </div>
         <div className="grille-ciel pointer-events-none absolute inset-0 -z-20 opacity-60" aria-hidden="true" />
@@ -89,7 +89,7 @@ export default function Accueil() {
           />
         </section>
 
-        <section aria-labelledby="titre-methode" className="py-12">
+        <section aria-labelledby="titre-methode" className="hors-ecran py-12">
           <p className="text-sm font-medium text-cyan">La méthode</p>
           <h2 id="titre-methode" className="mt-1 max-w-2xl text-3xl font-semibold text-ink">
             Comprendre, observer, pratiquer, <span className="accent">être évalué, corriger</span>
@@ -108,7 +108,7 @@ export default function Accueil() {
           </ol>
         </section>
 
-        <section aria-labelledby="titre-academies" className="py-12">
+        <section aria-labelledby="titre-academies" className="hors-ecran py-12">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-sm font-medium text-cyan">Le catalogue</p>
@@ -143,7 +143,7 @@ export default function Accueil() {
           </ul>
         </section>
 
-        <section aria-labelledby="titre-principes" className="py-12">
+        <section aria-labelledby="titre-principes" className="hors-ecran py-12">
           <p className="text-sm font-medium text-cyan">Nos principes</p>
           <h2 id="titre-principes" className="mt-1 text-3xl font-semibold text-ink">
             Ce qui guide Méridien

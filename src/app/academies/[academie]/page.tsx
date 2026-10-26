@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CarteEnsemble } from "@/components/catalogue/Cartes";
+import { CarteEnsemble } from "@/components/catalogue/CarteEnsemble";
 import { BadgeFiabilite } from "@/components/ui/BadgeFiabilite";
 import { Vignette } from "@/components/ui/Vignette";
 import { academie, academies, fiche } from "@/content";

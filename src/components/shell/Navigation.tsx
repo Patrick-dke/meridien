@@ -42,7 +42,7 @@ export function BarreLaterale({ titres, etapes }: { titres: Record<string, strin
   const chemin = usePathname();
   const indice = liens.findIndex((l) => l.actif(chemin));
   return (
-    <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line bg-bg/80 px-4 py-5 backdrop-blur lg:flex">
+    <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line bg-bg px-4 py-5 lg:flex">
       <Link href="/" className="mb-8 px-2" aria-label="Méridien, accueil">
         <Logo />
       </Link>
@@ -89,7 +89,7 @@ export function BarreBas() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-bg/95 pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <ul className="relative mx-auto grid max-w-lg grid-cols-5">
         <span
