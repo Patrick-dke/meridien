@@ -1,5 +1,5 @@
 /* Service worker Méridien : les pages consultées restent lisibles hors ligne. */
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE_PAGES = `meridien-pages-${VERSION}`;
 const CACHE_STATIQUE = `meridien-statique-${VERSION}`;
 const BASE = new URL(self.registration.scope).pathname.replace(/\/$/, "");
@@ -36,6 +36,8 @@ self.addEventListener("fetch", (evenement) => {
   if (requete.method !== "GET") return;
   const url = new URL(requete.url);
   if (url.origin !== self.location.origin) return;
+  // Pistes audio : lues par requêtes partielles (Range), que le cache ne sait pas conserver. Le navigateur s'en charge.
+  if (url.pathname.includes("/audio/") || requete.headers.has("range")) return;
 
   // Pages : réseau d'abord (contenu à jour), cache en secours, puis page « hors ligne ».
   if (requete.mode === "navigate") {

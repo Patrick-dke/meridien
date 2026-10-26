@@ -28,6 +28,7 @@ export default function PageMentions() {
           paragraphes: [
             "Les textes, figures et capsules de Méridien sont des créations originales, rédigées avec l'aide d'une intelligence artificielle puis vérifiées. Ils ne reprennent pas de contenus de formations tierces. Les noms de plateformes ou de produits cités (TradingView, MetaTrader…) appartiennent à leurs propriétaires respectifs.",
             "Méridien est un outil pédagogique : il ne constitue ni un conseil en investissement, ni une offre de services financiers. Voir l'avertissement sur les risques.",
+            "Narration des capsules : voix de synthèse produite localement avec Piper (Open Home Foundation), voix « siwis » entraînée sur le corpus SIWIS French Speech Synthesis Database (Université d'Édimbourg, licence CC BY 4.0). Aucune voix réelle n'est imitée.",
           ],
         },
       ]}

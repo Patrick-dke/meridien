@@ -1,15 +1,39 @@
 import { couleurCss, formatPrix, graduations } from "@/lib/chartkit/outils";
 import type { Annotation, SceneBougies } from "@/lib/chartkit/types";
 
-const L = 480;
-const H = 280;
-const GAUCHE = 8;
-const DROITE = 64;
+export const L = 480;
+export const H = 280;
+export const GAUCHE = 8;
+export const DROITE = 64;
 const HAUT = 16;
 const BAS = 16;
 
-/** Graphique en chandeliers annoté. `etape` révèle progressivement bougies et annotations. */
-export function GraphiqueBougies({ scene, etape = Number.POSITIVE_INFINITY }: { scene: SceneBougies; etape?: number }) {
+/** Nombre d'étapes d'une scène : la plus haute étape d'annotation ou de révélation. */
+export function etapesScene(scene: SceneBougies) {
+  return Math.max(0, (scene.revele?.length ?? 1) - 1, ...scene.annotations.map((a) => a.etape ?? 0));
+}
+
+/**
+ * Graphique en chandeliers annoté. `etape` révèle progressivement bougies et annotations.
+ * `formation` fait naître les bougies une à une (rejouer, capsule) ; `selection` met une bougie en évidence.
+ */
+export function GraphiqueBougies({
+  scene,
+  etape = Number.POSITIVE_INFINITY,
+  formation,
+  selection,
+  annotationsDepuis,
+}: {
+  scene: SceneBougies;
+  etape?: number;
+  /** Les bougies d'indice ≥ depuis apparaissent l'une après l'autre, espacées de pasMs. */
+  formation?: { depuis: number; pasMs: number; delaiMs?: number };
+  selection?: number;
+  /** Les annotations d'étape ≥ etape n'apparaissent qu'après delaiMs (une fois les bougies formées). */
+  annotationsDepuis?: { etape: number; delaiMs: number };
+}) {
+  const delaiAnnotation = (a: Annotation) =>
+    annotationsDepuis && (a.etape ?? 0) >= annotationsDepuis.etape ? { animationDelay: `${annotationsDepuis.delaiMs}ms` } : undefined;
   const n = scene.bougies.length;
   const visibles = scene.revele
     ? (scene.revele[Math.min(etape, scene.revele.length - 1)] ?? n)
@@ -51,15 +75,26 @@ export function GraphiqueBougies({ scene, etape = Number.POSITIVE_INFINITY }: { 
       {annotations
         .filter((a) => a.type === "zone")
         .map((a, i) => (
-          <Zone key={`z${i}`} a={a} x={x} y={y} pas={pas} />
+          <g key={`z${i}`} className="apparition" style={delaiAnnotation(a)}>
+            <Zone a={a} x={x} y={y} pas={pas} />
+          </g>
         ))}
+
+      {selection !== undefined && selection < visibles ? (
+        <rect x={x(selection) - pas / 2} y={HAUT - 8} width={pas} height={H - HAUT - BAS + 16} rx={4} fill="var(--cyan)" fillOpacity={0.08} stroke="var(--cyan)" strokeOpacity={0.35} />
+      ) : null}
 
       {scene.bougies.slice(0, visibles).map((b, i) => {
         const couleur = b.c >= b.o ? "var(--bull)" : "var(--bear)";
         const haut = y(Math.max(b.o, b.c));
         const hauteur = Math.max(1.5, Math.abs(y(b.o) - y(b.c)));
+        const nait = formation && i >= formation.depuis;
         return (
-          <g key={i} className={scene.revele ? "apparition" : undefined}>
+          <g
+            key={i}
+            className={nait ? "bougie-forme" : scene.revele ? "apparition" : undefined}
+            style={nait ? { animationDelay: `${(formation.delaiMs ?? 0) + (i - formation.depuis) * formation.pasMs}ms`, transformOrigin: `${x(i)}px ${y(b.o)}px` } : undefined}
+          >
             <line x1={x(i)} x2={x(i)} y1={y(b.h)} y2={y(b.l)} stroke={couleur} strokeWidth={1.5} />
             <rect x={x(i) - corps / 2} y={haut} width={corps} height={hauteur} rx={1} fill={couleur} />
           </g>
@@ -69,7 +104,9 @@ export function GraphiqueBougies({ scene, etape = Number.POSITIVE_INFINITY }: { 
       {annotations
         .filter((a) => a.type !== "zone")
         .map((a, i) => (
-          <Marque key={`a${i}`} a={a} x={x} y={y} pas={pas} decimales={scene.decimales} />
+          <g key={`a${i}`} className="apparition" style={delaiAnnotation(a)}>
+            <Marque a={a} x={x} y={y} pas={pas} decimales={scene.decimales} />
+          </g>
         ))}
     </svg>
   );

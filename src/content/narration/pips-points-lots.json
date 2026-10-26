@@ -1,0 +1,111 @@
+{
+ "slug": "pips-points-lots",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "4a196623",
+ "duree": 60.205,
+ "audio": "/audio/capsules/pips-points-lots.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 6.364,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 5.864,
+     "texte": "Pips, points et lots : trois mots pour mesurer les mouvements de prix et la taille de tes positions."
+    }
+   ]
+  },
+  {
+   "debut": 6.364,
+   "fin": 15.4,
+   "phrases": [
+    {
+     "debut": 6.364,
+     "fin": 10.603,
+     "texte": "Sur EUR/USD, le prix est coté avec quatre décimales."
+    },
+    {
+     "debut": 10.923,
+     "fin": 14.9,
+     "texte": "Le pip, c'est la quatrième : 0,0001."
+    }
+   ]
+  },
+  {
+   "debut": 15.4,
+   "fin": 29.399,
+   "phrases": [
+    {
+     "debut": 15.4,
+     "fin": 24.373,
+     "texte": "Si EUR/USD passe de 1,0850 à 1,0870, il a monté de 0,0020 : 20 pips."
+    },
+    {
+     "debut": 24.693,
+     "fin": 28.899,
+     "texte": "Pour les paires contre le yen, le pip vaut 0,01."
+    }
+   ]
+  },
+  {
+   "debut": 29.399,
+   "fin": 35.72,
+   "phrases": [
+    {
+     "debut": 29.399,
+     "fin": 31.344,
+     "texte": "La taille d'une position se compte en lots."
+    },
+    {
+     "debut": 31.664,
+     "fin": 35.22,
+     "texte": "Un lot standard, c'est 100 000 unités de la devise de base."
+    }
+   ]
+  },
+  {
+   "debut": 35.72,
+   "fin": 45.098,
+   "phrases": [
+    {
+     "debut": 35.72,
+     "fin": 42.039,
+     "texte": "Sur EUR/USD, un pip pour un lot vaut 0,0001 fois 100 000, soit 10 dollars."
+    },
+    {
+     "debut": 42.359,
+     "fin": 44.598,
+     "texte": "Pour un micro-lot, 10 centimes."
+    }
+   ]
+  },
+  {
+   "debut": 45.098,
+   "fin": 50.796,
+   "phrases": [
+    {
+     "debut": 45.098,
+     "fin": 50.296,
+     "texte": "Notre mouvement de 20 pips vaut donc 200 dollars avec un lot, et 2 dollars avec un micro-lot."
+    }
+   ]
+  },
+  {
+   "debut": 50.796,
+   "fin": 60.205,
+   "phrases": [
+    {
+     "debut": 50.796,
+     "fin": 54.691,
+     "texte": "Sur les indices et les matières premières, on parle de points."
+    },
+    {
+     "debut": 55.011,
+     "fin": 59.605,
+     "texte": "Leur valeur en argent dépend du contrat : lis toujours la fiche de l'instrument."
+    }
+   ]
+  }
+ ]
+}

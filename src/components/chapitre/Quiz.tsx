@@ -6,6 +6,7 @@ import { estComplete, melangeDeterministe, noter, noterQuiz, reponseVide, SEUIL_
 import { enregistrerQuiz } from "@/lib/progression/store";
 import { typographie } from "@/lib/typographie";
 import { IconeCoche, IconeCroix } from "../ui/Icones";
+import { Anneau, Jauge } from "../ui/Progression";
 
 const pct = (x: number) => `${Math.round(x * 100)} %`;
 
@@ -15,11 +16,43 @@ function Correction({ note, explication }: { note: number; explication: string }
   return (
     <div
       role="status"
-      className={`apparition mt-4 rounded-xl border-l-4 p-4 ${juste ? "border-ok bg-ok/10" : partiel ? "border-warn bg-warn/10" : "border-bad bg-bad/10"}`}
+      className={`apparition mt-5 flex gap-3 rounded-2xl border p-4 ${juste ? "border-ok/40 bg-ok/10" : partiel ? "border-warn/40 bg-warn/10" : "border-bad/40 bg-bad/10"}`}
     >
-      <p className="font-semibold text-ink">{juste ? "Juste" : partiel ? `Partiellement juste (${pct(note)})` : "Pas tout à fait"}</p>
-      <p className="mt-1 text-[0.95rem] text-ink">{typographie(explication)}</p>
+      <span
+        className={`flex size-8 shrink-0 items-center justify-center rounded-full ${juste ? "bg-ok text-bg" : partiel ? "bg-warn text-bg" : "bg-bad text-white"}`}
+        aria-hidden="true"
+      >
+        {juste ? <IconeCoche className="size-4" /> : <IconeCroix className="size-4" />}
+      </span>
+      <div>
+        <p className="font-semibold text-ink">{juste ? "Juste" : partiel ? `Partiellement juste (${pct(note)})` : "Pas tout à fait"}</p>
+        <p className="mt-1 text-[0.95rem] leading-relaxed text-ink">{typographie(explication)}</p>
+      </div>
     </div>
+  );
+}
+
+/** Court éclat de réussite : quelques particules qui s'écartent, une seule fois (rien en mouvement réduit). */
+function Eclat() {
+  return (
+    <span className="pointer-events-none absolute left-1/2 top-1/2" aria-hidden="true">
+      {Array.from({ length: 14 }, (_, i) => {
+        const angle = (i / 14) * Math.PI * 2;
+        const d = 70 + (i % 3) * 18;
+        return (
+          <span
+            key={i}
+            className="absolute size-1.5 rounded-full"
+            style={{
+              background: i % 2 ? "var(--cyan)" : "var(--gold)",
+              ["--dx" as string]: `${Math.round(Math.cos(angle) * d)}px`,
+              ["--dy" as string]: `${Math.round(Math.sin(angle) * d)}px`,
+              animation: `eclat 900ms var(--ease-out-soft) ${i * 12}ms both`,
+            }}
+          />
+        );
+      })}
+    </span>
   );
 }
 
@@ -41,11 +74,21 @@ function Option({
   children: React.ReactNode;
 }) {
   const bord =
-    etat === "juste" ? "border-ok bg-ok/10" : etat === "faux" ? "border-bad bg-bad/10" : etat === "attendu" ? "border-ok/60" : coche ? "border-brand bg-brand-soft" : "border-line-strong hover:border-ink-3";
+    etat === "juste"
+      ? "border-ok bg-ok/10"
+      : etat === "faux"
+        ? "border-bad bg-bad/10"
+        : etat === "attendu"
+          ? "border-ok/60 bg-ok/[0.04]"
+          : coche
+            ? "border-brand bg-brand-soft shadow-[0_0_0_3px_rgb(143_132_255/0.15)]"
+            : "border-line-strong bg-surface/60 hover:border-ink-3 hover:bg-surface-2";
   return (
-    <label className={`flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 transition-colors ${bord} ${desactive ? "cursor-default" : ""}`}>
-      <input type={type} name={name} checked={coche} onChange={onChange} disabled={desactive} className="mt-1 size-4 shrink-0 accent-[var(--brand-solid)]" />
-      <span className="flex-1 text-[0.98rem] text-ink">{children}</span>
+    <label
+      className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 transition-[background-color,border-color,box-shadow,transform] duration-200 active:scale-[0.99] ${bord} ${desactive ? "cursor-default active:scale-100" : ""}`}
+    >
+      <input type={type} name={name} checked={coche} onChange={onChange} disabled={desactive} className="size-[1.1rem] shrink-0 accent-[var(--brand-solid)]" />
+      <span className="flex-1 text-[0.98rem] leading-snug text-ink">{children}</span>
       {etat === "juste" || etat === "attendu" ? <IconeCoche className="size-5 shrink-0 text-ok" /> : null}
       {etat === "faux" ? <IconeCroix className="size-5 shrink-0 text-bad" /> : null}
     </label>
@@ -251,32 +294,43 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
 
   if (fini && resultat) {
     return (
-      <div className="not-prose space-y-5" aria-live="polite">
-        <div className={`rounded-2xl border p-5 ${resultat.reussi ? "border-ok/50 bg-ok/10" : "border-warn/50 bg-warn/10"}`}>
-          <p className="text-sm text-ink-2">Ton score</p>
-          <p className="mt-1 font-mono text-4xl font-semibold text-ink tabular">{pct(resultat.score)}</p>
-          <p className="mt-2 text-ink">
-            {resultat.reussi
-              ? "Chapitre validé. Tes résultats par concept sont enregistrés dans ton tableau de bord."
-              : `Il faut ${pct(SEUIL_REUSSITE)} pour valider le chapitre. Revois les points ci-dessous, puis réessaie : les tentatives sont illimitées.`}
-          </p>
+      <div className="not-prose space-y-6" aria-live="polite">
+        <div className={`apparition carte relative flex flex-col items-center gap-5 overflow-hidden p-6 text-center sm:flex-row sm:text-left ${resultat.reussi ? "!border-ok/40" : "!border-warn/40"}`}>
+          <span className="relative">
+            <Anneau valeur={resultat.score} taille={112} epaisseur={9} libelle="Ton score" teinte={resultat.reussi ? "var(--ok)" : "var(--warn)"}>
+              <span className="font-mono text-2xl font-semibold text-ink tabular">{pct(resultat.score)}</span>
+            </Anneau>
+            {resultat.reussi ? <Eclat /> : null}
+          </span>
+          <div>
+            <p className="text-sm text-ink-2">Ton score</p>
+            <p className="mt-1 text-xl font-semibold text-ink">{resultat.reussi ? "Bravo, c'est validé !" : "Encore un effort"}</p>
+            <p className="mt-2 text-ink-2">
+              {resultat.reussi
+                ? "Chapitre validé. Tes résultats par concept sont enregistrés dans ton tableau de bord."
+                : `Il faut ${pct(SEUIL_REUSSITE)} pour valider le chapitre. Revois les points ci-dessous, puis réessaie : les tentatives sont illimitées.`}
+            </p>
+          </div>
         </div>
         <div>
-          <p className="mb-2 text-sm font-semibold text-ink">Par concept</p>
-          <ul className="space-y-1.5">
-            {resultat.parConcept.map((c) => (
-              <li key={c.concept} className="flex items-center justify-between gap-3 rounded-lg bg-surface px-3 py-2 text-sm">
-                <span className="text-ink">{nomsConcepts[c.concept] ?? c.concept}</span>
-                <span className={`font-mono tabular ${c.score >= 0.8 ? "text-ok" : c.score >= 0.5 ? "text-warn" : "text-bad"}`}>{pct(c.score)}</span>
+          <p className="mb-3 text-sm font-semibold text-ink">Par concept</p>
+          <ul className="space-y-2.5">
+            {resultat.parConcept.map((c, i) => (
+              <li key={c.concept} className="revele rounded-xl bg-surface px-4 py-3 text-sm" style={{ ["--i" as string]: i }}>
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <span className="text-ink">{nomsConcepts[c.concept] ?? c.concept}</span>
+                  <span className={`font-mono tabular ${c.score >= 0.8 ? "text-ok" : c.score >= 0.5 ? "text-warn" : "text-bad"}`}>{pct(c.score)}</span>
+                </div>
+                <Jauge valeur={c.score} libelle={`Score sur ${nomsConcepts[c.concept] ?? c.concept}`} className="!h-1.5" />
               </li>
             ))}
           </ul>
         </div>
         <div className="flex flex-wrap gap-3">
-          <button type="button" onClick={recommencer} className="rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium text-ink hover:border-ink-3">
+          <button type="button" onClick={recommencer} className="btn btn-secondaire">
             Recommencer le quiz
           </button>
-          <a href="#etape-validation" className="rounded-lg bg-brand-solid px-4 py-2.5 text-sm font-medium text-white hover:brightness-110">
+          <a href="#etape-validation" className="btn btn-primaire">
             Voir la validation du chapitre
           </a>
         </div>
@@ -288,18 +342,26 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
   const note = verifiee ? noter(q, reponses[index]) : 0;
   return (
     <div className="not-prose">
-      <div className="mb-4 flex items-center justify-between text-sm text-ink-3">
-        <span>
-          Question {index + 1} sur {questions.length}
-        </span>
+      <div className="mb-5">
+        <div className="mb-2 flex items-center justify-between text-sm text-ink-3">
+          <span>
+            Question {index + 1} sur {questions.length}
+          </span>
+          <span className="font-mono text-xs">{Math.round((index / questions.length) * 100)} %</span>
+        </div>
         <span className="flex gap-1" aria-hidden="true">
           {questions.map((_, i) => (
-            <span key={i} className={`h-1.5 w-5 rounded-full ${i < index ? "bg-brand" : i === index ? "bg-brand/60" : "bg-line"}`} />
+            <span key={i} className="h-1.5 flex-1 overflow-hidden rounded-full bg-line">
+              <span
+                className="block h-full rounded-full transition-[width] duration-500 ease-[var(--ease-out-soft)]"
+                style={{ width: i < index || (i === index && verifiee) ? "100%" : i === index ? "35%" : "0%", background: "var(--meridien)" }}
+              />
+            </span>
           ))}
         </span>
       </div>
-      <fieldset key={q.id}>
-        <legend className="mb-4 text-lg font-semibold leading-snug text-ink">{typographie(q.enonce)}</legend>
+      <fieldset key={q.id} className={`apparition ${verifiee && note < 0.999 ? "refus" : ""}`}>
+        <legend className="mb-5 text-lg font-semibold leading-snug text-ink sm:text-xl">{typographie(q.enonce)}</legend>
         <ChampQuestion
           q={q}
           r={reponses[index]}
@@ -308,22 +370,22 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
         />
       </fieldset>
       {verifiee ? <Correction note={note} explication={q.explication} /> : null}
-      <div className="mt-5 flex justify-end">
+      <div className="mt-6 flex justify-end">
         {!verifiee ? (
           <button
             type="button"
             disabled={!estComplete(q, reponses[index])}
             onClick={() => setVerifiees((v) => v.map((x, i) => (i === index ? true : x)))}
-            className="rounded-lg bg-brand-solid px-5 py-2.5 text-sm font-medium text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
+            className="btn btn-primaire min-w-36"
           >
             Vérifier
           </button>
         ) : index < questions.length - 1 ? (
-          <button type="button" onClick={() => setIndex(index + 1)} className="rounded-lg bg-brand-solid px-5 py-2.5 text-sm font-medium text-white hover:brightness-110">
+          <button type="button" onClick={() => setIndex(index + 1)} className="btn btn-primaire min-w-36">
             Question suivante
           </button>
         ) : (
-          <button type="button" onClick={terminer} className="rounded-lg bg-brand-solid px-5 py-2.5 text-sm font-medium text-white hover:brightness-110">
+          <button type="button" onClick={terminer} className="btn btn-primaire min-w-36">
             Voir mon résultat
           </button>
         )}

@@ -1,0 +1,142 @@
+{
+ "slug": "risque-et-taille-de-position",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "43d38c8d",
+ "duree": 67.287,
+ "audio": "/audio/capsules/risque-et-taille-de-position.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 8.14,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 1.202,
+     "texte": "Combien acheter ?"
+    },
+    {
+     "debut": 1.922,
+     "fin": 7.64,
+     "texte": "La bonne question n'est pas « combien je veux gagner », mais « combien j'accepte de perdre si j'ai tort »."
+    }
+   ]
+  },
+  {
+   "debut": 8.14,
+   "fin": 17.479,
+   "phrases": [
+    {
+     "debut": 8.14,
+     "fin": 13.35,
+     "texte": "D'abord, fixe ton risque par opération : un petit pourcentage de ton capital."
+    },
+    {
+     "debut": 13.67,
+     "fin": 16.979,
+     "texte": "Avec 2 000 euros et 1 %, c'est 20 euros."
+    }
+   ]
+  },
+  {
+   "debut": 17.479,
+   "fin": 27.293,
+   "phrases": [
+    {
+     "debut": 17.479,
+     "fin": 20.793,
+     "texte": "Ensuite, place ton stop là où ton idée devient fausse."
+    },
+    {
+     "debut": 21.113,
+     "fin": 26.793,
+     "texte": "Ici, entrée à 50 euros, stop à 48 : 2 euros de risque par action."
+    }
+   ]
+  },
+  {
+   "debut": 27.293,
+   "fin": 34.945,
+   "phrases": [
+    {
+     "debut": 27.293,
+     "fin": 31.625,
+     "texte": "Enfin, divise : 20 euros de risque, 2 euros par action."
+    },
+    {
+     "debut": 31.945,
+     "fin": 34.445,
+     "texte": "Tu achètes 10 actions, pas une de plus."
+    }
+   ]
+  },
+  {
+   "debut": 34.945,
+   "fin": 43.308,
+   "phrases": [
+    {
+     "debut": 34.945,
+     "fin": 38.334,
+     "texte": "Si le stop est touché, tu perds 20 euros, comme prévu."
+    },
+    {
+     "debut": 38.654,
+     "fin": 42.808,
+     "texte": "Le stop a fixé la distance ; ta règle a fixé la taille."
+    }
+   ]
+  },
+  {
+   "debut": 43.308,
+   "fin": 53.071,
+   "phrases": [
+    {
+     "debut": 43.308,
+     "fin": 44.31,
+     "texte": "Pourquoi si peu ?"
+    },
+    {
+     "debut": 45.03,
+     "fin": 48.402,
+     "texte": "Parce que même une méthode gagnante enchaîne les pertes."
+    },
+    {
+     "debut": 48.722,
+     "fin": 52.571,
+     "texte": "Ici, six d'affilée, avec une méthode pourtant légèrement gagnante."
+    }
+   ]
+  },
+  {
+   "debut": 53.071,
+   "fin": 60.067,
+   "phrases": [
+    {
+     "debut": 53.071,
+     "fin": 56.682,
+     "texte": "Six pertes à 1 % coûtent environ 6 % du capital."
+    },
+    {
+     "debut": 57.002,
+     "fin": 59.567,
+     "texte": "À 10 % par trade, près de la moitié."
+    }
+   ]
+  },
+  {
+   "debut": 60.067,
+   "fin": 67.287,
+   "phrases": [
+    {
+     "debut": 60.067,
+     "fin": 64.635,
+     "texte": "Retiens : d'abord le risque, ensuite le stop, enfin la taille."
+    },
+    {
+     "debut": 64.955,
+     "fin": 66.687,
+     "texte": "Dans cet ordre, toujours."
+    }
+   ]
+  }
+ ]
+}

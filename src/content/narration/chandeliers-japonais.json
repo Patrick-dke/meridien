@@ -1,0 +1,106 @@
+{
+ "slug": "chandeliers-japonais",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "647cdc22",
+ "duree": 54.736,
+ "audio": "/audio/capsules/chandeliers-japonais.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 9.763,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 7.376,
+     "texte": "Sur un graphique en chandeliers, chaque bougie résume une période : une minute, une heure ou un jour."
+    },
+    {
+     "debut": 7.696,
+     "fin": 9.263,
+     "texte": "Elle porte quatre prix."
+    }
+   ]
+  },
+  {
+   "debut": 9.763,
+   "fin": 14.842,
+   "phrases": [
+    {
+     "debut": 9.763,
+     "fin": 14.342,
+     "texte": "Voici une bougie haussière : le prix a fini plus haut qu'il n'a commencé."
+    }
+   ]
+  },
+  {
+   "debut": 14.842,
+   "fin": 22.504,
+   "phrases": [
+    {
+     "debut": 14.842,
+     "fin": 18.709,
+     "texte": "Le bas du corps marque l'ouverture, le haut la clôture."
+    },
+    {
+     "debut": 19.029,
+     "fin": 22.004,
+     "texte": "Les mèches montrent le plus haut et le plus bas atteints."
+    }
+   ]
+  },
+  {
+   "debut": 22.504,
+   "fin": 30.921,
+   "phrases": [
+    {
+     "debut": 22.504,
+     "fin": 26.171,
+     "texte": "Le corps, c'est le chemin entre l'ouverture et la clôture."
+    },
+    {
+     "debut": 26.491,
+     "fin": 30.421,
+     "texte": "Les mèches, ce sont les excursions du prix avant qu'il ne revienne."
+    }
+   ]
+  },
+  {
+   "debut": 30.921,
+   "fin": 37.56,
+   "phrases": [
+    {
+     "debut": 30.921,
+     "fin": 37.06,
+     "texte": "Une bougie baissière, c'est l'inverse : l'ouverture en haut du corps, la clôture en bas."
+    }
+   ]
+  },
+  {
+   "debut": 37.56,
+   "fin": 45.638,
+   "phrases": [
+    {
+     "debut": 37.56,
+     "fin": 45.138,
+     "texte": "Sur un vrai graphique, on repère des bougies à longue mèche, à corps minuscule, ou de très grande amplitude."
+    }
+   ]
+  },
+  {
+   "debut": 45.638,
+   "fin": 54.736,
+   "phrases": [
+    {
+     "debut": 45.638,
+     "fin": 47.908,
+     "texte": "Mais une bougie seule ne prédit rien."
+    },
+    {
+     "debut": 48.228,
+     "fin": 54.136,
+     "texte": "Elle décrit ce qui s'est passé ; le contexte et les bougies suivantes comptent davantage."
+    }
+   ]
+  }
+ ]
+}

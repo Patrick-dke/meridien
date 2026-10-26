@@ -1,6 +1,6 @@
 "use client";
 
-import MiniSearch from "minisearch";
+import type MiniSearch from "minisearch";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ressource } from "@/lib/chemin";
@@ -24,13 +24,18 @@ export function Recherche() {
   const [resultats, setResultats] = useState<Resultat[]>([]);
   const [actif, setActif] = useState(0);
   const [erreur, setErreur] = useState(false);
+  const [pret, setPret] = useState(false);
   const router = useRouter();
 
   const charger = useCallback(async () => {
     if (index.current) return;
     try {
-      const docs: DocumentRecherche[] = await fetch(ressource("/recherche.json")).then((r) => r.json());
-      const m = new MiniSearch<DocumentRecherche>({
+      // Le moteur et l'index ne sont chargés qu'à la première ouverture de la recherche.
+      const [{ default: Moteur }, docs] = await Promise.all([
+        import("minisearch"),
+        fetch(ressource("/recherche.json")).then((r) => r.json() as Promise<DocumentRecherche[]>),
+      ]);
+      const m = new Moteur<DocumentRecherche>({
         fields: ["titre", "texte"],
         storeFields: ["titre", "type", "url"],
         processTerm: (t) => sansAccents(t),
@@ -38,7 +43,11 @@ export function Recherche() {
       });
       m.addAll(docs);
       index.current = m;
+      setPret(true);
       setErreur(false);
+      // Ce qui a été tapé pendant le chargement est cherché dès que l'index est prêt.
+      const deja = champ.current?.value ?? "";
+      if (deja.trim().length >= 2) setResultats(m.search(deja).slice(0, 12) as unknown as Resultat[]);
     } catch {
       setErreur(true);
     }
@@ -84,7 +93,7 @@ export function Recherche() {
       <button
         type="button"
         onClick={ouvrir}
-        className="inline-flex h-10 items-center gap-2 rounded-lg border border-line px-3 text-sm text-ink-2 hover:border-line-strong hover:text-ink"
+        className="inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface/60 px-3 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink active:scale-[0.97]"
       >
         <IconeRecherche className="size-[1.1rem]" />
         <span>Rechercher</span>
@@ -125,7 +134,10 @@ export function Recherche() {
         </div>
         <ul id="resultats-recherche" aria-label="Résultats" className="max-h-[55vh] overflow-y-auto p-2">
           {erreur ? <li className="px-3 py-6 text-center text-sm text-warn">Index de recherche indisponible hors ligne.</li> : null}
-          {!erreur && requete.trim().length >= 2 && resultats.length === 0 ? (
+          {!erreur && requete.trim().length >= 2 && resultats.length === 0 && !pret ? (
+            <li className="px-3 py-6 text-center text-sm text-ink-3">Chargement de l&apos;index…</li>
+          ) : null}
+          {!erreur && requete.trim().length >= 2 && resultats.length === 0 && pret ? (
             <li className="px-3 py-6 text-center text-sm text-ink-3">Aucun résultat pour « {requete} ».</li>
           ) : null}
           {resultats.map((r, i) => (

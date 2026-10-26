@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ListeChapitres } from "@/components/catalogue/ListeChapitres";
+import { CarteChapitre } from "@/components/catalogue/Cartes";
 import { ProgressionListe } from "@/components/progression/Indicateurs";
-import { academie, academies, estPublie, module } from "@/content";
+import { Vignette } from "@/components/ui/Vignette";
+import { academie, academies, etapesParChapitre, fiche, module } from "@/content";
+import { identiteModules, libellesStrategies, teintesAcademies } from "@/content/identite";
 import { typographie } from "@/lib/typographie";
 
 export const dynamicParams = false;
@@ -23,10 +25,13 @@ export default async function PageModule({ params }: PageProps<"/academies/[acad
   const a = academie(p.academie);
   const m = module(p.academie, p.module);
   if (!a || !m) notFound();
-  const publies = m.chapitres.filter((c) => estPublie(c.slug)).map((c) => c.slug);
+  const fichesModule = m.chapitres.map((c) => fiche(c.slug)!);
+  const publies = fichesModule.filter((f) => f.publie).map((f) => f.slug);
+  const id = identiteModules[m.slug];
+  const teinte = teintesAcademies[a.slug];
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      <nav aria-label="Fil d'Ariane" className="mb-4 text-sm text-ink-3">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <nav aria-label="Fil d'Ariane" className="mb-5 text-sm text-ink-3">
         <Link href="/academies/" className="hover:text-ink">
           Apprendre
         </Link>
@@ -35,20 +40,36 @@ export default async function PageModule({ params }: PageProps<"/academies/[acad
           {a.titre}
         </Link>
       </nav>
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">{typographie(m.titre)}</h1>
-      <p className="mt-2 max-w-2xl text-ink-2">{typographie(m.description)}</p>
-      {publies.length > 0 ? (
-        <div className="mt-6 max-w-md">
-          <ProgressionListe slugs={publies} libelle="Chapitres disponibles terminés" />
+      <header className="carte grid overflow-hidden md:grid-cols-[1.3fr_1fr]">
+        <div className="p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: teinte }}>
+            {a.code} · {libellesStrategies[id.strategie]}
+          </p>
+          <h1 className="mt-2 text-3xl font-semibold text-ink sm:text-4xl">{typographie(m.titre)}</h1>
+          <p className="mt-3 max-w-2xl text-ink-2">{typographie(m.description)}</p>
+          {publies.length > 0 ? (
+            <div className="mt-6 max-w-md">
+              <ProgressionListe slugs={publies} libelle="Chapitres disponibles terminés" />
+            </div>
+          ) : (
+            <p className="mt-6 rounded-xl border border-line bg-surface p-4 text-sm text-ink-2">
+              {typographie(
+                "Ce module est en préparation : ses chapitres seront publiés après rédaction et vérification. En attendant, le parcours « Premiers pas » pose les bases nécessaires.",
+              )}
+            </p>
+          )}
         </div>
-      ) : (
-        <p className="mt-6 rounded-xl border border-line bg-surface p-4 text-sm text-ink-2">
-          {typographie("Ce module est en préparation : ses chapitres seront publiés après rédaction et vérification. En attendant, le parcours « Premiers pas » pose les bases nécessaires.")}
-        </p>
-      )}
-      <div className="mt-6">
-        <ListeChapitres chapitres={m.chapitres} />
-      </div>
+        <div className="hidden border-l border-line md:block">
+          <Vignette motif={id.motif} teinte={teinte} graine={`module-${m.slug}`} className="h-full" />
+        </div>
+      </header>
+      <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {fichesModule.map((f, i) => (
+          <li key={f.slug} className="revele" style={{ ["--i" as string]: i % 6 }}>
+            <CarteChapitre f={f} etapes={etapesParChapitre[f.slug]} rang={i + 1} />
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

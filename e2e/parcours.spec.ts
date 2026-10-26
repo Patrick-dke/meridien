@@ -23,6 +23,8 @@ async function repondreQuizChapitre1(page: Page, justes = true) {
 }
 
 test("un débutant suit l'accueil personnalisé puis valide le premier chapitre", async ({ page }) => {
+  // Parcours complet de bout en bout (accueil, profil, neuf étapes, quiz, tableau de bord) : il lui faut du temps.
+  test.setTimeout(60_000);
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Apprendre à lire les marchés avec méthode.");
   await page.getByRole("link", { name: "Commencer sans compte" }).click();

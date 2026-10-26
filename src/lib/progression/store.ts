@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { ajouterScoresConcepts, ETAT_VIDE, lireEtat, type Etat, type Profil, type Reglages } from "./etat";
+import { ajouterAuJournal, ajouterScoresConcepts, ETAT_VIDE, jourLocal, lireEtat, type Etat, type Profil, type Reglages } from "./etat";
 
 /*
  * Progression enregistrée dans le navigateur (localStorage), sans compte ni serveur.
@@ -87,7 +87,12 @@ export function ajouterTemps(slug: string, secondes: number) {
   mettreAJour((e) => {
     const c = e.chapitres[slug];
     if (!c) return e;
-    return { ...e, derniereVisite: maintenant(), chapitres: { ...e.chapitres, [slug]: { ...c, tempsS: c.tempsS + secondes } } };
+    return {
+      ...e,
+      derniereVisite: maintenant(),
+      chapitres: { ...e.chapitres, [slug]: { ...c, tempsS: c.tempsS + secondes } },
+      journal: ajouterAuJournal(e.journal, jourLocal(), secondes),
+    };
   });
 }
 

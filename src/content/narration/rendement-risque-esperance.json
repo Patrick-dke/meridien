@@ -1,0 +1,131 @@
+{
+ "slug": "rendement-risque-esperance",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "a348f687",
+ "duree": 69.471,
+ "audio": "/audio/capsules/rendement-risque-esperance.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 8.18,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 3.168,
+     "texte": "Vaut-il mieux gagner souvent, ou gagner gros ?"
+    },
+    {
+     "debut": 3.888,
+     "fin": 5.447,
+     "texte": "Ni l'un ni l'autre seul."
+    },
+    {
+     "debut": 5.767,
+     "fin": 7.68,
+     "texte": "Tout est dans la combinaison des deux."
+    }
+   ]
+  },
+  {
+   "debut": 8.18,
+   "fin": 19.434,
+   "phrases": [
+    {
+     "debut": 8.18,
+     "fin": 13.36,
+     "texte": "Le ratio rendement sur risque compare ce que tu vises à ce que tu risques."
+    },
+    {
+     "debut": 13.68,
+     "fin": 18.934,
+     "texte": "4,40 visés pour 2,20 risqués : un ratio de 2."
+    }
+   ]
+  },
+  {
+   "debut": 19.434,
+   "fin": 29.634,
+   "phrases": [
+    {
+     "debut": 19.434,
+     "fin": 21.93,
+     "texte": "Chaque ratio a son seuil de rentabilité."
+    },
+    {
+     "debut": 22.25,
+     "fin": 25.933,
+     "texte": "Avec un ratio de 1, il faut gagner plus d'une fois sur deux."
+    },
+    {
+     "debut": 26.253,
+     "fin": 29.134,
+     "texte": "Avec un ratio de 2, plus d'une fois sur trois."
+    }
+   ]
+  },
+  {
+   "debut": 29.634,
+   "fin": 37.993,
+   "phrases": [
+    {
+     "debut": 29.634,
+     "fin": 33.516,
+     "texte": "Au-dessus de la courbe, la méthode gagne, avant frais."
+    },
+    {
+     "debut": 33.836,
+     "fin": 37.493,
+     "texte": "En dessous, elle perd, même avec de beaux trades."
+    }
+   ]
+  },
+  {
+   "debut": 37.993,
+   "fin": 52.378,
+   "phrases": [
+    {
+     "debut": 37.993,
+     "fin": 39.773,
+     "texte": "L'espérance combine les deux."
+    },
+    {
+     "debut": 40.093,
+     "fin": 51.878,
+     "texte": "Avec 40 % de réussite, des gains de 2R et des pertes de 1R : 0,8 moins 0,6, soit plus 0,2R par trade."
+    }
+   ]
+  },
+  {
+   "debut": 52.378,
+   "fin": 60.139,
+   "phrases": [
+    {
+     "debut": 52.378,
+     "fin": 56.528,
+     "texte": "Mais une espérance positive ne protège pas des séries de pertes."
+    },
+    {
+     "debut": 56.848,
+     "fin": 59.639,
+     "texte": "Elle ne se révèle que sur un grand nombre de trades."
+    }
+   ]
+  },
+  {
+   "debut": 60.139,
+   "fin": 69.471,
+   "phrases": [
+    {
+     "debut": 60.139,
+     "fin": 64.961,
+     "texte": "Retiens : une méthode se juge sur des dizaines de trades, frais compris."
+    },
+    {
+     "debut": 65.281,
+     "fin": 68.871,
+     "texte": "Jamais sur trois trades, ni sur une capture d'écran."
+    }
+   ]
+  }
+ ]
+}

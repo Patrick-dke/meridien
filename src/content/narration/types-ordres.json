@@ -1,0 +1,116 @@
+{
+ "slug": "types-ordres",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "e7edd461",
+ "duree": 59.668,
+ "audio": "/audio/capsules/types-ordres.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 7.64,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 4.099,
+     "texte": "Trois grands types d'ordres : au marché, limite et stop."
+    },
+    {
+     "debut": 4.419,
+     "fin": 7.14,
+     "texte": "Chacun garantit une chose, jamais tout."
+    }
+   ]
+  },
+  {
+   "debut": 7.64,
+   "fin": 15.985,
+   "phrases": [
+    {
+     "debut": 7.64,
+     "fin": 11.93,
+     "texte": "L'ordre au marché s'exécute tout de suite, au meilleur prix disponible."
+    },
+    {
+     "debut": 12.25,
+     "fin": 15.485,
+     "texte": "Tu es sûr d'être servi, pas du prix exact."
+    }
+   ]
+  },
+  {
+   "debut": 15.985,
+   "fin": 24.016,
+   "phrases": [
+    {
+     "debut": 15.985,
+     "fin": 17.938,
+     "texte": "L'ordre limite fixe ton prix."
+    },
+    {
+     "debut": 18.258,
+     "fin": 23.516,
+     "texte": "Un achat limite se place sous le prix actuel : tu n'achètes que si le prix descend jusque-là."
+    }
+   ]
+  },
+  {
+   "debut": 24.016,
+   "fin": 32.332,
+   "phrases": [
+    {
+     "debut": 24.016,
+     "fin": 27.315,
+     "texte": "L'ordre stop se déclenche quand un prix est franchi."
+    },
+    {
+     "debut": 27.635,
+     "fin": 31.832,
+     "texte": "Un achat stop se place au-dessus : tu n'achètes que si le prix monte jusque-là."
+    }
+   ]
+  },
+  {
+   "debut": 32.332,
+   "fin": 41.714,
+   "phrases": [
+    {
+     "debut": 32.332,
+     "fin": 37.92,
+     "texte": "À la vente, c'est symétrique : vente limite au-dessus du prix, vente stop en dessous."
+    },
+    {
+     "debut": 38.24,
+     "fin": 41.214,
+     "texte": "Le stop loss d'un achat est une vente stop."
+    }
+   ]
+  },
+  {
+   "debut": 41.714,
+   "fin": 50.121,
+   "phrases": [
+    {
+     "debut": 41.714,
+     "fin": 49.621,
+     "texte": "Retiens les garanties : le marché garantit l'exécution, la limite garantit le prix, le stop garantit seulement le déclenchement."
+    }
+   ]
+  },
+  {
+   "debut": 50.121,
+   "fin": 59.668,
+   "phrases": [
+    {
+     "debut": 50.121,
+     "fin": 53.98,
+     "texte": "Une fois déclenché, un ordre stop devient un ordre au marché."
+    },
+    {
+     "debut": 54.3,
+     "fin": 59.068,
+     "texte": "Dans un marché rapide, il peut donc être exécuté plus loin que prévu."
+    }
+   ]
+  }
+ ]
+}

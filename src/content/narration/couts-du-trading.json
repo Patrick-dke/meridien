@@ -1,0 +1,106 @@
+{
+ "slug": "couts-du-trading",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "bcad09c1",
+ "duree": 55.978,
+ "audio": "/audio/capsules/couts-du-trading.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 9.335,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 3.882,
+     "texte": "Un trade coûte de l'argent avant même de rapporter quoi que ce soit."
+    },
+    {
+     "debut": 4.202,
+     "fin": 8.835,
+     "texte": "Trois coûts principaux : le spread, la commission et le slippage."
+    }
+   ]
+  },
+  {
+   "debut": 9.335,
+   "fin": 17.289,
+   "phrases": [
+    {
+     "debut": 9.335,
+     "fin": 13.281,
+     "texte": "Le spread d'abord : tu achètes à l'ask, tu vends au bid."
+    },
+    {
+     "debut": 13.601,
+     "fin": 16.789,
+     "texte": "Si tu achètes puis revends aussitôt, tu perds l'écart."
+    }
+   ]
+  },
+  {
+   "debut": 17.289,
+   "fin": 27.308,
+   "phrases": [
+    {
+     "debut": 17.289,
+     "fin": 23.222,
+     "texte": "La commission, ensuite : des frais fixes ou en pourcentage, à chaque ordre."
+    },
+    {
+     "debut": 23.542,
+     "fin": 26.808,
+     "texte": "Sans commission, le spread est souvent plus large."
+    }
+   ]
+  },
+  {
+   "debut": 27.308,
+   "fin": 35.716,
+   "phrases": [
+    {
+     "debut": 27.308,
+     "fin": 35.216,
+     "texte": "Le slippage, enfin : l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur."
+    }
+   ]
+  },
+  {
+   "debut": 35.716,
+   "fin": 40.822,
+   "phrases": [
+    {
+     "debut": 35.716,
+     "fin": 40.322,
+     "texte": "Il frappe surtout les ordres au marché et les stops, lors des annonces et des gaps."
+    }
+   ]
+  },
+  {
+   "debut": 40.822,
+   "fin": 48.502,
+   "phrases": [
+    {
+     "debut": 40.822,
+     "fin": 48.002,
+     "texte": "Additionne-les : sur un objectif de 10 pips, un coût total de 2 pips représente déjà un cinquième du gain visé."
+    }
+   ]
+  },
+  {
+   "debut": 48.502,
+   "fin": 55.978,
+   "phrases": [
+    {
+     "debut": 48.502,
+     "fin": 51.944,
+     "texte": "Retiens : les coûts sont certains, les gains ne le sont pas."
+    },
+    {
+     "debut": 52.264,
+     "fin": 55.378,
+     "texte": "Plus ton objectif est petit, plus ils pèsent."
+    }
+   ]
+  }
+ ]
+}

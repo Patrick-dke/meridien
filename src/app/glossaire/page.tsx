@@ -14,7 +14,8 @@ export default function PageGlossaire() {
     .map((t) => ({ slug: t.slug, terme: typographie(t.terme), court: typographie(t.court), synonymes: t.synonymes }));
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">Glossaire</h1>
+      <p className="text-sm font-medium text-cyan">Les mots du trading</p>
+      <h1 className="mt-1 text-3xl font-semibold text-ink sm:text-4xl">Glossaire</h1>
       <p className="mt-2 max-w-2xl text-ink-2">
         {typographie(`${glossaire.length} termes, définis simplement. Dans les cours, les mots soulignés en pointillés ouvrent leur définition sans quitter la page.`)}
       </p>

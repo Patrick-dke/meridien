@@ -1,5 +1,9 @@
+import { existsSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { bougieValide } from "@/lib/chartkit/outils";
+import { empreinteTextes, phrasesAffichees, texteOral } from "@/lib/narration";
+import { narration } from "./narrations";
 import { decouper, texteBrut } from "@/lib/typographie";
 import { academies, parcoursPremiersPas } from "./catalogue";
 import { concepts } from "./concepts";
@@ -104,6 +108,41 @@ describe("chapitres", () => {
         expect(mots / s.duree, `${c.slug} : « ${s.texte} »`).toBeLessThanOrEqual(190 / 60);
       }
     }
+  });
+});
+
+describe("narration des capsules", () => {
+  it("chaque capsule publiée a une narration à jour, de 90 secondes au plus", () => {
+    for (const c of chapitresPublies) {
+      const n = narration(c.slug);
+      expect(n, `${c.slug} : narration absente (npm run voix)`).not.toBeNull();
+      if (!n) continue;
+      // Un texte modifié sans régénérer la voix ferait dire autre chose que ce qui est affiché.
+      expect(n.empreinte, `${c.slug} : narration périmée (npm run voix)`).toBe(empreinteTextes(c.capsule.scenes.map((s) => s.texte)));
+      expect(n.scenes).toHaveLength(c.capsule.scenes.length);
+      expect(n.duree, c.slug).toBeLessThanOrEqual(90);
+      expect(n.duree, c.slug).toBeGreaterThanOrEqual(25);
+      n.scenes.forEach((s, i) => {
+        expect(s.phrases.map((p) => p.texte), `${c.slug}, scène ${i + 1}`).toEqual(phrasesAffichees(c.capsule.scenes[i].texte));
+        expect(s.fin, `${c.slug}, scène ${i + 1}`).toBeGreaterThan(s.debut);
+        if (i > 0) expect(s.debut).toBeCloseTo(n.scenes[i - 1].fin, 3);
+        for (const p of s.phrases) {
+          expect(p.debut).toBeGreaterThanOrEqual(s.debut);
+          expect(p.fin).toBeLessThanOrEqual(s.fin);
+        }
+      });
+      const fichier = join(process.cwd(), "public", n.audio);
+      expect(existsSync(fichier), `${c.slug} : ${n.audio} manquant`).toBe(true);
+      // MP3 mono à 48 kbit/s : environ 6 Ko par seconde ; un fichier bien plus petit serait tronqué ou silencieux.
+      expect(statSync(fichier).size, c.slug).toBeGreaterThan(n.duree * 4000);
+    }
+  });
+
+  it("dit les nombres comme on les prononce", () => {
+    expect(texteOral("Tu risques 2,20 euros par action")).toBe("Tu risques 2 euros 20 par action");
+    expect(texteOral("un levier de 1:30 et 1,5 % du capital")).toBe("un levier de 1 pour 30 et 1 virgule 5 pour cent du capital");
+    expect(texteOral("10 000 € de capital")).toBe("10000 euros de capital");
+    expect(texteOral("Étape 1 : 50 euros")).toBe("Étape 1 : 50 euros");
   });
 });
 

@@ -17,7 +17,10 @@ const descriptions: Record<keyof typeof outils, string> = {
 export default function PageOutils() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">Outils</h1>
+      <p className="text-sm font-medium text-cyan">Pratiquer</p>
+      <h1 className="mt-1 text-3xl font-semibold text-ink sm:text-4xl">
+        Les <span className="accent">outils</span>
+      </h1>
       <p className="mt-2 max-w-2xl text-ink-2">
         {typographie(
           "Des calculateurs pour manipuler les notions des cours. Ils font des calculs exacts à partir de tes hypothèses : ils ne disent rien de ce que fera le marché.",

@@ -1,0 +1,126 @@
+{
+ "slug": "marge-et-levier",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "00dd67a0",
+ "duree": 64.351,
+ "audio": "/audio/capsules/marge-et-levier.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 10.025,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 4.162,
+     "texte": "Avec 1 000 euros, tu peux ouvrir une position de 30 000 euros."
+    },
+    {
+     "debut": 4.482,
+     "fin": 4.984,
+     "texte": "Comment ?"
+    },
+    {
+     "debut": 5.704,
+     "fin": 7.325,
+     "texte": "Grâce à l'effet de levier."
+    },
+    {
+     "debut": 7.645,
+     "fin": 9.525,
+     "texte": "Et c'est là que le danger commence."
+    }
+   ]
+  },
+  {
+   "debut": 10.025,
+   "fin": 19.594,
+   "phrases": [
+    {
+     "debut": 10.025,
+     "fin": 14.413,
+     "texte": "Le courtier ne te donne pas cet argent : il bloque une garantie, la marge."
+    },
+    {
+     "debut": 14.733,
+     "fin": 19.094,
+     "texte": "Avec un levier de 1 pour 30, elle vaut un trentième de la position."
+    }
+   ]
+  },
+  {
+   "debut": 19.594,
+   "fin": 25.955,
+   "phrases": [
+    {
+     "debut": 19.594,
+     "fin": 25.455,
+     "texte": "Sans levier, une position de 1 000 euros : une baisse de 1 % te coûte 10 euros."
+    }
+   ]
+  },
+  {
+   "debut": 25.955,
+   "fin": 35.76,
+   "phrases": [
+    {
+     "debut": 25.955,
+     "fin": 31.284,
+     "texte": "Avec un levier de 1 pour 10, et toute la position permise : 10 000 euros."
+    },
+    {
+     "debut": 31.604,
+     "fin": 35.26,
+     "texte": "La même baisse coûte 100 euros, 10 % du capital."
+    }
+   ]
+  },
+  {
+   "debut": 35.76,
+   "fin": 45.157,
+   "phrases": [
+    {
+     "debut": 35.76,
+     "fin": 39.073,
+     "texte": "Avec 1 pour 30 : 30 000 euros de position."
+    },
+    {
+     "debut": 39.393,
+     "fin": 44.657,
+     "texte": "300 euros perdus, soit 30 % du capital pour un mouvement de 1 %."
+    }
+   ]
+  },
+  {
+   "debut": 45.157,
+   "fin": 53.846,
+   "phrases": [
+    {
+     "debut": 45.157,
+     "fin": 50.198,
+     "texte": "Si tes pertes réduisent trop ton capital, le courtier ferme tes positions :"
+    },
+    {
+     "debut": 50.518,
+     "fin": 53.346,
+     "texte": "c'est l'appel de marge, souvent au pire moment."
+    }
+   ]
+  },
+  {
+   "debut": 53.846,
+   "fin": 64.351,
+   "phrases": [
+    {
+     "debut": 53.846,
+     "fin": 59.32,
+     "texte": "Retiens : le levier ne change pas le marché, il change la taille de ta position."
+    },
+    {
+     "debut": 59.64,
+     "fin": 63.751,
+     "texte": "Le risque se maîtrise par la taille, pas par le levier disponible."
+    }
+   ]
+  }
+ ]
+}

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { BadgeFiabilite } from "@/components/ui/BadgeFiabilite";
-import { academies, estPublie } from "@/content";
+import { CarteEnsemble } from "@/components/catalogue/Cartes";
+import { Explorateur } from "@/components/catalogue/Explorateur";
+import { CarteParcours } from "@/components/catalogue/Parcours";
+import { academies, etapesParChapitre, fiche, fiches, parcours } from "@/content";
+import { motifsAcademies, teintesAcademies } from "@/content/identite";
 import { typographie } from "@/lib/typographie";
 
 export const metadata: Metadata = {
@@ -11,48 +13,58 @@ export const metadata: Metadata = {
 
 export default function PageAcademies() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">Apprendre</h1>
-      <p className="mt-2 max-w-2xl text-ink-2">
-        {typographie(
-          "Cinq académies, des fondamentaux aux modèles avancés. Commence par le parcours « Premiers pas » : les académies suivantes s'appuient sur lui.",
-        )}
-      </p>
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <header className="max-w-3xl">
+        <p className="text-sm font-medium text-cyan">Apprendre</p>
+        <h1 className="mt-1 text-3xl font-semibold text-ink sm:text-4xl">
+          Cinq académies, <span className="accent">un seul fil</span>
+        </h1>
+        <p className="mt-3 text-ink-2">
+          {typographie(
+            "Des fondamentaux aux modèles avancés. Commence par le parcours « Premiers pas » : les académies suivantes s'appuient sur lui.",
+          )}
+        </p>
+      </header>
 
-      <Link
-        href="/parcours/premiers-pas/"
-        className="mt-6 flex flex-col gap-1 rounded-2xl border border-brand/50 bg-brand-soft p-5 transition-colors hover:border-brand sm:flex-row sm:items-center sm:justify-between"
-      >
-        <span>
-          <span className="block text-sm font-medium text-brand">Parcours recommandé</span>
-          <span className="block text-lg font-semibold text-ink">Premiers pas : 14 chapitres pour partir de zéro</span>
-        </span>
-        <span className="text-sm font-medium text-ink">Ouvrir le parcours →</span>
-      </Link>
+      <div className="mt-8">
+        <CarteParcours
+          fiches={parcours.map((s) => fiche(s)!)}
+          titre="Premiers pas"
+          description={`${parcours.length} chapitres pour partir de zéro : marchés, graphiques, ordres, coûts, levier et risque.`}
+        />
+      </div>
 
-      <ul className="mt-8 space-y-4">
-        {academies.map((a) => {
-          const chapitres = a.modules.flatMap((m) => m.chapitres);
-          const publies = chapitres.filter((c) => estPublie(c.slug)).length;
-          return (
-            <li key={a.slug}>
-              <Link href={`/academies/${a.slug}/`} className="block rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-brand/60">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-sm text-ink-3">{a.code}</span>
-                  <span className="text-xs text-ink-3">· {a.niveau}</span>
-                  {a.ecole ? <BadgeFiabilite fiabilite="ecole" /> : null}
-                </div>
-                <h2 className="mt-1 text-xl font-semibold text-ink">{typographie(a.titre)}</h2>
-                <p className="mt-1 text-[0.95rem] text-ink-2">{typographie(a.description)}</p>
-                <p className={`mt-3 text-sm ${publies ? "text-ok" : "text-ink-3"}`}>
-                  {a.modules.length} module{a.modules.length > 1 ? "s" : ""} · {chapitres.length} chapitres ·{" "}
-                  {publies ? `${publies} disponibles` : "en préparation"}
-                </p>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <section aria-labelledby="titre-academies" className="mt-14">
+        <h2 id="titre-academies" className="text-2xl font-semibold text-ink">
+          Les académies
+        </h2>
+        <ul className="rangee -mx-4 mt-5 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+          {academies.map((a, i) => {
+            const chapitres = a.modules.flatMap((m) => m.chapitres.map((c) => c.slug));
+            const publies = chapitres.filter((s) => fiche(s)?.publie);
+            return (
+              <li key={a.slug} className="revele w-[82%] shrink-0 sm:w-auto" style={{ ["--i" as string]: i }}>
+                <CarteEnsemble
+                  href={`/academies/${a.slug}/`}
+                  surtitre={`${a.code} · ${a.niveau}`}
+                  titre={a.titre}
+                  description={a.description}
+                  motif={motifsAcademies[a.slug]}
+                  teinte={teintesAcademies[a.slug]}
+                  publies={publies}
+                  total={chapitres.length}
+                  details={[`${a.modules.length} module${a.modules.length > 1 ? "s" : ""}`, `${chapitres.length} chapitres`]}
+                  ecole={a.ecole}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <div className="mt-14">
+        <Explorateur fiches={fiches} etapes={etapesParChapitre} />
+      </div>
     </div>
   );
 }

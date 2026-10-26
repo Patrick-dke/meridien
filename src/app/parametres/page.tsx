@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 export default function PageParametres() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-      <h1 className="mb-6 text-3xl font-semibold tracking-tight text-ink">Réglages et données</h1>
+      <p className="text-sm font-medium text-cyan">Moi</p>
+      <h1 className="mb-6 mt-1 text-3xl font-semibold text-ink sm:text-4xl">Réglages et données</h1>
       <Parametres />
     </div>
   );

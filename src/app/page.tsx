@@ -1,164 +1,171 @@
 import Link from "next/link";
-import { Visuel } from "@/components/figures/Figure";
+import { BougieVivante } from "@/components/accueil/BougieVivante";
+import { ChampMarche } from "@/components/accueil/ChampMarche";
+import { CarteEnsemble } from "@/components/catalogue/Cartes";
+import { CarteParcours } from "@/components/catalogue/Parcours";
 import { BoutonReprendre } from "@/components/progression/Indicateurs";
-import { academies, chapitre, estPublie, parcours, titresChapitres } from "@/content";
+import { IconeBouclier, IconeBoussole, IconeCible, IconeEclair, IconeGraphique, IconeLivre, IconeOeil, IconeOutils } from "@/components/ui/Icones";
+import { academies, fiche, parcours, titresChapitres } from "@/content";
+import { motifsAcademies, teintesAcademies } from "@/content/identite";
 import { typographie } from "@/lib/typographie";
 
 const etapesApprentissage = [
-  ["Comprendre", "Un chapitre court, une capsule animée, un cours détaillé."],
-  ["Observer", "Des figures annotées et des exemples chiffrés."],
-  ["Pratiquer", "Des calculateurs pour manipuler risque, pips et levier."],
-  ["Évaluer", "Un quiz corrigé à chaque chapitre, noté par concept."],
-  ["Corriger", "Des recommandations qui expliquent quoi revoir et pourquoi."],
+  { titre: "Comprendre", texte: "Une capsule narrée de 90 secondes au plus, puis un cours qui se dévoile notion par notion.", Icone: IconeLivre },
+  { titre: "Observer", texte: "Des graphiques qu'on explore du doigt : chaque bougie se lit, chaque zone s'explique.", Icone: IconeOeil },
+  { titre: "Pratiquer", texte: "Des calculateurs pour manipuler risque, pips et levier sur tes propres chiffres.", Icone: IconeOutils },
+  { titre: "Évaluer", texte: "Un quiz corrigé à chaque chapitre, noté concept par concept.", Icone: IconeCible },
+  { titre: "Corriger", texte: "Des recommandations qui disent quoi revoir, et pourquoi.", Icone: IconeBoussole },
 ];
 
 const principes = [
   {
     titre: "Aucune promesse de gains",
     texte: "Pas de signaux, pas de « méthode infaillible ». La plupart des particuliers perdent de l'argent en trading : on commence par là.",
+    Icone: IconeBouclier,
   },
   {
     titre: "Chaque affirmation a son badge",
     texte: "Fait établi, calcul, convention, interprétation d'école ou hypothèse à tester : tu sais toujours ce qui est prouvé, et ce qui ne l'est pas.",
+    Icone: IconeGraphique,
   },
   {
     titre: "Des chiffres vérifiés",
     texte: "Les calculs des cours et des quiz sont recalculés par des tests automatiques à chaque mise à jour du site.",
+    Icone: IconeCible,
   },
   {
-    titre: "Gratuit, sans compte, hors ligne",
-    texte: "Ta progression reste dans ton navigateur. Les chapitres consultés restent lisibles sans connexion.",
+    titre: "Gratuit, sans compte, léger",
+    texte: "Ta progression reste dans ton navigateur. Le site est pensé pour les téléphones modestes et les connexions irrégulières.",
+    Icone: IconeEclair,
   },
 ];
 
 export default function Accueil() {
   const titres = Object.fromEntries(titresChapitres);
-  const totalChapitres = academies.flatMap((a) => a.modules.flatMap((m) => m.chapitres)).length;
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      <section className="grid items-center gap-10 py-10 lg:grid-cols-[1.05fr_1fr] lg:py-16">
-        <div>
-          <p className="mb-4 inline-flex rounded-full border border-brand/40 bg-brand-soft px-3 py-1 text-sm font-medium text-brand">
-            Académie de trading gratuite
-          </p>
-          <h1 className="text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl">
-            Apprendre à lire les marchés avec méthode.
-          </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-2">
-            {typographie(
-              "Sans argent réel, sans promesse de gains. Des chapitres courts, des capsules animées, des quiz corrigés et des calculateurs pour comprendre — et maîtriser — ton risque.",
-            )}
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <BoutonReprendre parcours={parcours} titres={titres} />
-            <Link href="/parcours/premiers-pas/" className="rounded-xl border border-line-strong px-5 py-3.5 font-medium text-ink hover:border-ink-3">
-              Voir le parcours
+    <div>
+      <section className="relative isolate overflow-hidden">
+        {/* Le champ forme un horizon sous le texte et la démonstration, fondu vers le haut et sur les côtés. */}
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-[46%] opacity-80 [mask-image:linear-gradient(to_top,#000_35%,transparent)] lg:h-[52%]">
+          <ChampMarche />
+        </div>
+        <div className="grille-ciel pointer-events-none absolute inset-0 -z-20 opacity-60" aria-hidden="true" />
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-24 pt-10 sm:px-6 lg:grid-cols-2 lg:pb-44 lg:pt-16">
+          <div>
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3 py-1 text-sm font-medium text-cyan">
+              <span className="size-1.5 rounded-full bg-cyan" aria-hidden="true" /> Académie de trading gratuite
+            </p>
+            <h1 className="text-[2.6rem] font-semibold leading-[1.04] text-ink sm:text-6xl lg:text-[3.4rem] xl:text-6xl">
+              Apprendre à lire les marchés <span className="accent">avec méthode.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-2">
+              {typographie(
+                "Sans argent réel, sans promesse de gains. Des capsules narrées, des graphiques à explorer, des quiz corrigés et des calculateurs pour comprendre — et maîtriser — ton risque.",
+              )}
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <BoutonReprendre parcours={parcours} titres={titres} />
+              <Link href="/academies/" className="btn btn-secondaire btn-grand">
+                Explorer les cours
+              </Link>
+            </div>
+            <p className="mt-4 text-sm text-ink-3">Aucune inscription. Ta progression reste dans ce navigateur.</p>
+          </div>
+          <div className="lg:pl-6">
+            <BougieVivante />
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <section aria-labelledby="titre-parcours" className="revele py-10">
+          <h2 id="titre-parcours" className="sr-only">
+            Le parcours « Premiers pas »
+          </h2>
+          <CarteParcours
+            fiches={parcours.map((s) => fiche(s)!)}
+            titre="Premiers pas"
+            description={`${parcours.length} chapitres pour partir de zéro : marchés, graphiques, ordres, coûts, levier et risque.`}
+          />
+        </section>
+
+        <section aria-labelledby="titre-methode" className="py-12">
+          <p className="text-sm font-medium text-cyan">La méthode</p>
+          <h2 id="titre-methode" className="mt-1 max-w-2xl text-3xl font-semibold text-ink">
+            Comprendre, observer, pratiquer, <span className="accent">être évalué, corriger</span>
+          </h2>
+          <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {etapesApprentissage.map(({ titre, texte, Icone }, i) => (
+              <li key={titre} className="revele carte p-5" style={{ ["--i" as string]: i }}>
+                <span className="flex size-11 items-center justify-center rounded-xl border border-brand/30 bg-brand-soft text-brand">
+                  <Icone className="size-5" />
+                </span>
+                <p className="mt-4 font-mono text-xs text-ink-3">0{i + 1}</p>
+                <p className="mt-1 font-semibold text-ink">{titre}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{typographie(texte)}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section aria-labelledby="titre-academies" className="py-12">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-cyan">Le catalogue</p>
+              <h2 id="titre-academies" className="mt-1 text-3xl font-semibold text-ink">
+                Les académies
+              </h2>
+            </div>
+            <Link href="/academies/" className="btn btn-discret">
+              Tout explorer
             </Link>
           </div>
-          <p className="mt-4 text-sm text-ink-3">Aucune inscription. Ta progression reste dans ce navigateur.</p>
-        </div>
-        <figure className="rounded-2xl border border-line bg-surface p-3 shadow-2xl shadow-black/40 sm:p-4">
-          <Visuel scene="sl-tp-achat" />
-          <figcaption className="mt-3 px-1 text-sm text-ink-2">
-            {typographie(
-              "Un plan de trade : entrée à 50 €, stop loss à 47,80 €, objectif à 54,40 €. Le risque est décidé avant d'entrer. Données synthétiques.",
-            )}
-          </figcaption>
-        </figure>
-      </section>
+          <ul className="rangee -mx-4 mt-6 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+            {academies.map((a, i) => {
+              const chapitres = a.modules.flatMap((m) => m.chapitres.map((c) => c.slug));
+              return (
+                <li key={a.slug} className="revele w-[82%] shrink-0 sm:w-auto" style={{ ["--i" as string]: i }}>
+                  <CarteEnsemble
+                    href={`/academies/${a.slug}/`}
+                    surtitre={`${a.code} · ${a.niveau}`}
+                    titre={a.titre}
+                    description={a.description}
+                    motif={motifsAcademies[a.slug]}
+                    teinte={teintesAcademies[a.slug]}
+                    publies={chapitres.filter((s) => fiche(s)?.publie)}
+                    total={chapitres.length}
+                    details={[`${chapitres.length} chapitres`]}
+                    ecole={a.ecole}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
-      <section aria-labelledby="titre-methode" className="py-10">
-        <h2 id="titre-methode" className="text-2xl font-semibold tracking-tight text-ink">
-          Comprendre, pratiquer, être évalué, corriger
-        </h2>
-        <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {etapesApprentissage.map(([titre, texte], i) => (
-            <li key={titre} className="rounded-xl border border-line bg-surface p-4">
-              <span className="font-mono text-sm text-brand">0{i + 1}</span>
-              <p className="mt-1 font-semibold text-ink">{titre}</p>
-              <p className="mt-1 text-sm leading-relaxed text-ink-2">{typographie(texte)}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section aria-labelledby="titre-parcours" className="py-10">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 id="titre-parcours" className="text-2xl font-semibold tracking-tight text-ink">
-              Le parcours « Premiers pas »
-            </h2>
-            <p className="mt-1 text-ink-2">{typographie(`${parcours.length} chapitres pour partir de zéro : marchés, graphiques, ordres, coûts, levier et risque.`)}</p>
+        <section aria-labelledby="titre-principes" className="py-12">
+          <p className="text-sm font-medium text-cyan">Nos principes</p>
+          <h2 id="titre-principes" className="mt-1 text-3xl font-semibold text-ink">
+            Ce qui guide Méridien
+          </h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {principes.map(({ titre, texte, Icone }, i) => (
+              <div key={titre} className="revele carte flex gap-4 p-5" style={{ ["--i" as string]: i }}>
+                <Icone className="mt-0.5 size-6 shrink-0 text-cyan" />
+                <div>
+                  <p className="font-semibold text-ink">{typographie(titre)}</p>
+                  <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ink-2">{typographie(texte)}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <Link href="/parcours/premiers-pas/" className="text-sm font-medium text-brand hover:underline">
-            Tout le parcours
-          </Link>
-        </div>
-        <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {parcours.map((slug, i) => {
-            const c = chapitre(slug)!;
-            return (
-              <li key={slug}>
-                <Link href={`/chapitre/${slug}/`} className="flex h-full gap-4 rounded-xl border border-line bg-surface p-4 transition-colors hover:border-brand/60">
-                  <span className="font-mono text-sm text-ink-3">{String(i + 1).padStart(2, "0")}</span>
-                  <span>
-                    <span className="block font-medium leading-snug text-ink">{typographie(c.titre)}</span>
-                    <span className="mt-1 block text-sm text-ink-3">{c.dureeMin} min · quiz de {c.quiz.length} questions</span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-
-      <section aria-labelledby="titre-principes" className="py-10">
-        <h2 id="titre-principes" className="text-2xl font-semibold tracking-tight text-ink">
-          Ce qui guide Méridien
-        </h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {principes.map((p) => (
-            <div key={p.titre} className="rounded-xl border border-line bg-surface p-5">
-              <p className="font-semibold text-ink">{typographie(p.titre)}</p>
-              <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-2">{typographie(p.texte)}</p>
-            </div>
-          ))}
-        </div>
-        <p className="mt-4 text-sm">
-          <Link href="/methode/" className="text-brand hover:underline">
-            La méthode et les badges de fiabilité en détail
-          </Link>
-        </p>
-      </section>
-
-      <section aria-labelledby="titre-academies" className="py-10">
-        <h2 id="titre-academies" className="text-2xl font-semibold tracking-tight text-ink">
-          Les académies
-        </h2>
-        <p className="mt-1 text-ink-2">
-          {typographie(
-            `${totalChapitres} chapitres sont prévus. Ils sont publiés au fil de leur rédaction et de leur vérification ; les autres sont annoncés comme tels.`,
-          )}
-        </p>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {academies.map((a) => {
-            const chapitres = a.modules.flatMap((m) => m.chapitres);
-            const publies = chapitres.filter((c) => estPublie(c.slug)).length;
-            return (
-              <li key={a.slug}>
-                <Link href={`/academies/${a.slug}/`} className="flex h-full flex-col rounded-xl border border-line bg-surface p-5 transition-colors hover:border-brand/60">
-                  <span className="font-mono text-xs text-ink-3">{a.code}</span>
-                  <span className="mt-1 font-semibold text-ink">{typographie(a.titre)}</span>
-                  <span className="mt-2 flex-1 text-sm leading-relaxed text-ink-2">{typographie(a.description)}</span>
-                  <span className={`mt-4 text-xs font-medium ${publies ? "text-ok" : "text-ink-3"}`}>
-                    {publies ? `${publies} chapitre${publies > 1 ? "s" : ""} disponible${publies > 1 ? "s" : ""} sur ${chapitres.length}` : `${chapitres.length} chapitres en préparation`}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+          <p className="mt-5 text-sm">
+            <Link href="/methode/" className="text-brand underline underline-offset-4 hover:text-ink">
+              La méthode et les badges de fiabilité en détail
+            </Link>
+          </p>
+        </section>
+      </div>
     </div>
   );
 }

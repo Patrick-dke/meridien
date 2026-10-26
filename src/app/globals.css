@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
-/* Jetons du design system « Clarté nocturne » (voir le dossier de cadrage, section 8).
-   Le vert et le rouge sont réservés au sens du marché ; la marque est un indigo. */
+/* Direction artistique « Observatoire » : une nuit d'encre, des instruments de précision, et le méridien,
+   une ligne lumineuse iris → cyan, qui sert de signature, de tracé de parcours et de jauge.
+   Le vert et le rouge restent réservés au sens du marché ; l'or marque la maîtrise. */
 :root {
-  --bg: #0a0d13;
-  --surface: #10141c;
-  --overlay: #161b26;
-  --chart: #07090d;
-  --line: #1f2633;
-  --line-strong: #2c3546;
-  --ink: #e9edf4;
-  --ink-2: #a3adbf;
-  --ink-3: #7a849b;
-  --brand: #9384ff;
-  --brand-solid: #6553f5;
+  --bg: #05070d;
+  --bg-2: #080b14;
+  --surface: #0d111c;
+  --surface-2: #121827;
+  --overlay: #172033;
+  --chart: #060910;
+  --line: #1a2132;
+  --line-strong: #283249;
+  --ink: #eef1f8;
+  --ink-2: #a9b3c7;
+  --ink-3: #7c879e;
+  --brand: #8f84ff;
+  --brand-solid: #6a5cf6;
   --brand-soft: rgb(124 108 255 / 0.14);
-  --gold: #f2b84b;
+  --cyan: #45d7f2;
+  --gold: #f5c463;
   --ok: #2bc48a;
   --warn: #f2a93b;
   --bad: #f05a5f;
@@ -24,6 +28,7 @@
   --bear: #ef5b61;
   --fvg: #4ca8f5;
   --ob: #9b8cff;
+  --meridien: linear-gradient(90deg, var(--brand) 0%, var(--cyan) 100%);
   --text-scale: 1;
   color-scheme: dark;
 }
@@ -40,7 +45,9 @@
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-overlay: var(--overlay);
   --color-chart: var(--chart);
   --color-line: var(--line);
@@ -51,6 +58,7 @@
   --color-brand: var(--brand);
   --color-brand-solid: var(--brand-solid);
   --color-brand-soft: var(--brand-soft);
+  --color-cyan: var(--cyan);
   --color-gold: var(--gold);
   --color-ok: var(--ok);
   --color-warn: var(--warn);
@@ -59,20 +67,38 @@
   --color-bull: var(--bull);
   --color-bear: var(--bear);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-accent: var(--font-instrument), Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --radius-carte: 1.25rem;
 }
 
 html {
   font-size: calc(100% * var(--text-scale));
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* Le ciel de l'observatoire : deux lueurs fixes en haut de page, aucune image, aucun coût de défilement. */
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(1100px 520px at 78% -140px, rgb(106 92 246 / 0.16), transparent 70%),
+    radial-gradient(800px 420px at -10% -60px, rgb(69 215 242 / 0.07), transparent 70%),
+    var(--bg);
+  background-repeat: no-repeat;
   color: var(--ink);
   font-family: var(--font-sans);
   line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+.titre-affiche {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 ::selection {
@@ -81,20 +107,197 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--brand);
+  outline: 2px solid var(--cyan);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .tabular {
   font-variant-numeric: tabular-nums;
 }
 
+/* Mot mis en valeur dans un grand titre : italique à empattements, dégradé du méridien. */
+.accent {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  background: var(--meridien);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em;
+}
+
+/* Grille d'observatoire : lignes fines qui s'effacent vers le bas. Décor de section, jamais sous du texte long. */
+.grille-ciel {
+  background-image:
+    linear-gradient(to right, rgb(143 132 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(143 132 255 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+
+/* ——— Boutons ——— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  border-radius: 0.875rem;
+  padding: 0.625rem 1.125rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  transition:
+    transform 160ms var(--ease-out-soft),
+    background-color 160ms,
+    border-color 160ms,
+    box-shadow 200ms,
+    color 160ms;
+  user-select: none;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-primaire {
+  background: var(--brand-solid);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    0 10px 30px -12px rgb(106 92 246 / 0.75);
+}
+/* Au survol, le fond fonce légèrement (contraste du texte blanc ≥ 4,5:1) et la lueur s'intensifie. */
+.btn-primaire:hover:not(:disabled) {
+  background: #5f51f3;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 14px 36px -12px rgb(106 92 246 / 0.9);
+}
+.btn-secondaire {
+  border: 1px solid var(--line-strong);
+  background: rgb(18 24 39 / 0.6);
+  color: var(--ink);
+}
+.btn-secondaire:hover:not(:disabled) {
+  border-color: #3a4664;
+  background: var(--surface-2);
+}
+.btn-discret {
+  color: var(--ink-2);
+}
+.btn-discret:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--surface-2);
+}
+.btn-grand {
+  min-height: 3.25rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 1rem;
+}
+
+/* ——— Cartes ——— */
+.carte {
+  position: relative;
+  border-radius: var(--radius-carte);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgb(18 24 39 / 0.85), rgb(13 17 28 / 0.85));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.035);
+}
+/* Carte interactive : lueur qui suit le pointeur (variables --px, --py posées par le composant Carte),
+   relief au survol sur souris, simple enfoncement au toucher. */
+.carte-vive {
+  transition:
+    transform 260ms var(--ease-out-soft),
+    border-color 200ms,
+    box-shadow 260ms var(--ease-out-soft);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0));
+  will-change: transform;
+}
+.carte-vive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms;
+  background: radial-gradient(380px circle at var(--px, 50%) var(--py, 0%), rgb(143 132 255 / 0.16), transparent 60%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .carte-vive:hover {
+    --ty: -3px;
+    border-color: rgb(143 132 255 / 0.45);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      0 22px 50px -24px rgb(0 0 0 / 0.9),
+      0 0 0 1px rgb(143 132 255 / 0.12);
+  }
+  .carte-vive:hover::before {
+    opacity: 1;
+  }
+}
+.carte-vive:active {
+  transform: scale(0.985);
+  transition-duration: 120ms;
+}
+
+/* ——— Apparition au défilement (composant Apparition) ——— */
+.revele {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 520ms var(--ease-out-soft),
+    transform 620ms var(--ease-out-soft);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+.revele[data-vu] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ——— Méridien : barre et anneau de progression ——— */
+.jauge {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+}
+.jauge > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--meridien);
+  transition: width 900ms var(--ease-out-soft);
+  animation: jauge-remplit 900ms var(--ease-out-soft) both;
+}
+@keyframes jauge-remplit {
+  from {
+    width: 0;
+  }
+}
+/* L'anneau part de zéro au premier affichage, puis suit sa valeur. */
+@keyframes anneau-remplit {
+  from {
+    stroke-dashoffset: var(--circ);
+  }
+}
+.anneau-trace {
+  animation: anneau-remplit 1100ms var(--ease-out-soft) both;
+}
+
 /* Texte de cours : longueur de ligne confortable et rythme vertical régulier. */
 .prose-cours {
   max-width: 68ch;
   font-size: 1.0625rem;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--ink);
 }
 .prose-cours > * + * {
@@ -133,25 +336,7 @@ body {
   color: var(--ink-3);
 }
 
-/* Les animations pédagogiques deviennent des étapes fixes si l'utilisateur le demande,
-   ou en mode léger. */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-:root[data-leger="oui"] *,
-:root[data-leger="oui"] *::before,
-:root[data-leger="oui"] *::after {
-  animation-duration: 0.01ms !important;
-  transition-duration: 0.01ms !important;
-}
-
+/* ——— Entrées animées ——— */
 @keyframes apparition {
   from {
     opacity: 0;
@@ -177,4 +362,187 @@ body {
 .trace {
   stroke-dasharray: var(--longueur, 400);
   animation: trace 900ms var(--ease-out-soft) both;
+}
+
+/* Changement de page : le contenu se pose en douceur. */
+@keyframes page-entree {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-entree {
+  animation: page-entree 380ms var(--ease-out-soft) both;
+}
+
+/* Changement d'étape dans un chapitre, selon le sens de lecture. */
+@keyframes etape-avant {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes etape-arriere {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.etape-avant {
+  animation: etape-avant 340ms var(--ease-out-soft) both;
+}
+.etape-arriere {
+  animation: etape-arriere 340ms var(--ease-out-soft) both;
+}
+
+/* Une bougie qui se forme : elle grandit depuis son prix d'ouverture. */
+@keyframes bougie-forme {
+  from {
+    opacity: 0;
+    transform: scaleY(0.05);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+/* L'origine (posée en ligne, en coordonnées du graphique) est le prix d'ouverture de la bougie. */
+.bougie-forme {
+  transform-box: view-box;
+  animation: bougie-forme 520ms var(--ease-out-soft) both;
+}
+
+/* Correction de quiz : petit refus horizontal, coche qui se dessine. */
+@keyframes refus {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+.refus {
+  animation: refus 380ms ease-out both;
+}
+@keyframes eclat {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.4);
+  }
+}
+
+/* Capsule : la caméra avance doucement pendant la scène ; tout se fige quand la voix est en pause. */
+@keyframes zoom-lent {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.035);
+  }
+}
+.zoom-lent {
+  animation: zoom-lent 10s linear both;
+}
+.capsule-scene[data-pause="true"],
+.capsule-scene[data-pause="true"] * {
+  animation-play-state: paused !important;
+}
+
+/* Affiche du champ de l'accueil : une houle lente, uniquement en transformations (aucun recalcul de mise en page). */
+@keyframes houle {
+  from {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(5px);
+  }
+}
+.houle {
+  animation: houle 3s ease-in-out infinite alternate;
+}
+
+/* Squelette de chargement. */
+@keyframes lueur {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.squelette {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: lueur 1.4s linear infinite;
+}
+
+/* Défilement horizontal sans barre visible (rangées de cartes sur mobile). */
+.rangee {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.rangee::-webkit-scrollbar {
+  display: none;
+}
+.rangee > * {
+  scroll-snap-align: start;
+}
+
+/* Les animations pédagogiques deviennent des étapes fixes si l'utilisateur le demande, ou en mode léger. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .revele {
+    opacity: 1;
+    transform: none;
+  }
+  .carte-vive {
+    transform: none !important;
+  }
+}
+:root[data-leger="oui"] *,
+:root[data-leger="oui"] *::before,
+:root[data-leger="oui"] *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+:root[data-leger="oui"] .revele {
+  opacity: 1;
+  transform: none;
 }

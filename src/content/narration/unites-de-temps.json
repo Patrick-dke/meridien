@@ -1,0 +1,106 @@
+{
+ "slug": "unites-de-temps",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "21894939",
+ "duree": 48.29,
+ "audio": "/audio/capsules/unites-de-temps.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 8.833,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 3.893,
+     "texte": "Chaque bougie représente une durée : c'est l'unité de temps."
+    },
+    {
+     "debut": 4.213,
+     "fin": 8.333,
+     "texte": "Une minute, quinze minutes, une heure, un jour, une semaine…"
+    }
+   ]
+  },
+  {
+   "debut": 8.833,
+   "fin": 13.223,
+   "phrases": [
+    {
+     "debut": 8.833,
+     "fin": 12.723,
+     "texte": "Voici huit bougies de quinze minutes : deux heures d'échanges."
+    }
+   ]
+  },
+  {
+   "debut": 13.223,
+   "fin": 17.376,
+   "phrases": [
+    {
+     "debut": 13.223,
+     "fin": 16.876,
+     "texte": "Regroupons-les par quatre : chaque groupe couvre une heure."
+    }
+   ]
+  },
+  {
+   "debut": 17.376,
+   "fin": 24.006,
+   "phrases": [
+    {
+     "debut": 17.376,
+     "fin": 23.506,
+     "texte": "La bougie d'une heure prend l'ouverture de la première, le plus haut et le plus bas du groupe, et la clôture de la dernière."
+    }
+   ]
+  },
+  {
+   "debut": 24.006,
+   "fin": 32.708,
+   "phrases": [
+    {
+     "debut": 24.006,
+     "fin": 29.105,
+     "texte": "Résultat : les détails disparaissent, la direction générale apparaît."
+    },
+    {
+     "debut": 29.425,
+     "fin": 32.208,
+     "texte": "La première heure monte, la seconde baisse."
+    }
+   ]
+  },
+  {
+   "debut": 32.708,
+   "fin": 39.063,
+   "phrases": [
+    {
+     "debut": 32.708,
+     "fin": 34.755,
+     "texte": "L'unité de temps dépend de ton horizon."
+    },
+    {
+     "debut": 35.075,
+     "fin": 38.563,
+     "texte": "Plus elle est courte, plus le bruit et les frais pèsent."
+    }
+   ]
+  },
+  {
+   "debut": 39.063,
+   "fin": 48.29,
+   "phrases": [
+    {
+     "debut": 39.063,
+     "fin": 45.353,
+     "texte": "Beaucoup de traders lisent le contexte sur une unité longue et cherchent leur entrée sur une plus courte."
+    },
+    {
+     "debut": 45.673,
+     "fin": 47.69,
+     "texte": "On y reviendra dans l'analyse technique."
+    }
+   ]
+  }
+ ]
+}

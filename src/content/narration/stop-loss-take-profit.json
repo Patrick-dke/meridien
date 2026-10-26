@@ -1,0 +1,116 @@
+{
+ "slug": "stop-loss-take-profit",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "be4e012c",
+ "duree": 60.27,
+ "audio": "/audio/capsules/stop-loss-take-profit.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 8.191,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 4.65,
+     "texte": "Avant d'entrer dans un trade, pose-toi deux questions : où ai-je tort ?"
+    },
+    {
+     "debut": 5.37,
+     "fin": 6.971,
+     "texte": "Et où je sors si j'ai raison ?"
+    }
+   ]
+  },
+  {
+   "debut": 8.191,
+   "fin": 16.411,
+   "phrases": [
+    {
+     "debut": 8.191,
+     "fin": 15.911,
+     "texte": "Le Stop Loss est un ordre qui ferme ta position automatiquement si le prix atteint un niveau de perte fixé à l'avance."
+    }
+   ]
+  },
+  {
+   "debut": 16.411,
+   "fin": 20.37,
+   "phrases": [
+    {
+     "debut": 16.411,
+     "fin": 19.87,
+     "texte": "Le Take Profit la ferme quand le prix atteint ton objectif."
+    }
+   ]
+  },
+  {
+   "debut": 20.37,
+   "fin": 32.248,
+   "phrases": [
+    {
+     "debut": 20.37,
+     "fin": 21.303,
+     "texte": "Un exemple."
+    },
+    {
+     "debut": 21.623,
+     "fin": 23.613,
+     "texte": "Tu achètes une action à 50 euros."
+    },
+    {
+     "debut": 23.933,
+     "fin": 31.748,
+     "texte": "Ton idée ne tient plus si le prix passe sous 48 : ton Stop Loss va juste en dessous, à 47,80."
+    }
+   ]
+  },
+  {
+   "debut": 32.248,
+   "fin": 43.045,
+   "phrases": [
+    {
+     "debut": 32.248,
+     "fin": 35.837,
+     "texte": "Ton objectif est à 54,40."
+    },
+    {
+     "debut": 36.157,
+     "fin": 40.162,
+     "texte": "Tu risques 2,20 euros par action pour en viser le double."
+    },
+    {
+     "debut": 40.482,
+     "fin": 42.545,
+     "texte": "Les deux ordres se posent dès l'entrée."
+    }
+   ]
+  },
+  {
+   "debut": 43.045,
+   "fin": 54.208,
+   "phrases": [
+    {
+     "debut": 43.045,
+     "fin": 47.383,
+     "texte": "L'erreur classique : éloigner son Stop quand le prix s'en approche."
+    },
+    {
+     "debut": 47.703,
+     "fin": 53.708,
+     "texte": "Et en cas de mouvement brutal, le Stop peut s'exécuter plus loin : c'est le slippage."
+    }
+   ]
+  },
+  {
+   "debut": 54.208,
+   "fin": 60.27,
+   "phrases": [
+    {
+     "debut": 54.208,
+     "fin": 59.67,
+     "texte": "À retenir : ton Stop Loss se décide avant d'entrer, là où ton idée devient fausse."
+    }
+   ]
+  }
+ ]
+}

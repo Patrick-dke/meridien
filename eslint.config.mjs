@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Outils locaux de narration (environnement Python, modèle de voix).
+    ".outils/**",
   ]),
 ]);
 

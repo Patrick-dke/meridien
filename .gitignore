@@ -19,6 +19,7 @@
 # next.js
 /.next/
 /out/
+/out-avant/
 
 # production
 /build
@@ -38,6 +39,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# outils locaux (environnement Python et modèle de voix pour la narration)
+/.outils/
 
 # firebase
 .firebase/

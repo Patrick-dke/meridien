@@ -1,0 +1,111 @@
+{
+ "slug": "quest-ce-que-le-trading",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "1afd37fc",
+ "duree": 49.509,
+ "audio": "/audio/capsules/quest-ce-que-le-trading.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 9.852,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 6.827,
+     "texte": "Le trading, c'est acheter et vendre des actifs financiers pour profiter de leurs variations de prix."
+    },
+    {
+     "debut": 7.147,
+     "fin": 9.352,
+     "texte": "Rien de plus, rien de moins."
+    }
+   ]
+  },
+  {
+   "debut": 9.852,
+   "fin": 13.615,
+   "phrases": [
+    {
+     "debut": 9.852,
+     "fin": 13.115,
+     "texte": "Exemple : tu achètes une action à 50 euros."
+    }
+   ]
+  },
+  {
+   "debut": 13.615,
+   "fin": 18.534,
+   "phrases": [
+    {
+     "debut": 13.615,
+     "fin": 16.951,
+     "texte": "Quelques jours plus tard, elle vaut 53,30 euros."
+    },
+    {
+     "debut": 17.271,
+     "fin": 18.034,
+     "texte": "Tu la revends."
+    }
+   ]
+  },
+  {
+   "debut": 18.534,
+   "fin": 24.738,
+   "phrases": [
+    {
+     "debut": 18.534,
+     "fin": 24.238,
+     "texte": "Ton gain, c'est l'écart entre les deux prix : 3,30 euros par action, avant les frais."
+    }
+   ]
+  },
+  {
+   "debut": 24.738,
+   "fin": 32.911,
+   "phrases": [
+    {
+     "debut": 24.738,
+     "fin": 30.289,
+     "texte": "On peut aussi gagner quand le prix baisse : on vend d'abord, on rachète ensuite, moins cher."
+    },
+    {
+     "debut": 30.609,
+     "fin": 32.411,
+     "texte": "C'est une position vendeuse."
+    }
+   ]
+  },
+  {
+   "debut": 32.911,
+   "fin": 40.719,
+   "phrases": [
+    {
+     "debut": 32.911,
+     "fin": 35.54,
+     "texte": "Mais chaque trade peut aussi perdre."
+    },
+    {
+     "debut": 35.86,
+     "fin": 40.219,
+     "texte": "Le prix peut aller dans le mauvais sens, et les frais s'ajoutent à chaque opération."
+    }
+   ]
+  },
+  {
+   "debut": 40.719,
+   "fin": 49.509,
+   "phrases": [
+    {
+     "debut": 40.719,
+     "fin": 43.063,
+     "texte": "La plupart des débutants perdent de l'argent."
+    },
+    {
+     "debut": 43.383,
+     "fin": 48.909,
+     "texte": "Ici, tu apprendras d'abord à mesurer et à limiter ce risque, en argent fictif."
+    }
+   ]
+  }
+ ]
+}

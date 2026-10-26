@@ -1,0 +1,105 @@
+{
+ "slug": "trading-et-investissement",
+ "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
+ "empreinte": "c671a2c7",
+ "duree": 54.514,
+ "audio": "/audio/capsules/trading-et-investissement.mp3",
+ "scenes": [
+  {
+   "debut": 0.3,
+   "fin": 6.902,
+   "phrases": [
+    {
+     "debut": 0.3,
+     "fin": 4.093,
+     "texte": "Trader et investir, c'est acheter des actifs dans les deux cas."
+    },
+    {
+     "debut": 4.413,
+     "fin": 6.402,
+     "texte": "Mais ce ne sont pas du tout les mêmes métiers."
+    }
+   ]
+  },
+  {
+   "debut": 6.902,
+   "fin": 16.463,
+   "phrases": [
+    {
+     "debut": 6.902,
+     "fin": 9.607,
+     "texte": "L'investisseur achète pour des années :"
+    },
+    {
+     "debut": 9.927,
+     "fin": 15.963,
+     "texte": "il compte sur la croissance d'une entreprise ou de l'économie, et accepte de traverser des baisses."
+    }
+   ]
+  },
+  {
+   "debut": 16.463,
+   "fin": 27.196,
+   "phrases": [
+    {
+     "debut": 16.463,
+     "fin": 21.343,
+     "texte": "Le trader travaille sur quelques minutes, quelques heures ou quelques jours :"
+    },
+    {
+     "debut": 21.663,
+     "fin": 26.696,
+     "texte": "il cherche à profiter des variations de prix, dans un sens ou dans l'autre."
+    }
+   ]
+  },
+  {
+   "debut": 27.196,
+   "fin": 36.657,
+   "phrases": [
+    {
+     "debut": 27.196,
+     "fin": 32.768,
+     "texte": "Conséquence : l'investisseur paie peu de frais, le trader en paie à chaque opération."
+    },
+    {
+     "debut": 33.088,
+     "fin": 36.157,
+     "texte": "Et plus on opère souvent, plus ils pèsent."
+    }
+   ]
+  },
+  {
+   "debut": 36.657,
+   "fin": 46.128,
+   "phrases": [
+    {
+     "debut": 36.657,
+     "fin": 38.619,
+     "texte": "Aucun n'est meilleur par nature."
+    },
+    {
+     "debut": 38.939,
+     "fin": 41.034,
+     "texte": "L'erreur, c'est de mélanger les deux :"
+    },
+    {
+     "debut": 41.354,
+     "fin": 45.628,
+     "texte": "garder « pour le long terme » un trade perdant qu'on n'avait jamais prévu de garder."
+    }
+   ]
+  },
+  {
+   "debut": 46.128,
+   "fin": 54.514,
+   "phrases": [
+    {
+     "debut": 46.128,
+     "fin": 53.194,
+     "texte": "Avant de choisir, demande-toi : sur quel horizon, avec quel argent, et combien de temps à y consacrer ?"
+    }
+   ]
+  }
+ ]
+}

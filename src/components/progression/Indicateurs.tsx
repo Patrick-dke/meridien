@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ressource } from "@/lib/chemin";
 import { useProgression } from "@/lib/progression/store";
 import { IconeCoche } from "../ui/Icones";
+import { Jauge } from "../ui/Progression";
 
 /** Badge « Terminé » ou « En cours » d'un chapitre. */
 export function EtatChapitre({ slug }: { slug: string }) {
@@ -32,9 +33,7 @@ export function ProgressionListe({ slugs, libelle }: { slugs: string[]; libelle:
           {faits}/{slugs.length}
         </span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-line" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={libelle}>
-        <div className="h-full rounded-full bg-brand transition-[width]" style={{ width: `${pct}%` }} />
-      </div>
+      <Jauge valeur={pct / 100} libelle={libelle} />
     </div>
   );
 }
@@ -48,15 +47,15 @@ export function BoutonReprendre({ parcours, titres }: { parcours: string[]; titr
   const commence = Object.keys(p.chapitres).length > 0;
   if (!commence || !suivant) {
     return (
-      <Link href="/commencer/" className="inline-flex items-center justify-center rounded-xl bg-brand-solid px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-brand-solid/20 hover:brightness-110">
+      <Link href="/commencer/" className="btn btn-primaire btn-grand">
         Commencer sans compte
       </Link>
     );
   }
   return (
-    <Link href={`/chapitre/${suivant}/`} className="inline-flex flex-col rounded-xl bg-brand-solid px-6 py-3 text-white shadow-lg shadow-brand-solid/20 hover:brightness-110">
+    <Link href={`/chapitre/${suivant}/`} className="btn btn-primaire btn-grand !flex-col !items-start !gap-0">
       <span className="text-xs font-medium text-white/80">Reprendre</span>
-      <span className="text-base font-semibold">{titres[suivant] ?? "Mon parcours"}</span>
+      <span className="max-w-[16rem] truncate text-base font-semibold">{titres[suivant] ?? "Mon parcours"}</span>
     </Link>
   );
 }

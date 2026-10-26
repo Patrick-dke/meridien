@@ -33,7 +33,10 @@ export default function PageMethode() {
   return (
     <div className="mx-auto max-w-3xl space-y-12 px-4 py-8 sm:px-6">
       <header>
-        <h1 className="text-3xl font-semibold tracking-tight text-ink">Méthode et fiabilité</h1>
+        <p className="text-sm font-medium text-cyan">Nos règles</p>
+        <h1 className="mt-1 text-3xl font-semibold text-ink sm:text-4xl">
+          Méthode et <span className="accent">fiabilité</span>
+        </h1>
         <p className="mt-2 text-ink-2">
           {typographie("Comment Méridien enseigne, comment ses contenus sont vérifiés, et ce que tu peux attendre — ou non — de la plateforme.")}
         </p>
