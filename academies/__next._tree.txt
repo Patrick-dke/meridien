@@ -4,4 +4,4 @@
 :HL["/meridien/_next/static/media/77814b00d5ca94a4-s.p.21jp631_3pja2.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"academies","h":64,"c":"$Q2"}]]
-0:{"b":"oz891ERF3J3GnlIygYFXQ","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"e-odj2pAJBPoQQGmg9gfW","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
