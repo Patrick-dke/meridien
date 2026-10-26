@@ -17,7 +17,11 @@ export default function PageMentions() {
         },
         {
           titre: "Hébergement",
-          paragraphes: ["GitHub Pages, service de GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis."],
+          paragraphes: [
+            "Le site est publié à deux adresses au contenu identique, pour rester accessible si un fournisseur d'accès bloque l'une d'elles.",
+            "patrick-dke.github.io/meridien : GitHub Pages, service de GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.",
+            "meridien-academie.web.app : Firebase Hosting, service de Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis.",
+          ],
         },
         {
           titre: "Contenus",

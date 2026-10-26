@@ -29,9 +29,9 @@ export default function PageConfidentialite() {
           ],
         },
         {
-          titre: "L'hébergeur",
+          titre: "Les hébergeurs",
           paragraphes: [
-            "Le site est hébergé par GitHub Pages (GitHub, Inc.). Comme tout hébergeur, GitHub peut enregistrer des données techniques de connexion, comme l'adresse IP, pour la sécurité et le bon fonctionnement du service, selon sa propre politique de confidentialité. Méridien n'a pas accès à ces journaux.",
+            "Selon l'adresse que tu utilises, le site est servi par GitHub Pages (GitHub, Inc.) ou par Firebase Hosting (Google LLC). Comme tout hébergeur, ils peuvent enregistrer des données techniques de connexion, comme l'adresse IP, pour la sécurité et le bon fonctionnement du service, selon leur propre politique de confidentialité. Méridien n'a pas accès à ces journaux.",
           ],
         },
       ]}

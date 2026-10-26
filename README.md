@@ -59,6 +59,12 @@ powershell -ExecutionPolicy Bypass -File scripts/publier-github.ps1
 
 Le script envoie `main`, construit le site sous le sous-chemin `/meridien` et l'envoie sur la branche `gh-pages`. Dans Settings → Pages, la source doit être « Deploy from a branch », branche `gh-pages`, dossier racine. Le site est alors servi sur https://patrick-dke.github.io/meridien/.
 
+Une copie identique est servie à la racine de https://meridien-academie.web.app (Firebase Hosting, projet `meridien-academie`), pour les visiteurs dont le fournisseur d'accès bloque `github.io`. Elle se met à jour à la main, après chaque envoi sur `main` :
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts/publier-firebase.ps1
+```
+
 Ensuite, chaque envoi sur `main` passe par le workflow `.github/workflows/verifier-et-publier.yml`, qui vérifie tout (types, lint, tests unitaires, construction, tests de bout en bout et d'accessibilité) puis republie `gh-pages`. Le site étant statique, il se déploie aussi tel quel sur Netlify, Vercel, Cloudflare Pages ou Firebase Hosting.
 
 ## Avertissement
