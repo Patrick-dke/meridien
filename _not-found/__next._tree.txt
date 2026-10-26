@@ -1,4 +1,4 @@
-:HL["/meridien/_next/static/chunks/41tio99b8hems.css","style"]
+:HL["/meridien/_next/static/chunks/1hq3yabus8-p0.css","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"/_not-found","h":64,"c":"$Q2"}]]
-0:{"b":"e-odj2pAJBPoQQGmg9gfW","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"k_qMYkQbDZeC-4L8nEjgX","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
