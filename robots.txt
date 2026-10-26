@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /meridien/hors-ligne/
+
+Sitemap: https://patrick-dke.github.io/meridien/sitemap.xml

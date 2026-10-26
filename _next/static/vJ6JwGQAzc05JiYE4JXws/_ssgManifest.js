@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Facademies\u002F[academie]","\u002Facademies\u002F[academie]\u002F[module]","\u002Fchapitre\u002F[slug]","\u002Fglossaire\u002F[terme]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
