@@ -45,7 +45,8 @@ export function Recherche() {
   }, []);
 
   const ouvrir = useCallback(() => {
-    dialogue.current?.showModal();
+    if (!dialogue.current || dialogue.current.open) return;
+    dialogue.current.showModal();
     void charger();
     setTimeout(() => champ.current?.focus(), 0);
   }, [charger]);

@@ -27,10 +27,13 @@ test("le calculateur d'espérance donne la probabilité exacte de série de pert
 
 test("la recherche trouve un terme et y mène", async ({ page, isMobile }) => {
   await page.goto("/");
-  if (isMobile) await page.getByRole("button", { name: "Rechercher" }).click();
-  else await page.keyboard.press("Control+k");
   const champ = page.getByRole("searchbox", { name: "Rechercher dans Méridien" });
-  await expect(champ).toBeVisible();
+  // Le raccourci n'existe qu'une fois la page hydratée : on réessaie jusqu'à l'ouverture.
+  await expect(async () => {
+    if (isMobile) await page.getByRole("button", { name: "Rechercher" }).click();
+    else await page.keyboard.press("Control+k");
+    await expect(champ).toBeVisible({ timeout: 1000 });
+  }).toPass();
   await champ.fill("levier");
   const resultats = page.getByRole("list", { name: "Résultats" });
   await expect(resultats.getByRole("button").first()).toBeVisible();
