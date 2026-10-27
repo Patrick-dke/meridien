@@ -1,29 +1,30 @@
 2:"$Sreact.fragment"
-3:"/meridien/_next/static/chunks/1oo-as2d_y-vp.js"
-4:"/meridien/_next/static/chunks/3luc2_gixphlm.js"
-5:I[39756,["$3","$4"],"default"]
-6:I[37457,["$3","$4"],"default"]
-d:I[22016,["$3","$4"],""]
-e:I[97367,["$3","$4"],"OutletBoundary"]
-f:"$Sreact.suspense"
-12:"ViewportBoundary"
-13:I[97367,["$3","$4"],"$12"]
-14:"MetadataBoundary"
-15:I[97367,["$3","$4"],"$14"]
-16:I[27201,["$3","$4"],"IconMark"]
-8:X
-8:C
+3:"/meridien/_next/static/chunks/1v4rl6vnurrt0.js"
+4:"/meridien/_next/static/chunks/1usk440_efoul.js"
+5:"/meridien/_next/static/chunks/2m18na4qeywv2.js"
+6:I[39756,["$3","$4","$5"],"default"]
+7:I[37457,["$3","$4","$5"],"default"]
+e:I[22016,["$3","$4","$5"],""]
+f:I[97367,["$3","$4","$5"],"OutletBoundary"]
+10:"$Sreact.suspense"
+13:"ViewportBoundary"
+14:I[97367,["$3","$4","$5"],"$13"]
+15:"MetadataBoundary"
+16:I[97367,["$3","$4","$5"],"$15"]
+17:I[27201,["$3","$4","$5"],"IconMark"]
 9:X
-c:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$2","c",{"children":[["$","article",null,{"className":"mx-auto max-w-3xl px-4 py-8 sm:px-6","children":[["$","nav",null,{"aria-label":"Fil d'Ariane","className":"mb-4 text-sm text-ink-3","children":["$","$Ld",null,{"href":"/glossaire/","className":"hover:text-ink","children":"Glossaire"}]}],["$","h1",null,{"className":"text-3xl font-semibold tracking-tight text-ink","children":"Ordre stop"}],["$","p",null,{"className":"mt-1 text-ink-3","children":["Aussi : ","stop order"]}],["$","div",null,{"className":"mt-4","children":["$","$Ld",null,{"href":"/methode/#fiabilite","data-badge":"","title":"Définition ou mécanisme vérifiable.","className":"inline-flex min-h-6 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium no-underline border-info/40 text-info","children":[["$","span",null,{"aria-hidden":"true","children":"●"}],"Fait établi"]}]}],["$","p",null,{"className":"mt-5 text-lg font-medium leading-relaxed text-ink","children":"Un ordre qui devient un ordre au marché dès qu'un prix de déclenchement est atteint."}],["$","p",null,{"className":"prose-cours mt-4 text-ink-2","children":"Un achat stop se place au-dessus du prix actuel, une vente stop en dessous. Le stop loss est un ordre stop qui ferme une position perdante ; comme tout ordre au marché, son prix d'exécution n'est pas garanti."}],["$","$Ld",null,{"href":"/chapitre/types-ordres/","className":"mt-8 block rounded-xl border border-line bg-surface p-4 hover:border-brand/60","children":[["$","span",null,{"className":"block text-sm text-ink-3","children":"Expliqué en détail dans le chapitre"}],["$","span",null,{"className":"font-medium text-ink","children":"Acheter, vendre : les types d'ordres"}]]}],["$","div",null,{"className":"mt-8","children":[["$","h2",null,{"className":"text-sm font-semibold text-ink","children":"Voir aussi"}],["$","ul",null,{"className":"mt-2 flex flex-wrap gap-2","children":[["$","li","stop-loss",{"children":["$","$Ld",null,{"href":"/glossaire/stop-loss/","className":"inline-block rounded-full border border-line px-3 py-1.5 text-sm text-ink-2 hover:border-brand/60 hover:text-ink","children":"Stop Loss"}]}],["$","li","ordre-au-marche",{"children":["$","$Ld",null,{"href":"/glossaire/ordre-au-marche/","className":"inline-block rounded-full border border-line px-3 py-1.5 text-sm text-ink-2 hover:border-brand/60 hover:text-ink","children":"Ordre au marché"}]}],["$","li","slippage",{"children":["$","$Ld",null,{"href":"/glossaire/slippage/","className":"inline-block rounded-full border border-line px-3 py-1.5 text-sm text-ink-2 hover:border-brand/60 hover:text-ink","children":"Slippage"}]}]]}]]}]]}],null,["$","$Le",null,{"children":["$","$f",null,{"name":"Next.MetadataOutlet","children":"$@10"}]}]]}],"p":"$@11","v":null,"s":"$9"}}]]
-a:[["children",{"s":{"n":"terme","t":"d","k":"ordre-stop","s":[]},"h":65632,"d":{"r":["$","$2","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@b","v":"$8","s":"$9"},"c":"$Qc"}]]
-1:[["children",{"s":"glossaire","h":131136,"d":{"r":["$","$2","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@7","v":"$8","s":"$9"},"c":"$Qa"}]]
-0:{"t":{"t":{"s":"","h":131088,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$L13",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#05070d"}],["$","meta","3",{"name":"color-scheme","content":"dark"}]]}],["$","$L15",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Ordre stop : définition · Méridien"}],["$","meta","1",{"name":"description","content":"Un ordre qui devient un ordre au marché dès qu'un prix de déclenchement est atteint."}],["$","meta","2",{"name":"application-name","content":"Méridien"}],["$","link","3",{"rel":"manifest","href":"/meridien/manifest.webmanifest"}],["$","meta","4",{"property":"og:title","content":"Méridien — Académie de trading"}],["$","meta","5",{"property":"og:description","content":"Apprendre à lire les marchés avec méthode — sans argent réel, sans promesse de gains."}],["$","meta","6",{"property":"og:site_name","content":"Méridien"}],["$","meta","7",{"property":"og:locale","content":"fr_FR"}],["$","meta","8",{"property":"og:type","content":"website"}],["$","meta","9",{"name":"twitter:card","content":"summary"}],["$","meta","10",{"name":"twitter:title","content":"Méridien — Académie de trading"}],["$","meta","11",{"name":"twitter:description","content":"Apprendre à lire les marchés avec méthode — sans argent réel, sans promesse de gains."}],["$","link","12",{"rel":"apple-touch-icon","href":"/meridien/icons/apple-touch-icon.png"}],["$","$L16","13",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@17","v":null,"s":"$9"}},"a":"$@18","u":"$@19","b":"k_qMYkQbDZeC-4L8nEjgX"}
-10:null
-19:true
-9:300
 9:C
-18:0
-b:"$undefined"
-7:"$undefined"
-17:"$undefined"
-11:"$undefined"
+a:X
+d:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$2","c",{"children":[["$","article",null,{"className":"mx-auto max-w-3xl px-4 py-8 sm:px-6","children":[["$","nav",null,{"aria-label":"Fil d'Ariane","className":"mb-4 text-sm text-ink-3","children":["$","$Le",null,{"href":"/glossaire/","className":"hover:text-ink","children":"Glossaire"}]}],["$","h1",null,{"className":"text-3xl font-semibold tracking-tight text-ink","children":"Ordre stop"}],["$","p",null,{"className":"mt-1 text-ink-3","children":["Aussi : ","stop order"]}],["$","div",null,{"className":"mt-4","children":["$","$Le",null,{"href":"/methode/#fiabilite","data-badge":"","title":"Définition ou mécanisme vérifiable.","className":"inline-flex min-h-6 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium no-underline border-info/40 text-info","children":[["$","span",null,{"aria-hidden":"true","children":"●"}],"Fait établi"]}]}],["$","p",null,{"className":"mt-5 text-lg font-medium leading-relaxed text-ink","children":"Un ordre qui devient un ordre au marché dès qu'un prix de déclenchement est atteint."}],["$","p",null,{"className":"prose-cours mt-4 text-ink-2","children":"Un achat stop se place au-dessus du prix actuel, une vente stop en dessous. Le stop loss est un ordre stop qui ferme une position perdante ; comme tout ordre au marché, son prix d'exécution n'est pas garanti."}],["$","$Le",null,{"href":"/chapitre/types-ordres/","className":"mt-8 block rounded-xl border border-line bg-surface p-4 hover:border-brand/60","children":[["$","span",null,{"className":"block text-sm text-ink-3","children":"Expliqué en détail dans le chapitre"}],["$","span",null,{"className":"font-medium text-ink","children":"Acheter, vendre : les types d'ordres"}]]}],["$","div",null,{"className":"mt-8","children":[["$","h2",null,{"className":"text-sm font-semibold text-ink","children":"Voir aussi"}],["$","ul",null,{"className":"mt-2 flex flex-wrap gap-2","children":[["$","li","stop-loss",{"children":["$","$Le",null,{"href":"/glossaire/stop-loss/","className":"inline-block rounded-full border border-line px-3 py-1.5 text-sm text-ink-2 hover:border-brand/60 hover:text-ink","children":"Stop Loss"}]}],["$","li","ordre-au-marche",{"children":["$","$Le",null,{"href":"/glossaire/ordre-au-marche/","className":"inline-block rounded-full border border-line px-3 py-1.5 text-sm text-ink-2 hover:border-brand/60 hover:text-ink","children":"Ordre au marché"}]}],["$","li","slippage",{"children":["$","$Le",null,{"href":"/glossaire/slippage/","className":"inline-block rounded-full border border-line px-3 py-1.5 text-sm text-ink-2 hover:border-brand/60 hover:text-ink","children":"Slippage"}]}]]}]]}]]}],null,["$","$Lf",null,{"children":["$","$10",null,{"name":"Next.MetadataOutlet","children":"$@11"}]}]]}],"p":"$@12","v":null,"s":"$a"}}]]
+b:[["children",{"s":{"n":"terme","t":"d","k":"ordre-stop","s":[]},"h":65632,"d":{"r":["$","$2","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@c","v":"$9","s":"$a"},"c":"$Qd"}]]
+1:[["children",{"s":"glossaire","h":131136,"d":{"r":["$","$2","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@8","v":"$9","s":"$a"},"c":"$Qb"}]]
+0:{"t":{"t":{"s":"","h":131088,"c":"$Q1"},"h":{"r":["$","$2","h",{"children":[null,["$","$L14",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#05070d"}],["$","meta","3",{"name":"color-scheme","content":"dark"}]]}],["$","$L16",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$10",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Ordre stop : définition · Méridien"}],["$","meta","1",{"name":"description","content":"Un ordre qui devient un ordre au marché dès qu'un prix de déclenchement est atteint."}],["$","meta","2",{"name":"application-name","content":"Méridien"}],["$","link","3",{"rel":"manifest","href":"/meridien/manifest.webmanifest"}],["$","meta","4",{"property":"og:title","content":"Méridien — Académie de trading"}],["$","meta","5",{"property":"og:description","content":"Apprendre à lire les marchés avec méthode — sans argent réel, sans promesse de gains."}],["$","meta","6",{"property":"og:site_name","content":"Méridien"}],["$","meta","7",{"property":"og:locale","content":"fr_FR"}],["$","meta","8",{"property":"og:type","content":"website"}],["$","meta","9",{"name":"twitter:card","content":"summary"}],["$","meta","10",{"name":"twitter:title","content":"Méridien — Académie de trading"}],["$","meta","11",{"name":"twitter:description","content":"Apprendre à lire les marchés avec méthode — sans argent réel, sans promesse de gains."}],["$","link","12",{"rel":"apple-touch-icon","href":"/meridien/icons/apple-touch-icon.png"}],["$","$L17","13",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@18","v":null,"s":"$a"}},"a":"$@19","u":"$@1a","b":"tV5QkJJSOOMHIJWbHjA96"}
+11:null
+1a:true
+a:300
+a:C
+19:0
+c:"$undefined"
+8:"$undefined"
+18:"$undefined"
+12:"$undefined"

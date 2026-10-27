@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,97987,i=>{"use strict";var p=i.i(92953);(0,p.V)("firebase","13.1.0","app"),i.S([p,"getApps,Y,initializeApp,W"],76510),i.i(76510),i.S([p,"getApps,Y,initializeApp,W"],97987)}]);
