@@ -7,7 +7,7 @@ import { fiche } from "@/content";
 import { offre } from "@/content/offre";
 import { deconnecter, renvoyerVerification } from "@/lib/compte/actions";
 import { rafraichirProfil, useSession } from "@/lib/compte/session";
-import { appeler, obtenirDb } from "@/lib/firebase/client";
+import { appeler, fonctionsDisponibles, obtenirDb } from "@/lib/firebase/client";
 import { formaterPrix } from "@/lib/offre/commercial";
 import { jourLocal } from "@/lib/progression/etat";
 import { useProgression } from "@/lib/progression/store";
@@ -106,9 +106,10 @@ export function MonCompte({ modules }: { modules: ModulePresente[] }) {
     lireListe<Certificat>("certificats", uid)
       .then(setCertificats)
       .catch(() => setCertificats([]));
-    appeler<Eligibilite>("outils", { action: "eligibilite" })
-      .then(setOutils)
-      .catch((e) => setErreurOutils((e as Error).message));
+    if (fonctionsDisponibles)
+      appeler<Eligibilite>("outils", { action: "eligibilite" })
+        .then(setOutils)
+        .catch((e) => setErreurOutils((e as Error).message));
   }, [uid]);
 
   if (s.etat !== "connecte" || !s.utilisateur) return <div className="carte h-64 animate-pulse" aria-busy="true" />;
@@ -269,6 +270,7 @@ export function MonCompte({ modules }: { modules: ModulePresente[] }) {
             Un indicateur et un Expert Advisor pour MetaTrader 5 sont remis aux apprenants qui ont terminé le parcours requis et réussi ses évaluations. Ce sont des outils d&apos;aide à
             l&apos;analyse : ils ne garantissent aucun résultat et s&apos;utilisent d&apos;abord sur un compte de démonstration.
           </p>
+          {!fonctionsDisponibles ? <p className="mt-3 text-sm text-ink-3">Le suivi de ton éligibilité et les demandes d&apos;accès ouvrent très bientôt.</p> : null}
           {erreurOutils ? <p className="mt-3 text-sm text-warn">{erreurOutils}</p> : null}
           {outils ? (
             <>
@@ -306,7 +308,7 @@ export function MonCompte({ modules }: { modules: ModulePresente[] }) {
                   })}
               </div>
             </>
-          ) : !erreurOutils ? (
+          ) : !erreurOutils && fonctionsDisponibles ? (
             <div className="mt-4 h-16 animate-pulse rounded-xl bg-surface-2" />
           ) : null}
         </div>

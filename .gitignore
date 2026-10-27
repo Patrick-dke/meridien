@@ -36,6 +36,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# Configurations sans secret, partagées : configuration publique Firebase du site, paramètres des fonctions.
+!.env.production
+!functions/.env.demo-meridien
+!functions/.env.meridien-academie
 
 # vercel
 .vercel

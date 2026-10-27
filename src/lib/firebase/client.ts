@@ -26,6 +26,11 @@ const config = emulateurs
 export const projetFirebase = config.projectId;
 /** Faux tant que l'application web n'est pas enregistrée : les comptes sont alors annoncés comme bientôt disponibles. */
 export const comptesDisponibles = Boolean(config.apiKey && config.projectId);
+/**
+ * Fonctions serveur déployées (offre Blaze) : quiz officiels, contact, paiement, administration. Sans elles,
+ * ces services sont annoncés « bientôt » au lieu d'échouer ; comptes et progression fonctionnent quand même.
+ */
+export const fonctionsDisponibles = emulateurs || (comptesDisponibles && process.env.NEXT_PUBLIC_FONCTIONS === "1");
 const HOTE = "127.0.0.1";
 
 let app: Promise<FirebaseApp> | null = null;

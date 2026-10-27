@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "@/lib/compte/session";
+import { fonctionsDisponibles } from "@/lib/firebase/client";
 import { formaterPrix, useDroits, useModulesEnVente } from "@/lib/offre/commercial";
 import { useProgression } from "@/lib/progression/store";
 import { typographie } from "@/lib/typographie";
@@ -136,6 +137,15 @@ export function BlocAchat({ m, premierChapitre }: { m: ModulePresente; premierCh
           <Link href={`/chapitre/${premierChapitre}/`} className="btn btn-primaire btn-grand w-full">
             {e.etat === "en-cours" ? "Reprendre le module" : e.etat === "termine" ? "Revoir le module" : "Commencer le module"}
           </Link>
+        ) : !fonctionsDisponibles ? (
+          <>
+            <p className="rounded-xl border border-line px-4 py-3 text-sm text-ink-2">Le paiement en ligne ouvre très bientôt. Crée ton compte dès maintenant : ta progression y sera gardée.</p>
+            {s.etat !== "connecte" ? (
+              <Link href="/inscription/" className="btn btn-primaire btn-grand w-full">
+                Créer mon compte gratuit
+              </Link>
+            ) : null}
+          </>
         ) : e.etat === "indisponible" ? (
           <p className="rounded-xl border border-line px-4 py-3 text-sm text-ink-2">Ce module n&apos;est pas encore en vente.</p>
         ) : s.etat === "connecte" ? (

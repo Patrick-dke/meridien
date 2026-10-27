@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { associerGoogle, changerEmail, changerMotDePasse, deconnecterPartout, modifierProfil, reduirePhoto } from "@/lib/compte/actions";
 import { useSession } from "@/lib/compte/session";
 import { formaterTelephone } from "@/lib/compte/telephone";
+import { fonctionsDisponibles } from "@/lib/firebase/client";
 import { Alerte, BoutonEnvoi, Champ, ChampMotDePasse } from "./Formulaire";
 
 type Retour = { ok: boolean; texte: string } | null;
@@ -188,9 +189,13 @@ export function ParametresProfil() {
       </Bloc>
 
       <Bloc titre="Sécurité" aide="Téléphone perdu, ordinateur partagé ? Ferme toutes les sessions ouvertes : il faudra te reconnecter partout.">
-        <button type="button" className="btn btn-secondaire" disabled={sessions.enCours} onClick={() => void sessions.lancer(deconnecterPartout, "Toutes les sessions sont fermées.")}>
-          Déconnecter tous les appareils
-        </button>
+        {fonctionsDisponibles ? (
+          <button type="button" className="btn btn-secondaire" disabled={sessions.enCours} onClick={() => void sessions.lancer(deconnecterPartout, "Toutes les sessions sont fermées.")}>
+            Déconnecter tous les appareils
+          </button>
+        ) : (
+          <p className="text-sm text-ink-3">La déconnexion de tous les appareils ouvre très bientôt. En attendant, change ton mot de passe : les autres sessions devront se reconnecter.</p>
+        )}
         {sessions.retour && !sessions.retour.ok ? (
           <div className="mt-3">
             <Alerte>{sessions.retour.texte}</Alerte>

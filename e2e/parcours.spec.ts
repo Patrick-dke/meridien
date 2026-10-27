@@ -1,29 +1,8 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-/** Répond au quiz du chapitre 1 ; `justes` = false donne de mauvaises réponses aux quatre premières questions. */
-async function repondreQuizChapitre1(page: Page, justes = true) {
-  const verifierEtSuivre = async (derniere = false) => {
-    await page.getByRole("button", { name: "Vérifier" }).click();
-    await page.getByRole("button", { name: derniere ? "Voir mon résultat" : "Question suivante" }).click();
-  };
-  await page.getByRole("radio", { name: justes ? "+60 €" : "+3 €", exact: true }).check();
-  await verifierEtSuivre();
-  await page.getByRole("radio", { name: justes ? "Vrai" : "Faux", exact: true }).check();
-  await verifierEtSuivre();
-  await page.getByRole("radio", { name: justes ? "−15 €" : "+15 €", exact: true }).check();
-  await verifierEtSuivre();
-  for (const motif of justes ? [/longues séries de pertes/, /frais réduisent/, /effet de levier/] : [/deux trades/]) {
-    await page.getByRole("checkbox", { name: motif }).check();
-  }
-  await verifierEtSuivre();
-  await page.getByRole("radio", { name: "Faux", exact: true }).check();
-  await verifierEtSuivre();
-  await page.getByRole("radio", { name: /analyser avec méthode/ }).check();
-  await verifierEtSuivre(true);
-}
-
-test("un débutant suit l'accueil personnalisé puis valide le premier chapitre", async ({ page }) => {
-  // Parcours complet de bout en bout (accueil, profil, neuf étapes, quiz, tableau de bord) : il lui faut du temps.
+test("un débutant suit l'accueil personnalisé jusqu'au quiz, qui demande un compte gratuit", async ({ page }) => {
+  // Parcours de bout en bout (accueil, profil, étapes du chapitre, quiz) : il lui faut du temps.
+  // La validation par le quiz, avec un compte, est testée dans e2e/emulateurs (environnement de test).
   test.setTimeout(60_000);
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Apprendre à lire les marchés avec méthode.");
@@ -42,29 +21,12 @@ test("un débutant suit l'accueil personnalisé puis valide le premier chapitre"
     await page.getByRole("button", { name: "Continuer" }).click();
     await expect(page.locator('section[id^="etape-"]:not([hidden])')).toHaveAttribute("aria-label", etape);
   }
-  await repondreQuizChapitre1(page);
-  await expect(page.getByText("100 %").first()).toBeVisible();
-  await page.getByRole("link", { name: "Voir la validation du chapitre" }).click();
-  await expect(page.getByText("Chapitre validé", { exact: true })).toBeVisible();
+  await expect(page.getByText("Crée ton compte gratuit pour passer le quiz")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Créer un compte" }).first()).toHaveAttribute("href", /\/inscription\/\?suite=/);
 
-  // La progression survit au rechargement.
+  // La progression de lecture survit au rechargement, sans compte.
   await page.reload();
-  await expect(page.getByText("Chapitre validé", { exact: true })).toBeVisible();
-
-  await page.goto("/tableau-de-bord/");
-  await expect(page.getByText("1/14").first()).toBeVisible();
-  await expect(page.getByText("Suite du parcours")).toBeVisible();
-  await expect(page.getByRole("link", { name: /Trading et investissement/ }).first()).toBeVisible();
-});
-
-test("un quiz raté ne valide pas le chapitre et déclenche une recommandation", async ({ page }) => {
-  await page.goto("/chapitre/quest-ce-que-le-trading/#etape-quiz");
-  await repondreQuizChapitre1(page, false);
-  await expect(page.getByText(/Il faut 80 %/)).toBeVisible();
-  await page.goto("/chapitre/quest-ce-que-le-trading/#etape-validation");
-  await expect(page.getByText("Chapitre pas encore validé")).toBeVisible();
-  await page.goto("/tableau-de-bord/");
-  await expect(page.getByText(/réponses? manquées?/).first()).toBeVisible();
+  await expect(page.locator('section[id^="etape-"]:not([hidden])')).toHaveAttribute("aria-label", "Quiz");
 });
 
 test("la reprise rouvre l'étape où l'apprenant s'était arrêté", async ({ page }) => {

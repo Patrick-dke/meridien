@@ -8,7 +8,7 @@ import { useParametreAdresse } from "@/lib/adresse";
 import { renvoyerVerification } from "@/lib/compte/actions";
 import { rafraichirProfil, useSession } from "@/lib/compte/session";
 import { formaterTelephone, normaliserTelephone, operateurProbable, type Operateur } from "@/lib/compte/telephone";
-import { appeler } from "@/lib/firebase/client";
+import { appeler, fonctionsDisponibles } from "@/lib/firebase/client";
 import { formaterPrix, useDroits, useModulesEnVente } from "@/lib/offre/commercial";
 import { Alerte, Champ } from "../compte/Formulaire";
 import { IconeCadenas, IconeCoche, IconeCroix } from "../ui/Icones";
@@ -74,13 +74,20 @@ export function PagePaiement() {
     if (s.etat === "deconnecte") router.replace(`/connexion/?suite=${encodeURIComponent(`/paiement/${window.location.search}`)}`);
   }, [s.etat, router]);
   useEffect(() => {
-    if (s.etat !== "connecte") return;
+    if (s.etat !== "connecte" || !fonctionsDisponibles) return;
     appeler<EtatServeur>("etatPaiement").then(setServeur, (e) => setErreurServeur((e as Error).message));
   }, [s.etat]);
 
   const m = offre.find((x) => x.id === idModule);
   if (s.etat !== "connecte" || idModule === undefined) return <Chargement />;
   if (!m || m.gratuit) return <Alerte>Module inconnu. Choisis une formation depuis la page Formations.</Alerte>;
+  if (!fonctionsDisponibles)
+    return (
+      <Alerte ton="info">
+        Le paiement en ligne ouvre très bientôt. Ton compte est prêt : ta progression y est déjà enregistrée, et tu pourras débloquer « {m.titre} » dès
+        l&apos;ouverture.
+      </Alerte>
+    );
   if (!s.utilisateur?.emailVerifie) return <VerifierEmail />;
   if (erreurServeur) return <Alerte>Le paiement est momentanément indisponible : {erreurServeur}</Alerte>;
   if (!serveur || !droits.pret) return <Chargement />;

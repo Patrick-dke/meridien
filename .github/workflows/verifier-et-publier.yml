@@ -22,12 +22,7 @@ jobs:
       NEXT_TELEMETRY_DISABLED: "1"
       NEXT_PUBLIC_BASE_PATH: /meridien
       NEXT_PUBLIC_SITE_URL: https://patrick-dke.github.io
-      # Configuration publique de l'application web Firebase (variables du dépôt) : vides tant que les comptes
-      # ne sont pas ouverts ; le site affiche alors « comptes bientôt disponibles ».
-      NEXT_PUBLIC_FIREBASE_API_KEY: ${{ vars.NEXT_PUBLIC_FIREBASE_API_KEY }}
-      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ vars.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
-      NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ vars.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-      NEXT_PUBLIC_FIREBASE_APP_ID: ${{ vars.NEXT_PUBLIC_FIREBASE_APP_ID }}
+      # La configuration publique Firebase du site est dans .env.production (lue par next build).
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

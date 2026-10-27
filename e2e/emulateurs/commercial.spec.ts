@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { COMPTES_TEST } from "../../scripts/emulateurs/comptes";
+import { repondreQuizChapitre1 } from "../aides";
 
 /**
  * Parcours commercial dans l'environnement de TEST (site construit avec NEXT_PUBLIC_EMULATEURS=1, émulateurs
@@ -24,7 +25,40 @@ async function verifierAdresse(page: Page, email: string) {
   await page.goto(lien!);
 }
 
+async function connecter(page: Page, compte: { email: string; motDePasse: string }, suite: string) {
+  await page.goto(`/connexion/?suite=${encodeURIComponent(suite)}`);
+  await page.getByLabel("Adresse e-mail").fill(compte.email);
+  await page.getByLabel("Mot de passe", { exact: true }).fill(compte.motDePasse);
+  await page.getByRole("button", { name: "Se connecter" }).click();
+}
+
 test.describe.configure({ mode: "serial" });
+
+test("un apprenant connecté valide le premier chapitre gratuit par le quiz, noté par le serveur", async ({ page }) => {
+  test.setTimeout(90_000);
+  await connecter(page, COMPTES_TEST.apprenant, "/chapitre/quest-ce-que-le-trading/#etape-quiz");
+  await expect(page.getByText("Question 1 sur")).toBeVisible({ timeout: 30_000 });
+  await repondreQuizChapitre1(page);
+  await expect(page.getByText("100 %").first()).toBeVisible();
+  await expect(page.getByText("Résultat officiel enregistré sur ton compte.")).toBeVisible({ timeout: 30_000 });
+  await page.getByRole("link", { name: "Voir la validation du chapitre" }).click();
+  await expect(page.getByText("Chapitre validé", { exact: true })).toBeVisible();
+  await page.goto("/tableau-de-bord/");
+  await expect(page.getByText("1/14").first()).toBeVisible();
+});
+
+test("un quiz raté ne valide pas le chapitre et déclenche une recommandation", async ({ page }) => {
+  test.setTimeout(90_000);
+  await connecter(page, COMPTES_TEST.apprenant, "/chapitre/trading-et-investissement/");
+  // La redirection n'a lieu qu'une fois la connexion établie.
+  await expect(page).toHaveURL(/\/chapitre\/trading-et-investissement\/$/, { timeout: 30_000 });
+  await page.goto("/chapitre/quest-ce-que-le-trading/#etape-quiz");
+  await expect(page.getByText("Question 1 sur")).toBeVisible({ timeout: 30_000 });
+  await repondreQuizChapitre1(page, false);
+  await expect(page.getByText(/Il faut 80 %/)).toBeVisible();
+  await page.goto("/tableau-de-bord/");
+  await expect(page.getByText(/réponses? manquées?/).first()).toBeVisible();
+});
 
 test("un visiteur voit les prix venus de la base et un chapitre payant verrouillé", async ({ page }) => {
   await page.goto("/formations/");

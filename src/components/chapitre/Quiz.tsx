@@ -5,7 +5,7 @@ import type { Question } from "@/content/schema";
 import { estComplete, melangeDeterministe, noter, noterQuiz, reponseVide, SEUIL_REUSSITE, type Reponse } from "@/lib/apprentissage/quiz";
 import { enregistrerQuiz } from "@/lib/progression/store";
 import { useSession } from "@/lib/compte/session";
-import { appeler, comptesDisponibles } from "@/lib/firebase/client";
+import { appeler, comptesDisponibles, fonctionsDisponibles } from "@/lib/firebase/client";
 import Link from "next/link";
 import { typographie } from "@/lib/typographie";
 import { IconeCoche, IconeCroix } from "../ui/Icones";
@@ -315,7 +315,7 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
     if (!enregistre.current) {
       enregistrerQuiz(slug, r.score, r.parConcept, r.reussi);
       enregistre.current = true;
-      if (session.etat === "connecte") envoyerOfficiel();
+      if (session.etat === "connecte" && fonctionsDisponibles) envoyerOfficiel();
     }
     setFini(true);
   };
@@ -352,6 +352,11 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
             </p>
           </div>
         </div>
+        {session.etat === "connecte" && !fonctionsDisponibles ? (
+          <p className="rounded-xl border border-line bg-surface px-4 py-3 text-sm" role="status">
+            Résultat enregistré dans ta progression, sur ton compte. Les résultats officiels et les certificats arrivent bientôt.
+          </p>
+        ) : null}
         {officiel ? (
           <p className={`rounded-xl border px-4 py-3 text-sm ${officiel.statut === "erreur" ? "border-warn/50 bg-warn/10" : "border-line bg-surface"}`} role="status">
             {officiel.statut === "envoi" ? "Enregistrement du résultat officiel sur ton compte…" : null}

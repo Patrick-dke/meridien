@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAncre } from "@/lib/adresse";
 import { rafraichirProfil } from "@/lib/compte/session";
-import { appeler } from "@/lib/firebase/client";
+import { appeler, fonctionsDisponibles } from "@/lib/firebase/client";
 import { useSession } from "@/lib/compte/session";
 import { BandeauTest } from "../compte/Connexion";
 import { Contenus, Demandes, Journal, Messages, Modules, Paiements, Parametres, Utilisateurs, VueEnsemble } from "./Sections";
@@ -31,6 +31,8 @@ export function Administration() {
   const [choisi, setOnglet] = useState<(typeof ONGLETS)[number]["id"] | null>(null);
   const onglet = choisi ?? ONGLETS.find((o) => o.id === ancre)?.id ?? "ensemble";
   if (s.etat === "inconnu" || (s.etat === "connecte" && s.profil === null && !s.admin)) return <div className="carte h-40 animate-pulse" aria-busy="true" />;
+  if (!fonctionsDisponibles)
+    return <p className="carte p-6 text-ink-2">L&apos;administration s&apos;ouvrira avec la mise en service des fonctions serveur (offre Blaze de Firebase).</p>;
   if (!s.admin) return <AccesReserve connecte={s.etat === "connecte"} />;
   const Actif = ONGLETS.find((o) => o.id === onglet)!.composant;
   return (

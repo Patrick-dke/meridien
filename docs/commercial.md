@@ -6,10 +6,10 @@ Ce document décrit ce qui a été construit pour vendre les formations, ce qui 
 
 | Élément | Environnement de test (émulateurs, paiements simulés) | Production |
 | --- | --- | --- |
-| Comptes e-mail + mot de passe, vérification de l'adresse, mot de passe oublié | Vérifié (navigateur + tests automatiques) | Non activé : application web Firebase à enregistrer, fournisseurs d'authentification à activer |
-| « Continuer avec Google » | Code prêt ; non testable dans l'émulateur sans fenêtre Google | Non activé (domaines autorisés à déclarer) |
-| Prix en base, grille 10 000 FCFA par niveau | Vérifié | Base Firestore à créer |
-| Contenus payants protégés côté serveur | Vérifié : règles Firestore (14 tests) + parcours complet ; contrôle de fuite du site publié : aucune | Base, règles et publication des contenus à faire |
+| Comptes e-mail + mot de passe, vérification de l'adresse, mot de passe oublié | Vérifié (navigateur + tests automatiques) | **Ouvert** le 27/10/2026 (application web enregistrée, fournisseur activé) ; pas encore éprouvé par une vraie inscription |
+| « Continuer avec Google » | Code prêt ; non testable dans l'émulateur sans fenêtre Google | **Activé** ; domaines autorisés : meridien-academie.web.app, meridien-academie.firebaseapp.com, patrick-dke.github.io ; pas encore éprouvé |
+| Prix en base, grille 10 000 FCFA par niveau | Vérifié | Base créée (europe-west1, protégée contre la suppression) ; collection `modules` encore vide (« prix bientôt annoncé ») : elle se remplit depuis l'administration, qui exige les fonctions |
+| Contenus payants protégés côté serveur | Vérifié : règles Firestore (14 tests) + parcours complet ; contrôle de fuite du site publié : aucune | Règles déployées et vérifiées sur la vraie base (lecture publique des prix seulement, tout le reste refusé sans compte) ; contenus pas encore publiés |
 | Paiement Mobile Money (Orange Money, MTN MoMo) | **Simulation uniquement** : réussite, échec, expiration, idempotence, anti-doublon, webhook authentifié, relecture du statut auprès du prestataire | **Aucun paiement réel n'a été effectué.** Adaptateur Fapshi écrit d'après sa documentation, jamais appelé (pas de compte ni de clés) |
 | Quiz notés par le serveur, certificats | Vérifié | Fonctions à déployer (offre Blaze) |
 | Administration, journal d'audit | Vérifié | Fonctions à déployer, premier administrateur à désigner |
@@ -112,12 +112,14 @@ Alternatives étudiées : CamPay (≈ 2 % à l'encaissement, 1 % au retrait), No
 
 ## 6. Mise en service : étapes qui demandent ton intervention
 
+Tant que les fonctions serveur ne sont pas déployées (`NEXT_PUBLIC_FONCTIONS=0` dans `.env.production`), le site ouvre les comptes et la progression synchronisée, et annonce « bientôt » pour les quiz officiels et certificats, le contact, le paiement et l'administration. Après l'étape 5, passer `NEXT_PUBLIC_FONCTIONS=1`.
+
 Chaque étape est réversible sauf mention contraire. Je ne les ai pas faites : elles touchent ton compte, ta sécurité, ton argent ou la publication commerciale.
 
-1. **Publier la version commerciale du site** (GitHub Pages et Firebase Hosting). Sans les étapes suivantes, elle montre les modules verrouillés, « prix bientôt annoncé » et « comptes bientôt disponibles » ; « Premiers pas » reste entièrement libre.
-2. **Enregistrer l'application web Firebase** (`firebase apps:create WEB "Meridien Web"`), puis renseigner `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID` et `NEXT_PUBLIC_FIREBASE_APP_ID` (configuration publique par nature) pour le build et la CI.
-3. **Activer l'authentification** : console Firebase → Authentication → fournisseurs **E-mail/Mot de passe** et **Google**. Ajouter `patrick-dke.github.io` aux domaines autorisés. Choisir l'adresse d'assistance de l'écran de consentement Google.
-4. **Créer la base Firestore** (emplacement définitif : `eur3` ou `europe-west1`, **irréversible**), puis `firebase deploy --only firestore` (règles et index).
+1. ~~Publier la version commerciale du site~~ : fait le 27/10/2026.
+2. ~~Enregistrer l'application web Firebase~~ : fait le 27/10/2026 (« Meridien Web ») ; sa configuration publique est dans `.env.production`.
+3. ~~Activer l'authentification~~ : fait le 27/10/2026 (e-mail/mot de passe et Google ; `patrick-dke.github.io` autorisé). L'adresse d'assistance affichée sur l'écran de consentement Google est celle du compte propriétaire : à remplacer par une adresse de contact dédiée dans la console (Authentication → Méthode de connexion → Google) si tu préfères.
+4. ~~Créer la base Firestore et déployer les règles~~ : fait le 27/10/2026 (`europe-west1`, édition standard, protection contre la suppression activée).
 5. **Passer à l'offre Blaze** (carte bancaire, alerte de budget), puis :
    ```bash
    firebase functions:secrets:set FAPSHI_API_USER
