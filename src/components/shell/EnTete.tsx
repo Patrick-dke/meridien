@@ -11,7 +11,7 @@ export function EnTete() {
         <Link href="/" className="lg:hidden" aria-label="Méridien, accueil">
           <Logo />
         </Link>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1 min-[400px]:gap-2">
           <Recherche />
           {/* Sur les plus petits écrans, les réglages restent accessibles par « Moi » : la place va au compte. */}
           <Link href="/parametres/" className="btn btn-discret !min-h-10 !px-0 size-10 max-[399px]:!hidden" aria-label="Réglages">

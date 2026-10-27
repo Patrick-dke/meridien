@@ -96,7 +96,7 @@ export function Recherche() {
         className="inline-flex h-10 items-center gap-2 rounded-xl border border-line bg-surface/60 px-3 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink active:scale-[0.97]"
       >
         <IconeRecherche className="size-[1.1rem]" />
-        <span>Rechercher</span>
+        <span className="max-[359px]:sr-only">Rechercher</span>
         <kbd className="hidden rounded border border-line px-1.5 font-mono text-xs text-ink-3 md:inline">Ctrl K</kbd>
       </button>
       <dialog
