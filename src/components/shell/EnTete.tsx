@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { IconeReglages } from "../ui/Icones";
+import { BoutonCompte } from "./BoutonCompte";
 import { Logo } from "./Logo";
 import { Recherche } from "./Recherche";
 
@@ -12,9 +13,11 @@ export function EnTete() {
         </Link>
         <div className="ml-auto flex items-center gap-2">
           <Recherche />
-          <Link href="/parametres/" className="btn btn-discret !min-h-10 !px-0 size-10" aria-label="Réglages">
+          {/* Sur les plus petits écrans, les réglages restent accessibles par « Moi » : la place va au compte. */}
+          <Link href="/parametres/" className="btn btn-discret !min-h-10 !px-0 size-10 max-[399px]:!hidden" aria-label="Réglages">
             <IconeReglages />
           </Link>
+          <BoutonCompte />
         </div>
       </div>
     </header>

@@ -17,6 +17,13 @@ const pages = [
   "/parametres/",
   "/methode/",
   "/legal/risques/",
+  "/formations/",
+  "/formations/price-action/",
+  "/chapitre/rejets-et-meches/",
+  "/connexion/",
+  "/inscription/",
+  "/mot-de-passe/",
+  "/paiement/?module=price-action",
 ];
 
 for (const chemin of pages) {

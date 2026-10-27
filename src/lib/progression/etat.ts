@@ -93,3 +93,70 @@ export function ajouterScoresConcepts(etat: Etat, scores: { concept: string; sco
   }
   return { ...etat, concepts };
 }
+
+const plusRecent = (a?: string, b?: string) => (!a ? b : !b ? a : a > b ? a : b);
+const plusAncien = (a?: string, b?: string) => (!a ? b : !b ? a : a < b ? a : b);
+
+/**
+ * Fusion de deux progressions (cet appareil et le compte) sans rien perdre : un chapitre terminé d'un côté
+ * reste terminé, les meilleurs scores et le temps le plus long sont gardés, favoris et notes sont réunis.
+ * Les réglages d'affichage restent ceux de l'appareil (`local`).
+ */
+export function fusionnerEtats(local: Etat, compte: Etat): Etat {
+  const chapitres: Etat["chapitres"] = { ...compte.chapitres };
+  for (const [slug, l] of Object.entries(local.chapitres)) {
+    const c = chapitres[slug];
+    if (!c) {
+      chapitres[slug] = l;
+      continue;
+    }
+    const meilleur = Math.max(l.meilleurScore ?? -1, c.meilleurScore ?? -1);
+    chapitres[slug] = {
+      statut: l.statut === "termine" || c.statut === "termine" ? "termine" : "en-cours",
+      etape: Math.max(l.etape, c.etape),
+      debut: plusAncien(l.debut, c.debut)!,
+      fin: plusAncien(l.fin, c.fin),
+      tempsS: Math.max(l.tempsS, c.tempsS),
+      tentatives: Math.max(l.tentatives, c.tentatives),
+      meilleurScore: meilleur >= 0 ? meilleur : undefined,
+      dernierScore: l.dernierScore ?? c.dernierScore,
+    };
+    if (chapitres[slug].fin === undefined) delete chapitres[slug].fin;
+    if (chapitres[slug].meilleurScore === undefined) delete chapitres[slug].meilleurScore;
+    if (chapitres[slug].dernierScore === undefined) delete chapitres[slug].dernierScore;
+  }
+  const concepts: Etat["concepts"] = { ...compte.concepts };
+  for (const [id, l] of Object.entries(local.concepts)) {
+    const c = concepts[id];
+    concepts[id] = !c || l.dernier > c.dernier || (l.dernier === c.dernier && l.scores.length >= c.scores.length) ? l : c;
+  }
+  const notes = { ...compte.notes };
+  for (const [slug, texte] of Object.entries(local.notes)) {
+    const autre = notes[slug];
+    if (!autre || texte.includes(autre)) notes[slug] = texte;
+    else if (!autre.includes(texte)) notes[slug] = `${texte}\n\n${autre}`.slice(0, 20000);
+  }
+  const journal: Record<string, number> = { ...compte.journal };
+  for (const [jour, s] of Object.entries(local.journal ?? {})) journal[jour] = Math.max(s, journal[jour] ?? 0);
+  const jours = Object.keys(journal).sort();
+  for (const ancien of jours.slice(0, Math.max(0, jours.length - 60))) delete journal[ancien];
+
+  const fusion: Etat = {
+    version: VERSION,
+    chapitres,
+    concepts,
+    favoris: [...new Set([...compte.favoris, ...local.favoris])],
+    notes,
+    reglages: local.reglages,
+    journal,
+  };
+  const profil = local.profil && compte.profil ? (local.profil.date >= compte.profil.date ? local.profil : compte.profil) : (local.profil ?? compte.profil);
+  if (profil) fusion.profil = profil;
+  const visite = plusRecent(local.derniereVisite, compte.derniereVisite);
+  if (visite) {
+    fusion.derniereVisite = visite;
+    const dernier = visite === local.derniereVisite ? local.dernierChapitre : compte.dernierChapitre;
+    if (dernier) fusion.dernierChapitre = dernier;
+  }
+  return fusion;
+}

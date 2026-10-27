@@ -10,7 +10,7 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
-    "out-avant/**",
+    "out-avant/**", "out-test/**", "functions/lib/**",
     "build/**",
     "next-env.d.ts",
     // Outils locaux de narration (environnement Python, modèle de voix).

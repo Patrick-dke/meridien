@@ -1,0 +1,129 @@
+rules_version = '2';
+
+// Règles d'accès de Méridien. Principe : le navigateur lit ce qui le concerne et n'écrit que son profil et sa
+// progression. Tout ce qui touche à l'argent, aux droits d'accès, aux évaluations officielles et au journal
+// d'audit est écrit par les fonctions serveur (SDK Admin), qui contournent ces règles.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function connecte() { return request.auth != null; }
+    function moi(uid) { return connecte() && request.auth.uid == uid; }
+    function doc(chemin) { return /databases/$(database)/documents/$(chemin); }
+    function admin() { return connecte() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function suspendu() {
+      return exists(/databases/$(database)/documents/utilisateurs/$(request.auth.uid))
+        && get(/databases/$(database)/documents/utilisateurs/$(request.auth.uid)).data.get('statut', 'actif') == 'suspendu';
+    }
+    function aDroit(module) {
+      return exists(/databases/$(database)/documents/droits/$(request.auth.uid + '_' + module))
+        && get(/databases/$(database)/documents/droits/$(request.auth.uid + '_' + module)).data.actif == true;
+    }
+    function texte(v, min, max) { return v is string && v.size() >= min && v.size() <= max; }
+
+    // ---- Public : catalogue commercial, paramètres affichables, vérification des certificats.
+    match /modules/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /parametres/public {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /parametres/{section} {
+      // Bénéficiaire, conditions des outils, contact : lus et écrits par l'administration via les fonctions.
+      allow read, write: if false;
+    }
+    match /certificats/{id} {
+      allow get: if true;
+      allow list: if connecte() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    // ---- Profil : l'utilisateur ne modifie que ses coordonnées ; statut et rôle restent au serveur.
+    function profilValide(d) {
+      return texte(d.nom, 2, 80)
+        && texte(d.nomMinuscule, 2, 80)
+        && d.email == request.auth.token.email
+        && d.emailMinuscule == d.email.lower()
+        && (d.get('telephone', null) == null || (d.telephone is string && d.telephone.matches('^6[0-9]{8}$')))
+        && (d.get('photo', null) == null || (d.photo is string && d.photo.size() < 120000 && d.photo.matches('^data:image/(jpeg|webp|png);base64,.*')));
+    }
+    match /utilisateurs/{uid} {
+      allow read: if moi(uid);
+      allow create: if moi(uid)
+        && request.resource.data.keys().hasOnly(['nom', 'nomMinuscule', 'email', 'emailMinuscule', 'telephone', 'photo', 'creeLe', 'majLe'])
+        && profilValide(request.resource.data);
+      allow update: if moi(uid) && !suspendu()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nom', 'nomMinuscule', 'email', 'emailMinuscule', 'telephone', 'photo', 'majLe'])
+        && profilValide(request.resource.data);
+      allow delete: if false;
+    }
+
+    // ---- Progression personnelle (lecture, temps, notes) : écrite par l'apprenant lui-même.
+    match /progressions/{uid} {
+      allow read: if moi(uid);
+      allow create, update: if moi(uid) && !suspendu()
+        && request.resource.data.keys().hasOnly(['etat', 'majLe'])
+        && request.resource.data.etat is map
+        && request.resource.data.majLe is string;
+      allow delete: if false;
+    }
+
+    // ---- Écrits par le serveur seulement ; lisibles par leur propriétaire.
+    match /commandes/{id} {
+      allow read: if connecte() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+    match /transactions/{id} {
+      allow read: if connecte() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+    match /droits/{id} {
+      allow read: if connecte() && (resource.data.uid == request.auth.uid || admin());
+      allow write: if false;
+    }
+    match /evaluations/{id} {
+      allow read: if connecte() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+    match /demandesOutils/{id} {
+      allow read: if connecte() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    // ---- Contenus payants : servis seulement à qui a un droit actif sur le module (ou à l'administration).
+    match /contenus/{slug} {
+      allow get: if connecte() && !suspendu() && (admin() || aDroit(resource.data.module));
+      allow list: if admin();
+      allow write: if admin() && texte(request.resource.data.module, 1, 60);
+    }
+    match /narrations/{slug} {
+      allow get: if connecte() && !suspendu() && (admin() || aDroit(resource.data.module));
+      allow list: if admin();
+      allow write: if admin() && texte(request.resource.data.module, 1, 60);
+      match /morceaux/{n} {
+        allow get: if connecte() && !suspendu() && (admin() || aDroit(resource.data.module));
+        allow write: if admin() && texte(request.resource.data.module, 1, 60);
+      }
+    }
+    // Corrigés des quiz : jamais lus par les apprenants ; la notation officielle se fait sur le serveur.
+    match /corriges/{slug} {
+      allow read, write: if admin();
+    }
+
+    // ---- Administration.
+    match /admins/{uid} {
+      allow get: if moi(uid);
+      allow write: if false;
+    }
+    match /journalAudit/{id} {
+      // Ajout seul, par le serveur : personne ne peut modifier ni effacer une entrée.
+      allow read: if admin();
+      allow write: if false;
+    }
+
+    // Tout le reste (messages, limites, simulations…) n'est accessible que par le serveur.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

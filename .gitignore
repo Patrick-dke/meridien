@@ -50,3 +50,11 @@ firebase-debug.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# contenus des modules payants (publiés dans la base protégée, jamais dans le dépôt public)
+/prive/
+/firestore-debug.log
+/ui-debug.log
+/database-debug.log
+/.emulateurs/
+/out-test/

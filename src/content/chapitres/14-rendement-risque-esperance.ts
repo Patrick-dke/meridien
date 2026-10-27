@@ -24,27 +24,36 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 8,
-        texte: "Vaut-il mieux gagner souvent, ou gagner gros ? Ni l'un ni l'autre seul. Tout est dans la combinaison des deux.",
+        texte:
+          "Vaut-il mieux gagner souvent, ou gagner gros ? Ni l'un ni l'autre seul. Tout est dans la combinaison des deux.",
         visuel: { type: "titre", titre: "Gagner souvent ou gagner gros ?" },
       },
       {
         duree: 9,
-        texte: "Le ratio rendement sur risque compare ce que tu vises à ce que tu risques. 4,40 visés pour 2,20 risqués : un ratio de 2.",
-        visuel: { type: "formule", texte: "Ratio = gain visé ÷ perte acceptée", legende: "4,40 ÷ 2,20 = 2" },
+        texte:
+          "Le ratio rendement sur risque compare ce que tu vises à ce que tu risques. 4,40 visés pour 2,20 risqués : un ratio de 2.",
+        visuel: {
+          type: "formule",
+          texte: "Ratio = gain visé ÷ perte acceptée",
+          legende: "4,40 ÷ 2,20 = 2",
+        },
       },
       {
         duree: 12,
-        texte: "Chaque ratio a son seuil de rentabilité. Avec un ratio de 1, il faut gagner plus d'une fois sur deux. Avec un ratio de 2, plus d'une fois sur trois.",
+        texte:
+          "Chaque ratio a son seuil de rentabilité. Avec un ratio de 1, il faut gagner plus d'une fois sur deux. Avec un ratio de 2, plus d'une fois sur trois.",
         visuel: { type: "figure", scene: "seuil-rentabilite", etape: 1 },
       },
       {
         duree: 7,
-        texte: "Au-dessus de la courbe, la méthode gagne, avant frais. En dessous, elle perd, même avec de beaux trades.",
+        texte:
+          "Au-dessus de la courbe, la méthode gagne, avant frais. En dessous, elle perd, même avec de beaux trades.",
         visuel: { type: "figure", scene: "seuil-rentabilite", etape: 2 },
       },
       {
         duree: 11,
-        texte: "L'espérance combine les deux. Avec 40 % de réussite, des gains de 2R et des pertes de 1R : 0,8 moins 0,6, soit plus 0,2R par trade.",
+        texte:
+          "L'espérance combine les deux. Avec 40 % de réussite, des gains de 2R et des pertes de 1R : 0,8 moins 0,6, soit plus 0,2R par trade.",
         visuel: {
           type: "formule",
           texte: "0,4 × 2R − 0,6 × 1R = +0,2R",
@@ -53,13 +62,19 @@ export const chapitre: Chapitre = {
       },
       {
         duree: 9,
-        texte: "Mais une espérance positive ne protège pas des séries de pertes. Elle ne se révèle que sur un grand nombre de trades.",
+        texte:
+          "Mais une espérance positive ne protège pas des séries de pertes. Elle ne se révèle que sur un grand nombre de trades.",
         visuel: { type: "figure", scene: "series-resultats", etape: 2 },
       },
       {
         duree: 9,
-        texte: "Retiens : une méthode se juge sur des dizaines de trades, frais compris. Jamais sur trois trades, ni sur une capture d'écran.",
-        visuel: { type: "titre", titre: "Mesurer, pas supposer", sousTitre: "Des dizaines de trades, frais compris" },
+        texte:
+          "Retiens : une méthode se juge sur des dizaines de trades, frais compris. Jamais sur trois trades, ni sur une capture d'écran.",
+        visuel: {
+          type: "titre",
+          titre: "Mesurer, pas supposer",
+          sousTitre: "Des dizaines de trades, frais compris",
+        },
       },
     ],
   },
@@ -73,7 +88,11 @@ export const chapitre: Chapitre = {
           texte:
             "Le [[ratio-rendement-risque|ratio rendement/risque]] (R:R) compare le gain visé à la perte acceptée sur un trade. Entrée à 50,00 €, stop à 47,80 €, objectif à 54,40 € : 4,40 € visés pour 2,20 € risqués, soit un ratio de 2. On dit aussi que l'objectif est à 2R, en prenant le risque comme [[r-unite|unité R]].",
         },
-        { type: "formule", fiabilite: "calcul", texte: "Ratio = |objectif − entrée| ÷ |entrée − stop|" },
+        {
+          type: "formule",
+          fiabilite: "calcul",
+          texte: "Ratio = |objectif − entrée| ÷ |entrée − stop|",
+        },
       ],
     },
     {
@@ -106,12 +125,19 @@ export const chapitre: Chapitre = {
         {
           type: "formule",
           fiabilite: "calcul",
-          texte: "Espérance par trade = taux de réussite × gain moyen − taux d'échec × perte moyenne",
+          texte:
+            "Espérance par trade = taux de réussite × gain moyen − taux d'échec × perte moyenne",
         },
         {
           type: "tableau",
           fiabilite: "calcul",
-          entetes: ["Méthode", "Réussite", "Gain moyen", "Perte moyenne", "Espérance par trade"],
+          entetes: [
+            "Méthode",
+            "Réussite",
+            "Gain moyen",
+            "Perte moyenne",
+            "Espérance par trade",
+          ],
           lignes: [
             ["A", "60 %", "1R", "1R", "+0,20R"],
             ["B", "40 %", "2R", "1R", "+0,20R"],
@@ -153,17 +179,27 @@ export const chapitre: Chapitre = {
     },
   ],
   illustrations: [
-    { type: "figure", scene: "seuil-rentabilite", legende: "La courbe donne le taux de réussite minimal pour chaque ratio, avant frais." },
+    {
+      type: "figure",
+      scene: "seuil-rentabilite",
+      legende:
+        "La courbe donne le taux de réussite minimal pour chaque ratio, avant frais.",
+    },
     {
       type: "figure",
       scene: "series-resultats",
-      legende: "Une méthode à espérance légèrement positive (+0,05R par trade) : +1R sur vingt trades, après six pertes d'affilée.",
+      legende:
+        "Une méthode à espérance légèrement positive (+0,05R par trade) : +1R sur vingt trades, après six pertes d'affilée.",
     },
   ],
   exemple: {
     titre: "Juger une méthode sur vingt trades",
     blocs: [
-      { type: "p", texte: "Voici vingt trades d'une méthode qui vise 2R et risque 1R : 7 gagnants, 13 perdants." },
+      {
+        type: "p",
+        texte:
+          "Voici vingt trades d'une méthode qui vise 2R et risque 1R : 7 gagnants, 13 perdants.",
+      },
       {
         type: "liste",
         fiabilite: "calcul",
@@ -184,14 +220,24 @@ export const chapitre: Chapitre = {
   erreurs: [
     {
       titre: "Juger une méthode sur son taux de réussite seul",
-      texte: "80 % de trades gagnants peuvent perdre de l'argent si les pertes sont bien plus grandes que les gains.",
+      texte:
+        "80 % de trades gagnants peuvent perdre de l'argent si les pertes sont bien plus grandes que les gains.",
     },
     {
       titre: "Viser des ratios énormes",
-      texte: "Un objectif lointain est rarement atteint. Le ratio ne vaut que combiné au taux de réussite réellement mesuré.",
+      texte:
+        "Un objectif lointain est rarement atteint. Le ratio ne vaut que combiné au taux de réussite réellement mesuré.",
     },
-    { titre: "Calculer l'espérance sans les frais", texte: "Les frais peuvent faire passer une méthode gagnante en perte. Calcule toujours frais compris." },
-    { titre: "Conclure trop tôt", texte: "Quelques trades ne prouvent rien, dans un sens comme dans l'autre." },
+    {
+      titre: "Calculer l'espérance sans les frais",
+      texte:
+        "Les frais peuvent faire passer une méthode gagnante en perte. Calcule toujours frais compris.",
+    },
+    {
+      titre: "Conclure trop tôt",
+      texte:
+        "Quelques trades ne prouvent rien, dans un sens comme dans l'autre.",
+    },
   ],
   resume: [
     "Ratio = gain visé ÷ perte acceptée ; on l'exprime aussi en R.",
@@ -200,11 +246,39 @@ export const chapitre: Chapitre = {
     "Taux de réussite et ratio ne se lisent jamais séparément.",
     "Une espérance se mesure sur un grand nombre de trades ; les séries de pertes restent normales.",
   ],
+  exercices: [
+    {
+      id: "pp-14-e1",
+      type: "calcul",
+      consigne:
+        "Entrée à 100,00, stop à 98,00, objectif à 106,00. Quel est le ratio rendement/risque ?",
+      reponse: 3,
+      tolerance: 0.05,
+      aide: "Ratio = |objectif − entrée| ÷ |entrée − stop|.",
+      corrige:
+        "Gain visé : 106 − 100 = 6. Risque : 100 − 98 = 2. Ratio : 6 ÷ 2 = 3. Sans frais, il suffit de gagner plus d'un trade sur quatre (1 ÷ (1 + 3) = 25 %) pour ne pas perdre.",
+      concepts: ["rendement-risque"],
+    },
+    {
+      id: "pp-14-e2",
+      type: "calcul",
+      consigne:
+        "Ta méthode gagne 40 % du temps, avec un gain moyen de 150 € et une perte moyenne de 100 €. Quelle est son espérance par trade, avant frais ?",
+      reponse: 0,
+      tolerance: 0,
+      unite: "€",
+      aide: "Espérance = taux de réussite × gain moyen − taux d'échec × perte moyenne.",
+      corrige:
+        "0,40 × 150 − 0,60 × 100 = 60 − 60 = 0 €. L'espérance est nulle : avec les frais, la méthode perdrait de l'argent sur la durée. Il faudrait un meilleur taux de réussite ou un meilleur ratio.",
+      concepts: ["esperance", "taux-reussite"],
+    },
+  ],
   quiz: [
     {
       id: "c14-q1",
       type: "unique",
-      enonce: "Entrée à 100 €, stop à 98 €, objectif à 106 €. Quel est le ratio rendement/risque ?",
+      enonce:
+        "Entrée à 100 €, stop à 98 €, objectif à 106 €. Quel est le ratio rendement/risque ?",
       choix: ["2", "3", "4", "6"],
       bonne: 1,
       explication: "Gain visé 6 €, risque 2 € : 6 ÷ 2 = 3.",
@@ -213,7 +287,8 @@ export const chapitre: Chapitre = {
     {
       id: "c14-q2",
       type: "unique",
-      enonce: "Avec un ratio de 3, quel est le taux de réussite minimal pour ne pas perdre, sans frais ?",
+      enonce:
+        "Avec un ratio de 3, quel est le taux de réussite minimal pour ne pas perdre, sans frais ?",
       choix: ["20 %", "25 %", "33 %", "75 %"],
       bonne: 1,
       explication: "1 ÷ (1 + 3) = 25 %.",
@@ -222,7 +297,8 @@ export const chapitre: Chapitre = {
     {
       id: "c14-q3",
       type: "unique",
-      enonce: "50 % de réussite, gains moyens de 1,5R, pertes moyennes de 1R. Quelle est l'espérance par trade ?",
+      enonce:
+        "50 % de réussite, gains moyens de 1,5R, pertes moyennes de 1R. Quelle est l'espérance par trade ?",
       choix: ["+0,25R", "+0,5R", "+0,75R", "−0,25R"],
       bonne: 0,
       explication: "0,5 × 1,5 − 0,5 × 1 = 0,75 − 0,5 = +0,25R.",
@@ -233,16 +309,23 @@ export const chapitre: Chapitre = {
       type: "vraifaux",
       enonce: "Une méthode qui gagne 80 % du temps est forcément rentable.",
       reponse: false,
-      explication: "Si ses pertes sont bien plus grandes que ses gains, elle perd de l'argent malgré son taux de réussite.",
+      explication:
+        "Si ses pertes sont bien plus grandes que ses gains, elle perd de l'argent malgré son taux de réussite.",
       concepts: ["taux-reussite", "esperance"],
     },
     {
       id: "c14-q5",
       type: "unique",
       enonce: "30 % de réussite, gains de 2R, pertes de 1R. La méthode est :",
-      choix: ["gagnante", "perdante", "à l'équilibre", "impossible à juger sans connaître le capital"],
+      choix: [
+        "gagnante",
+        "perdante",
+        "à l'équilibre",
+        "impossible à juger sans connaître le capital",
+      ],
       bonne: 1,
-      explication: "0,3 × 2 − 0,7 × 1 = −0,1R par trade : elle perd de l'argent.",
+      explication:
+        "0,3 × 2 − 0,7 × 1 = −0,1R par trade : elle perd de l'argent.",
       concepts: ["esperance", "rendement-risque"],
     },
     {
@@ -256,7 +339,8 @@ export const chapitre: Chapitre = {
         "Le taux de réussite, le gain moyen et la perte moyenne",
       ],
       bonnes: [0, 1, 3],
-      explication: "Trois trades ne prouvent rien ; il faut un échantillon important et des chiffres frais compris.",
+      explication:
+        "Trois trades ne prouvent rien ; il faut un échantillon important et des chiffres frais compris.",
       concepts: ["esperance"],
     },
   ],

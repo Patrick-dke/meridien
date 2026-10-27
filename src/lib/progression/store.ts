@@ -148,6 +148,14 @@ export function importer(texte: string): boolean {
   return true;
 }
 
+/** Écoute les changements de progression (synchronisation avec le compte). */
+export const ecouterProgression = sAbonner;
+
+/** Remplace la progression par un état déjà validé (fusion avec le compte). */
+export function remplacerEtat(etat: Etat) {
+  enregistrer(etat);
+}
+
 export function effacerTout() {
   try {
     window.localStorage.removeItem(CLE);

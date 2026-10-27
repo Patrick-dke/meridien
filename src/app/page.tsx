@@ -3,6 +3,9 @@ import { BougieVivante } from "@/components/accueil/BougieVivante";
 import { ChampMarche } from "@/components/accueil/ChampMarche";
 import { CarteEnsemble } from "@/components/catalogue/CarteEnsemble";
 import { CarteParcours } from "@/components/catalogue/Parcours";
+import { Contact } from "@/components/accueil/Contact";
+import { CarteModule } from "@/components/offre/Offre";
+import { modulesPresentes } from "@/content/presentation";
 import { BoutonReprendre } from "@/components/progression/Indicateurs";
 import { IconeBouclier, IconeBoussole, IconeCible, IconeEclair, IconeGraphique, IconeLivre, IconeOeil, IconeOutils } from "@/components/ui/Icones";
 import { academies, fiche, parcours, titresChapitres } from "@/content";
@@ -143,6 +146,62 @@ export default function Accueil() {
           </ul>
         </section>
 
+        <section aria-labelledby="titre-formations" className="hors-ecran py-12">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-cyan">Les formations</p>
+              <h2 id="titre-formations" className="mt-1 text-3xl font-semibold text-ink">
+                Commence gratuitement, <span className="accent">avance à ton rythme</span>
+              </h2>
+              <p className="mt-2 max-w-2xl text-ink-2">{typographie("« Premiers pas » est gratuit. Les modules suivants se débloquent un par un, par Orange Money ou MTN MoMo.")}</p>
+            </div>
+            <Link href="/formations/" className="btn btn-discret">
+              Toutes les formations
+            </Link>
+          </div>
+          <ul className="rangee -mx-4 mt-6 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+            {modulesPresentes.slice(0, 3).map((m, i) => (
+              <li key={m.id} className="revele w-[82%] shrink-0 sm:w-auto" style={{ ["--i" as string]: i }}>
+                <CarteModule m={m} />
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-labelledby="titre-outils-inclus" className="hors-ecran py-12">
+          <div className="carte relative overflow-hidden p-6 sm:p-10">
+            <div className="grille-ciel pointer-events-none absolute inset-0" aria-hidden="true" />
+            <div className="relative max-w-2xl">
+              <p className="text-sm font-medium text-cyan">Outils MetaTrader 5</p>
+              <h2 id="titre-outils-inclus" className="mt-1 text-3xl font-semibold text-ink">
+                Votre formation terminée, accédez à nos outils de trading inclus.
+              </h2>
+              <p className="mt-3 text-ink-2">
+                {typographie(
+                  "Un indicateur et un Expert Advisor pour MetaTrader 5, remis aux apprenants qui ont terminé le parcours requis et réussi ses évaluations. Ils aident à appliquer la méthode enseignée : ils ne garantissent aucun résultat, se testent d'abord sur un compte de démonstration, et le risque de perte reste entier.",
+                )}
+              </p>
+              <ol className="mt-5 grid gap-2 text-sm text-ink-2 sm:grid-cols-3">
+                <li className="rounded-xl border border-line bg-surface/60 p-3">
+                  <span className="font-mono text-xs text-ink-3">01</span>
+                  <span className="block text-ink">Crée ton compte</span>
+                </li>
+                <li className="rounded-xl border border-line bg-surface/60 p-3">
+                  <span className="font-mono text-xs text-ink-3">02</span>
+                  <span className="block text-ink">Termine le parcours et réussis les quiz</span>
+                </li>
+                <li className="rounded-xl border border-line bg-surface/60 p-3">
+                  <span className="font-mono text-xs text-ink-3">03</span>
+                  <span className="block text-ink">Demande l&apos;accès depuis ton espace</span>
+                </li>
+              </ol>
+              <Link href="/compte/#outils" className="btn btn-primaire mt-6">
+                Voir mes conditions d&apos;accès
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <section aria-labelledby="titre-principes" className="hors-ecran py-12">
           <p className="text-sm font-medium text-cyan">Nos principes</p>
           <h2 id="titre-principes" className="mt-1 text-3xl font-semibold text-ink">
@@ -164,6 +223,14 @@ export default function Accueil() {
               La méthode et les badges de fiabilité en détail
             </Link>
           </p>
+        </section>
+
+        <section id="contact" aria-labelledby="titre-contact" className="hors-ecran scroll-mt-20 py-12">
+          <p className="text-sm font-medium text-cyan">Contact</p>
+          <h2 id="titre-contact" className="mb-6 mt-1 text-3xl font-semibold text-ink">
+            Une question ? Écris-nous
+          </h2>
+          <Contact />
         </section>
       </div>
     </div>

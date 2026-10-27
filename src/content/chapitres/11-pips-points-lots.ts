@@ -3,7 +3,8 @@ import type { Chapitre } from "../schema";
 export const chapitre: Chapitre = {
   slug: "pips-points-lots",
   titre: "Pips, points et lots",
-  sousTitre: "Mesurer un mouvement et la taille d'une position, puis les traduire en argent",
+  sousTitre:
+    "Mesurer un mouvement et la taille d'une position, puis les traduire en argent",
   academie: "fondamentaux",
   module: "outils-du-trader",
   niveau: 2,
@@ -24,38 +25,68 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 7,
-        texte: "Pips, points et lots : trois mots pour mesurer les mouvements de prix et la taille de tes positions.",
+        texte:
+          "Pips, points et lots : trois mots pour mesurer les mouvements de prix et la taille de tes positions.",
         visuel: { type: "titre", titre: "Pips, points et lots" },
       },
       {
         duree: 7,
-        texte: "Sur EUR/USD, le prix est coté avec quatre décimales. Le pip, c'est la quatrième : 0,0001.",
+        texte:
+          "Sur EUR/USD, le prix est coté avec quatre décimales. Le pip, c'est la quatrième : 0,0001.",
         visuel: { type: "figure", scene: "mouvement-20-pips", etape: 0 },
       },
       {
         duree: 10,
-        texte: "Si EUR/USD passe de 1,0850 à 1,0870, il a monté de 0,0020 : 20 pips. Pour les paires contre le yen, le pip vaut 0,01.",
+        texte:
+          "Si EUR/USD passe de 1,0850 à 1,0870, il a monté de 0,0020 : 20 pips. Pour les paires contre le yen, le pip vaut 0,01.",
         visuel: { type: "figure", scene: "mouvement-20-pips", etape: 1 },
       },
       {
         duree: 8,
-        texte: "La taille d'une position se compte en lots. Un lot standard, c'est 100 000 unités de la devise de base.",
-        visuel: { type: "points", titre: "Les lots", items: ["1 lot = 100 000 unités", "Mini-lot = 10 000", "Micro-lot = 1 000"] },
+        texte:
+          "La taille d'une position se compte en lots. Un lot standard, c'est 100 000 unités de la devise de base.",
+        visuel: {
+          type: "points",
+          titre: "Les lots",
+          items: [
+            "1 lot = 100 000 unités",
+            "Mini-lot = 10 000",
+            "Micro-lot = 1 000",
+          ],
+        },
       },
       {
         duree: 8,
-        texte: "Sur EUR/USD, un pip pour un lot vaut 0,0001 fois 100 000, soit 10 dollars. Pour un micro-lot, 10 centimes.",
-        visuel: { type: "formule", texte: "0,0001 × 100 000 = 10 $", legende: "Valeur d'un pip pour 1 lot de EUR/USD" },
+        texte:
+          "Sur EUR/USD, un pip pour un lot vaut 0,0001 fois 100 000, soit 10 dollars. Pour un micro-lot, 10 centimes.",
+        visuel: {
+          type: "formule",
+          texte: "0,0001 × 100 000 = 10 $",
+          legende: "Valeur d'un pip pour 1 lot de EUR/USD",
+        },
       },
       {
         duree: 7,
-        texte: "Notre mouvement de 20 pips vaut donc 200 dollars avec un lot, et 2 dollars avec un micro-lot.",
-        visuel: { type: "formule", texte: "20 pips × 10 $ = 200 $", legende: "Avec 1 lot ; avec un micro-lot : 20 × 0,10 $ = 2 $" },
+        texte:
+          "Notre mouvement de 20 pips vaut donc 200 dollars avec un lot, et 2 dollars avec un micro-lot.",
+        visuel: {
+          type: "formule",
+          texte: "20 pips × 10 $ = 200 $",
+          legende: "Avec 1 lot ; avec un micro-lot : 20 × 0,10 $ = 2 $",
+        },
       },
       {
         duree: 10,
-        texte: "Sur les indices et les matières premières, on parle de points. Leur valeur en argent dépend du contrat : lis toujours la fiche de l'instrument.",
-        visuel: { type: "points", titre: "Les points", items: ["Indices, actions, matières premières", "Valeur fixée par le contrat"] },
+        texte:
+          "Sur les indices et les matières premières, on parle de points. Leur valeur en argent dépend du contrat : lis toujours la fiche de l'instrument.",
+        visuel: {
+          type: "points",
+          titre: "Les points",
+          items: [
+            "Indices, actions, matières premières",
+            "Valeur fixée par le contrat",
+          ],
+        },
       },
     ],
   },
@@ -73,7 +104,8 @@ export const chapitre: Chapitre = {
           type: "formule",
           fiabilite: "calcul",
           texte: "Nombre de pips = écart de prix ÷ taille du pip",
-          legende: "EUR/USD de 1,0850 à 1,0870 : 0,0020 ÷ 0,0001 = 20 pips. USD/JPY de 150,20 à 150,65 : 0,45 ÷ 0,01 = 45 pips.",
+          legende:
+            "EUR/USD de 1,0850 à 1,0870 : 0,0020 ÷ 0,0001 = 20 pips. USD/JPY de 150,20 à 150,65 : 0,45 ÷ 0,01 = 45 pips.",
         },
         {
           type: "p",
@@ -105,7 +137,11 @@ export const chapitre: Chapitre = {
         {
           type: "tableau",
           fiabilite: "calcul",
-          entetes: ["Taille", "Unités de devise de base", "Valeur d'un pip sur EUR/USD (compte en $)"],
+          entetes: [
+            "Taille",
+            "Unités de devise de base",
+            "Valeur d'un pip sur EUR/USD (compte en $)",
+          ],
           lignes: [
             ["1 lot standard", "100 000", "10 $"],
             ["Mini-lot (0,1)", "10 000", "1 $"],
@@ -127,7 +163,8 @@ export const chapitre: Chapitre = {
           type: "formule",
           fiabilite: "calcul",
           texte: "Valeur d'un pip = taille du pip × nombre d'unités",
-          legende: "Elle s'exprime dans la devise de cotation : le dollar pour EUR/USD, le yen pour USD/JPY.",
+          legende:
+            "Elle s'exprime dans la devise de cotation : le dollar pour EUR/USD, le yen pour USD/JPY.",
         },
         {
           type: "p",
@@ -139,11 +176,21 @@ export const chapitre: Chapitre = {
       ],
     },
   ],
-  illustrations: [{ type: "figure", scene: "mouvement-20-pips", legende: "De 1,0850 à 1,0870 : 0,0020, soit 20 pips." }],
+  illustrations: [
+    {
+      type: "figure",
+      scene: "mouvement-20-pips",
+      legende: "De 1,0850 à 1,0870 : 0,0020, soit 20 pips.",
+    },
+  ],
   exemple: {
     titre: "Que vaut un mouvement ?",
     blocs: [
-      { type: "p", texte: "Tu as acheté 0,5 lot de EUR/USD à 1,0850 et le prix monte à 1,0870. Ton compte est en dollars." },
+      {
+        type: "p",
+        texte:
+          "Tu as acheté 0,5 lot de EUR/USD à 1,0850 et le prix monte à 1,0870. Ton compte est en dollars.",
+      },
       {
         type: "liste",
         ordonnee: true,
@@ -162,13 +209,21 @@ export const chapitre: Chapitre = {
     ],
   },
   erreurs: [
-    { titre: "Confondre pips et pipettes", texte: "Sur une cotation à cinq décimales, le dernier chiffre est une pipette, un dixième de pip." },
+    {
+      titre: "Confondre pips et pipettes",
+      texte:
+        "Sur une cotation à cinq décimales, le dernier chiffre est une pipette, un dixième de pip.",
+    },
     {
       titre: "Appliquer 10 $ par pip à toutes les paires",
       texte:
         "C'est vrai pour un lot sur les paires cotées en dollars (EUR/USD, GBP/USD) avec un compte en dollars. Pour les autres, il faut calculer et convertir.",
     },
-    { titre: "Supposer la valeur d'un point", texte: "La valeur d'un point dépend du contrat. Une erreur d'un facteur 10 est vite arrivée." },
+    {
+      titre: "Supposer la valeur d'un point",
+      texte:
+        "La valeur d'un point dépend du contrat. Une erreur d'un facteur 10 est vite arrivée.",
+    },
   ],
   resume: [
     "Un pip vaut 0,0001 pour la plupart des paires, 0,01 pour les paires contre le yen.",
@@ -177,14 +232,43 @@ export const chapitre: Chapitre = {
     "Sur EUR/USD avec un compte en dollars : 10 $ par pip pour un lot.",
     "La valeur d'un point d'indice dépend du contrat : lis la fiche de l'instrument.",
   ],
+  exercices: [
+    {
+      id: "pp-11-e1",
+      type: "calcul",
+      consigne:
+        "EUR/USD passe de 1,0912 à 1,0947. De combien de pips a-t-il monté ?",
+      reponse: 35,
+      tolerance: 0,
+      unite: "pips",
+      aide: "Sur EUR/USD, un pip vaut 0,0001.",
+      corrige: "Écart : 1,0947 − 1,0912 = 0,0035 ; 0,0035 ÷ 0,0001 = 35 pips.",
+      concepts: ["pip"],
+    },
+    {
+      id: "pp-11-e2",
+      type: "calcul",
+      consigne:
+        "Combien vaut un pip pour une position de 0,5 lot standard sur EUR/USD, sur un compte en dollars ?",
+      reponse: 5,
+      tolerance: 0.05,
+      unite: "$",
+      aide: "Un lot standard = 100 000 unités. Valeur d'un pip = taille du pip × nombre d'unités.",
+      corrige:
+        "0,5 lot = 50 000 unités ; 0,0001 × 50 000 = 5 $ par pip. Un mouvement de 35 pips vaudrait 175 $.",
+      concepts: ["valeur-pip", "lot"],
+    },
+  ],
   quiz: [
     {
       id: "c11-q1",
       type: "unique",
-      enonce: "GBP/USD passe de 1,2640 à 1,2615. De combien de pips a-t-il bougé ?",
+      enonce:
+        "GBP/USD passe de 1,2640 à 1,2615. De combien de pips a-t-il bougé ?",
       choix: ["2,5 pips", "25 pips", "250 pips", "0,25 pip"],
       bonne: 1,
-      explication: "1,2640 − 1,2615 = 0,0025 ; divisé par 0,0001, cela fait 25 pips.",
+      explication:
+        "1,2640 − 1,2615 = 0,0025 ; divisé par 0,0001, cela fait 25 pips.",
       concepts: ["pip"],
     },
     {
@@ -193,13 +277,15 @@ export const chapitre: Chapitre = {
       enonce: "USD/JPY passe de 149,80 à 150,30. Combien de pips ?",
       choix: ["5 pips", "50 pips", "500 pips", "0,5 pip"],
       bonne: 1,
-      explication: "Pour les paires en yen, le pip vaut 0,01 : 0,50 ÷ 0,01 = 50 pips.",
+      explication:
+        "Pour les paires en yen, le pip vaut 0,01 : 0,50 ÷ 0,01 = 50 pips.",
       concepts: ["pip"],
     },
     {
       id: "c11-q3",
       type: "unique",
-      enonce: "Quelle est la valeur d'un pip pour 0,2 lot de EUR/USD, avec un compte en dollars ?",
+      enonce:
+        "Quelle est la valeur d'un pip pour 0,2 lot de EUR/USD, avec un compte en dollars ?",
       choix: ["0,20 $", "2 $", "20 $", "200 $"],
       bonne: 1,
       explication: "0,2 lot = 20 000 unités ; 0,0001 × 20 000 = 2 $ par pip.",
@@ -208,7 +294,8 @@ export const chapitre: Chapitre = {
     {
       id: "c11-q4",
       type: "unique",
-      enonce: "Tu as 0,5 lot de EUR/USD (compte en dollars) et le prix baisse de 30 pips contre toi. Quel est le résultat ?",
+      enonce:
+        "Tu as 0,5 lot de EUR/USD (compte en dollars) et le prix baisse de 30 pips contre toi. Quel est le résultat ?",
       choix: ["−15 $", "−150 $", "−300 $", "−1 500 $"],
       bonne: 1,
       explication: "0,5 lot vaut 5 $ par pip ; 30 pips × 5 $ = 150 $ de perte.",
@@ -229,9 +316,11 @@ export const chapitre: Chapitre = {
     {
       id: "c11-q6",
       type: "vraifaux",
-      enonce: "La valeur d'un point est la même pour tous les indices et tous les courtiers.",
+      enonce:
+        "La valeur d'un point est la même pour tous les indices et tous les courtiers.",
       reponse: false,
-      explication: "Elle dépend de la taille du contrat, propre à chaque instrument et à chaque courtier.",
+      explication:
+        "Elle dépend de la taille du contrat, propre à chaque instrument et à chaque courtier.",
       concepts: ["pip"],
     },
   ],

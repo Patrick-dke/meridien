@@ -3,7 +3,8 @@ import type { Chapitre } from "../schema";
 export const chapitre: Chapitre = {
   slug: "quest-ce-que-le-trading",
   titre: "Qu'est-ce que le trading, et ce qu'il n'est pas",
-  sousTitre: "Acheter, vendre, et pourquoi la plupart des débutants perdent de l'argent",
+  sousTitre:
+    "Acheter, vendre, et pourquoi la plupart des débutants perdent de l'argent",
   academie: "fondamentaux",
   module: "introduction",
   niveau: 1,
@@ -24,8 +25,13 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 9,
-        texte: "Le trading, c'est acheter et vendre des actifs financiers pour profiter de leurs variations de prix. Rien de plus, rien de moins.",
-        visuel: { type: "titre", titre: "Qu'est-ce que le trading ?", sousTitre: "Acheter, vendre, et accepter un risque" },
+        texte:
+          "Le trading, c'est acheter et vendre des actifs financiers pour profiter de leurs variations de prix. Rien de plus, rien de moins.",
+        visuel: {
+          type: "titre",
+          titre: "Qu'est-ce que le trading ?",
+          sousTitre: "Acheter, vendre, et accepter un risque",
+        },
       },
       {
         duree: 5,
@@ -34,32 +40,45 @@ export const chapitre: Chapitre = {
       },
       {
         duree: 5,
-        texte: "Quelques jours plus tard, elle vaut 53,30 euros. Tu la revends.",
+        texte:
+          "Quelques jours plus tard, elle vaut 53,30 euros. Tu la revends.",
         visuel: { type: "figure", scene: "trading-aller-retour", etape: 2 },
       },
       {
         duree: 6,
-        texte: "Ton gain, c'est l'écart entre les deux prix : 3,30 euros par action, avant les frais.",
+        texte:
+          "Ton gain, c'est l'écart entre les deux prix : 3,30 euros par action, avant les frais.",
         visuel: { type: "figure", scene: "trading-aller-retour", etape: 3 },
       },
       {
         duree: 9,
-        texte: "On peut aussi gagner quand le prix baisse : on vend d'abord, on rachète ensuite, moins cher. C'est une position vendeuse.",
+        texte:
+          "On peut aussi gagner quand le prix baisse : on vend d'abord, on rachète ensuite, moins cher. C'est une position vendeuse.",
         visuel: { type: "figure", scene: "trading-vente-decouvert", etape: 3 },
       },
       {
         duree: 10,
-        texte: "Mais chaque trade peut aussi perdre. Le prix peut aller dans le mauvais sens, et les frais s'ajoutent à chaque opération.",
+        texte:
+          "Mais chaque trade peut aussi perdre. Le prix peut aller dans le mauvais sens, et les frais s'ajoutent à chaque opération.",
         visuel: {
           type: "points",
           titre: "Ce que le trading n'est pas",
-          items: ["Un revenu garanti", "Un jeu sans risque", "Une prédiction de l'avenir"],
+          items: [
+            "Un revenu garanti",
+            "Un jeu sans risque",
+            "Une prédiction de l'avenir",
+          ],
         },
       },
       {
         duree: 9,
-        texte: "La plupart des débutants perdent de l'argent. Ici, tu apprendras d'abord à mesurer et à limiter ce risque, en argent fictif.",
-        visuel: { type: "titre", titre: "D'abord le risque", sousTitre: "Ensuite, éventuellement, le gain" },
+        texte:
+          "La plupart des débutants perdent de l'argent. Ici, tu apprendras d'abord à mesurer et à limiter ce risque, en argent fictif.",
+        visuel: {
+          type: "titre",
+          titre: "D'abord le risque",
+          sousTitre: "Ensuite, éventuellement, le gain",
+        },
       },
     ],
   },
@@ -76,8 +95,10 @@ export const chapitre: Chapitre = {
         {
           type: "formule",
           fiabilite: "calcul",
-          texte: "Résultat = (prix de sortie − prix d'entrée) × quantité − frais",
-          legende: "Pour une position acheteuse. Pour une position vendeuse, on inverse : (prix d'entrée − prix de sortie).",
+          texte:
+            "Résultat = (prix de sortie − prix d'entrée) × quantité − frais",
+          legende:
+            "Pour une position acheteuse. Pour une position vendeuse, on inverse : (prix d'entrée − prix de sortie).",
         },
         {
           type: "p",
@@ -144,12 +165,14 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "trading-aller-retour",
-      legende: "Achat à 50,00 €, revente à 53,30 € : 3,30 € de gain par action, avant frais.",
+      legende:
+        "Achat à 50,00 €, revente à 53,30 € : 3,30 € de gain par action, avant frais.",
     },
     {
       type: "figure",
       scene: "trading-vente-decouvert",
-      legende: "Position vendeuse : vente à 60,50 €, rachat à 57,50 €. Le prix a baissé de 3,00 €, c'est le gain par unité.",
+      legende:
+        "Position vendeuse : vente à 60,50 €, rachat à 57,50 €. Le prix a baissé de 3,00 €, c'est le gain par unité.",
     },
   ],
   exemple: {
@@ -165,7 +188,8 @@ export const chapitre: Chapitre = {
           ["Vente", "60,50 €", "57,50 €", "10", "+30,00 €"],
           ["Vente", "60,50 €", "62,00 €", "10", "−15,00 €"],
         ],
-        legende: "Résultats avant frais. Pour une vente, l'entrée est le prix de vente et la sortie le prix de rachat.",
+        legende:
+          "Résultats avant frais. Pour une vente, l'entrée est le prix de vente et la sortie le prix de rachat.",
       },
       {
         type: "p",
@@ -198,11 +222,40 @@ export const chapitre: Chapitre = {
     "Aucune méthode ne gagne à chaque fois ; la majorité des particuliers perdent de l'argent sur les CFD.",
     "Avant tout gain, on apprend à mesurer et à limiter le risque.",
   ],
+  exercices: [
+    {
+      id: "pp-01-e1",
+      type: "calcul",
+      consigne:
+        "Tu achètes 40 actions à 25,00 € et tu les revends à 26,50 €. Les frais totaux (entrée et sortie) s'élèvent à 4,00 €. Quel est ton résultat net, en euros ?",
+      reponse: 56,
+      tolerance: 0.5,
+      unite: "€",
+      aide: "Résultat = (prix de sortie − prix d'entrée) × quantité − frais.",
+      corrige:
+        "(26,50 − 25,00) × 40 = 1,50 × 40 = 60,00 € de gain brut. On retire les 4,00 € de frais : 56,00 € de résultat net.",
+      concepts: ["trading"],
+    },
+    {
+      id: "pp-01-e2",
+      type: "calcul",
+      consigne:
+        "Tu vends à découvert 100 unités à 12,40 €, puis tu les rachètes à 12,90 €. Sans frais, quel est ton résultat, en euros ? (Un résultat négatif s'écrit avec un signe moins.)",
+      reponse: -50,
+      tolerance: 0.5,
+      unite: "€",
+      aide: "Pour une position vendeuse, le résultat est (prix de vente − prix de rachat) × quantité.",
+      corrige:
+        "(12,40 − 12,90) × 100 = −0,50 × 100 = −50,00 €. Le prix a monté alors que tu pariais sur la baisse : la position vendeuse perd.",
+      concepts: ["position-longue-courte", "risque-de-perte"],
+    },
+  ],
   quiz: [
     {
       id: "c01-q1",
       type: "unique",
-      enonce: "Tu achètes 20 actions à 40 € et tu les revends à 43 €. Quel est le résultat brut ?",
+      enonce:
+        "Tu achètes 20 actions à 40 € et tu les revends à 43 €. Quel est le résultat brut ?",
       choix: ["+3 €", "+60 €", "+43 €", "+86 €"],
       bonne: 1,
       explication: "(43 − 40) × 20 = 60 €, avant frais.",
@@ -213,16 +266,19 @@ export const chapitre: Chapitre = {
       type: "vraifaux",
       enonce: "Une position vendeuse gagne de l'argent quand le prix baisse.",
       reponse: true,
-      explication: "On vend d'abord, on rachète ensuite moins cher : l'écart est le gain.",
+      explication:
+        "On vend d'abord, on rachète ensuite moins cher : l'écart est le gain.",
       concepts: ["position-longue-courte"],
     },
     {
       id: "c01-q3",
       type: "unique",
-      enonce: "Tu vends 10 unités à 60,50 €, puis tu les rachètes à 62,00 €. Quel est le résultat brut ?",
+      enonce:
+        "Tu vends 10 unités à 60,50 €, puis tu les rachètes à 62,00 €. Quel est le résultat brut ?",
       choix: ["+15 €", "−15 €", "+1,50 €", "−150 €"],
       bonne: 1,
-      explication: "Pour une vente : (60,50 − 62,00) × 10 = −15 €. Le prix a monté, la position vendeuse perd.",
+      explication:
+        "Pour une vente : (60,50 − 62,00) × 10 = −15 €. Le prix a monté, la position vendeuse perd.",
       concepts: ["position-longue-courte", "trading"],
     },
     {
@@ -243,7 +299,8 @@ export const chapitre: Chapitre = {
     {
       id: "c01-q5",
       type: "vraifaux",
-      enonce: "La perte maximale d'une position vendeuse est limitée au prix de vente.",
+      enonce:
+        "La perte maximale d'une position vendeuse est limitée au prix de vente.",
       reponse: false,
       explication:
         "Le prix peut monter sans limite théorique : la perte d'une position vendeuse n'a pas de plafond, d'où l'importance du stop loss.",
@@ -260,7 +317,8 @@ export const chapitre: Chapitre = {
         "Repérer les actions qui vont monter",
       ],
       bonne: 2,
-      explication: "La plateforme est un environnement d'apprentissage, ni un service de signaux ni une promesse de gains.",
+      explication:
+        "La plateforme est un environnement d'apprentissage, ni un service de signaux ni une promesse de gains.",
       concepts: ["trading"],
     },
   ],

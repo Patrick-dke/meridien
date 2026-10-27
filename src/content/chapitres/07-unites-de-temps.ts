@@ -24,8 +24,13 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 8,
-        texte: "Chaque bougie représente une durée : c'est l'unité de temps. Une minute, quinze minutes, une heure, un jour, une semaine…",
-        visuel: { type: "titre", titre: "L'unité de temps", sousTitre: "M1, M15, H1, H4, D1…" },
+        texte:
+          "Chaque bougie représente une durée : c'est l'unité de temps. Une minute, quinze minutes, une heure, un jour, une semaine…",
+        visuel: {
+          type: "titre",
+          titre: "L'unité de temps",
+          sousTitre: "M1, M15, H1, H4, D1…",
+        },
       },
       {
         duree: 5,
@@ -39,27 +44,38 @@ export const chapitre: Chapitre = {
       },
       {
         duree: 10,
-        texte: "La bougie d'une heure prend l'ouverture de la première, le plus haut et le plus bas du groupe, et la clôture de la dernière.",
+        texte:
+          "La bougie d'une heure prend l'ouverture de la première, le plus haut et le plus bas du groupe, et la clôture de la dernière.",
         visuel: { type: "figure", scene: "m15-vers-h1", etape: 2 },
       },
       {
         duree: 7,
-        texte: "Résultat : les détails disparaissent, la direction générale apparaît. La première heure monte, la seconde baisse.",
+        texte:
+          "Résultat : les détails disparaissent, la direction générale apparaît. La première heure monte, la seconde baisse.",
         visuel: { type: "figure", scene: "m15-vers-h1", etape: 2 },
       },
       {
         duree: 8,
-        texte: "L'unité de temps dépend de ton horizon. Plus elle est courte, plus le bruit et les frais pèsent.",
+        texte:
+          "L'unité de temps dépend de ton horizon. Plus elle est courte, plus le bruit et les frais pèsent.",
         visuel: {
           type: "points",
           titre: "Choisir",
-          items: ["Scalping : 1 à 5 minutes", "Day trading : 5 minutes à 1 heure", "Swing : 4 heures à 1 jour"],
+          items: [
+            "Scalping : 1 à 5 minutes",
+            "Day trading : 5 minutes à 1 heure",
+            "Swing : 4 heures à 1 jour",
+          ],
         },
       },
       {
         duree: 10,
-        texte: "Beaucoup de traders lisent le contexte sur une unité longue et cherchent leur entrée sur une plus courte. On y reviendra dans l'analyse technique.",
-        visuel: { type: "points", items: ["Contexte : unité longue", "Entrée : unité courte"] },
+        texte:
+          "Beaucoup de traders lisent le contexte sur une unité longue et cherchent leur entrée sur une plus courte. On y reviendra dans l'analyse technique.",
+        visuel: {
+          type: "points",
+          items: ["Contexte : unité longue", "Entrée : unité courte"],
+        },
       },
     ],
   },
@@ -76,7 +92,11 @@ export const chapitre: Chapitre = {
         {
           type: "tableau",
           fiabilite: "calcul",
-          entetes: ["Notation courante", "Durée d'une bougie", "Bougies dans 24 heures"],
+          entetes: [
+            "Notation courante",
+            "Durée d'une bougie",
+            "Bougies dans 24 heures",
+          ],
           lignes: [
             ["M1", "1 minute", "1 440"],
             ["M5", "5 minutes", "288"],
@@ -98,7 +118,8 @@ export const chapitre: Chapitre = {
       blocs: [
         {
           type: "p",
-          texte: "Une bougie longue n'est rien d'autre que la synthèse des bougies plus courtes qu'elle contient :",
+          texte:
+            "Une bougie longue n'est rien d'autre que la synthèse des bougies plus courtes qu'elle contient :",
         },
         {
           type: "liste",
@@ -143,12 +164,24 @@ export const chapitre: Chapitre = {
         {
           type: "tableau",
           fiabilite: "convention",
-          entetes: ["Style", "Durée d'une position", "Unités souvent utilisées"],
+          entetes: [
+            "Style",
+            "Durée d'une position",
+            "Unités souvent utilisées",
+          ],
           lignes: [
             ["Scalping", "Quelques secondes à quelques minutes", "M1, M5"],
-            ["Day trading", "Quelques minutes à quelques heures, fermée le jour même", "M5, M15, H1"],
+            [
+              "Day trading",
+              "Quelques minutes à quelques heures, fermée le jour même",
+              "M5, M15, H1",
+            ],
             ["Swing trading", "Quelques jours à quelques semaines", "H4, D1"],
-            ["Investissement", "Des mois ou des années", "D1, hebdomadaire, mensuel"],
+            [
+              "Investissement",
+              "Des mois ou des années",
+              "D1, hebdomadaire, mensuel",
+            ],
           ],
         },
         {
@@ -164,7 +197,8 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "m15-vers-h1",
-      legende: "Les mêmes deux heures en bougies de 15 minutes, puis en bougies d'une heure.",
+      legende:
+        "Les mêmes deux heures en bougies de 15 minutes, puis en bougies d'une heure.",
     },
   ],
   exemple: {
@@ -192,7 +226,8 @@ export const chapitre: Chapitre = {
   erreurs: [
     {
       titre: "Comparer des bougies d'unités différentes",
-      texte: "Une « grande bougie » en M5 est minuscule en D1. Vérifie toujours l'unité affichée avant de comparer.",
+      texte:
+        "Une « grande bougie » en M5 est minuscule en D1. Vérifie toujours l'unité affichée avant de comparer.",
     },
     {
       titre: "Changer d'unité de temps pour justifier un trade",
@@ -201,7 +236,8 @@ export const chapitre: Chapitre = {
     },
     {
       titre: "Commencer par les unités les plus courtes",
-      texte: "Le M1 semble offrir plus d'occasions, mais les frais et le bruit y pèsent le plus. Les unités plus longues sont plus lisibles pour apprendre.",
+      texte:
+        "Le M1 semble offrir plus d'occasions, mais les frais et le bruit y pèsent le plus. Les unités plus longues sont plus lisibles pour apprendre.",
     },
   ],
   resume: [
@@ -209,6 +245,31 @@ export const chapitre: Chapitre = {
     "Une bougie longue reprend l'ouverture de la première bougie courte, les extrêmes du groupe et la clôture de la dernière.",
     "Une tendance n'a de sens qu'avec son unité de temps.",
     "Plus l'unité est courte, plus le bruit et les frais pèsent.",
+  ],
+  exercices: [
+    {
+      id: "pp-07-e1",
+      type: "calcul",
+      consigne:
+        "Combien de bougies de 15 minutes faut-il pour former une bougie de 4 heures ?",
+      reponse: 16,
+      tolerance: 0,
+      unite: "bougies",
+      corrige: "4 heures = 240 minutes ; 240 ÷ 15 = 16 bougies de 15 minutes.",
+      concepts: ["unite-de-temps"],
+    },
+    {
+      id: "pp-07-e2",
+      type: "calcul",
+      consigne:
+        "Quatre bougies de 15 minutes se suivent : (O 100,0 ; H 101,0 ; B 99,5 ; C 100,8), (O 100,8 ; H 102,0 ; B 100,5 ; C 101,6), (O 101,6 ; H 101,9 ; B 100,9 ; C 101,0), (O 101,0 ; H 101,4 ; B 100,2 ; C 100,6). Quel est le plus bas de la bougie d'une heure qui les regroupe ?",
+      reponse: 99.5,
+      tolerance: 0.01,
+      aide: "La bougie d'une heure prend l'ouverture de la première, la clôture de la dernière, le plus haut et le plus bas de toutes.",
+      corrige:
+        "Le plus bas de l'heure est le plus bas des quatre : min(99,5 ; 100,5 ; 100,9 ; 100,2) = 99,5. Pour mémoire, cette bougie d'une heure vaut O 100,0 ; H 102,0 ; B 99,5 ; C 100,6.",
+      concepts: ["unite-de-temps", "ohlc"],
+    },
   ],
   quiz: [
     {
@@ -223,10 +284,12 @@ export const chapitre: Chapitre = {
     {
       id: "c07-q2",
       type: "unique",
-      enonce: "Quatre bougies M15 ont pour plus hauts 1,0858 ; 1,0861 ; 1,0866 et 1,0868. Quel est le plus haut de la bougie H1 correspondante ?",
+      enonce:
+        "Quatre bougies M15 ont pour plus hauts 1,0858 ; 1,0861 ; 1,0866 et 1,0868. Quel est le plus haut de la bougie H1 correspondante ?",
       choix: ["1,0858", "1,0863", "1,0866", "1,0868"],
       bonne: 3,
-      explication: "Le plus haut de la bougie H1 est le plus élevé des quatre plus hauts : 1,0868.",
+      explication:
+        "Le plus haut de la bougie H1 est le plus élevé des quatre plus hauts : 1,0868.",
       concepts: ["unite-de-temps", "ohlc"],
     },
     {
@@ -234,21 +297,25 @@ export const chapitre: Chapitre = {
       type: "ordre",
       enonce: "Classe ces unités de temps de la plus courte à la plus longue.",
       etapes: ["M1", "M15", "H1", "H4", "D1"],
-      explication: "M = minutes, H = heures, D = jour : 1 minute, 15 minutes, 1 heure, 4 heures, 1 jour.",
+      explication:
+        "M = minutes, H = heures, D = jour : 1 minute, 15 minutes, 1 heure, 4 heures, 1 jour.",
       concepts: ["unite-de-temps"],
     },
     {
       id: "c07-q4",
       type: "vraifaux",
-      enonce: "Un marché peut être haussier en journalier et baissier en M15 au même moment.",
+      enonce:
+        "Un marché peut être haussier en journalier et baissier en M15 au même moment.",
       reponse: true,
-      explication: "Ce sont deux échelles différentes : un repli de quelques heures peut s'inscrire dans une hausse de plusieurs semaines.",
+      explication:
+        "Ce sont deux échelles différentes : un repli de quelques heures peut s'inscrire dans une hausse de plusieurs semaines.",
       concepts: ["unite-de-temps"],
     },
     {
       id: "c07-q5",
       type: "unique",
-      enonce: "Pourquoi les unités de temps très courtes sont-elles exigeantes pour un débutant ?",
+      enonce:
+        "Pourquoi les unités de temps très courtes sont-elles exigeantes pour un débutant ?",
       choix: [
         "Elles sont interdites aux particuliers",
         "Les mouvements y sont petits par rapport aux frais, et le bruit domine",
@@ -256,7 +323,8 @@ export const chapitre: Chapitre = {
         "Le spread y est nul",
       ],
       bonne: 1,
-      explication: "Sur des mouvements de quelques pips, le spread et les commissions représentent une grande part du gain possible.",
+      explication:
+        "Sur des mouvements de quelques pips, le spread et les commissions représentent une grande part du gain possible.",
       concepts: ["unite-de-temps"],
     },
   ],

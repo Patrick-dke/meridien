@@ -24,37 +24,48 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 9,
-        texte: "Sur un graphique en chandeliers, chaque bougie résume une période : une minute, une heure ou un jour. Elle porte quatre prix.",
-        visuel: { type: "titre", titre: "Une bougie, quatre prix", sousTitre: "Ouverture, plus haut, plus bas, clôture" },
+        texte:
+          "Sur un graphique en chandeliers, chaque bougie résume une période : une minute, une heure ou un jour. Elle porte quatre prix.",
+        visuel: {
+          type: "titre",
+          titre: "Une bougie, quatre prix",
+          sousTitre: "Ouverture, plus haut, plus bas, clôture",
+        },
       },
       {
         duree: 6,
-        texte: "Voici une bougie haussière : le prix a fini plus haut qu'il n'a commencé.",
+        texte:
+          "Voici une bougie haussière : le prix a fini plus haut qu'il n'a commencé.",
         visuel: { type: "figure", scene: "anatomie", etape: 0 },
       },
       {
         duree: 9,
-        texte: "Le bas du corps marque l'ouverture, le haut la clôture. Les mèches montrent le plus haut et le plus bas atteints.",
+        texte:
+          "Le bas du corps marque l'ouverture, le haut la clôture. Les mèches montrent le plus haut et le plus bas atteints.",
         visuel: { type: "figure", scene: "anatomie", etape: 1 },
       },
       {
         duree: 9,
-        texte: "Le corps, c'est le chemin entre l'ouverture et la clôture. Les mèches, ce sont les excursions du prix avant qu'il ne revienne.",
+        texte:
+          "Le corps, c'est le chemin entre l'ouverture et la clôture. Les mèches, ce sont les excursions du prix avant qu'il ne revienne.",
         visuel: { type: "figure", scene: "anatomie", etape: 2 },
       },
       {
         duree: 7,
-        texte: "Une bougie baissière, c'est l'inverse : l'ouverture en haut du corps, la clôture en bas.",
+        texte:
+          "Une bougie baissière, c'est l'inverse : l'ouverture en haut du corps, la clôture en bas.",
         visuel: { type: "figure", scene: "anatomie", etape: 3 },
       },
       {
         duree: 8,
-        texte: "Sur un vrai graphique, on repère des bougies à longue mèche, à corps minuscule, ou de très grande amplitude.",
+        texte:
+          "Sur un vrai graphique, on repère des bougies à longue mèche, à corps minuscule, ou de très grande amplitude.",
         visuel: { type: "figure", scene: "lecture-serie", etape: 3 },
       },
       {
         duree: 9,
-        texte: "Mais une bougie seule ne prédit rien. Elle décrit ce qui s'est passé ; le contexte et les bougies suivantes comptent davantage.",
+        texte:
+          "Mais une bougie seule ne prédit rien. Elle décrit ce qui s'est passé ; le contexte et les bougies suivantes comptent davantage.",
         visuel: { type: "titre", titre: "Décrire, pas prédire" },
       },
     ],
@@ -145,12 +156,14 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "anatomie",
-      legende: "À gauche une bougie haussière, à droite une bougie baissière : l'ouverture et la clôture changent de place selon le sens.",
+      legende:
+        "À gauche une bougie haussière, à droite une bougie baissière : l'ouverture et la clôture changent de place selon le sens.",
     },
     {
       type: "figure",
       scene: "lecture-serie",
-      legende: "Trois bougies repérées : une longue mèche basse, un corps minuscule et une forte bougie baissière.",
+      legende:
+        "Trois bougies repérées : une longue mèche basse, un corps minuscule et une forte bougie baissière.",
     },
   ],
   exemple: {
@@ -180,15 +193,18 @@ export const chapitre: Chapitre = {
   erreurs: [
     {
       titre: "Inverser ouverture et clôture sur une bougie baissière",
-      texte: "Pour une bougie baissière, l'ouverture est en haut du corps et la clôture en bas.",
+      texte:
+        "Pour une bougie baissière, l'ouverture est en haut du corps et la clôture en bas.",
     },
     {
       titre: "Prendre une forme de bougie pour un signal",
-      texte: "Une forme de bougie décrit le passé. Sans contexte ni mesure, elle ne dit pas ce que fera le prix.",
+      texte:
+        "Une forme de bougie décrit le passé. Sans contexte ni mesure, elle ne dit pas ce que fera le prix.",
     },
     {
       titre: "Oublier l'unité de temps",
-      texte: "Une grande bougie en 1 minute peut être invisible sur un graphique journalier. Vérifie toujours l'unité de temps affichée.",
+      texte:
+        "Une grande bougie en 1 minute peut être invisible sur un graphique journalier. Vérifie toujours l'unité de temps affichée.",
     },
   ],
   resume: [
@@ -197,31 +213,68 @@ export const chapitre: Chapitre = {
     "Haussière : clôture au-dessus de l'ouverture ; baissière : en dessous.",
     "Une bougie décrit le passé ; sa valeur prédictive dépend du contexte et se mesure.",
   ],
+  exercices: [
+    {
+      id: "pp-06-e1",
+      type: "graphique",
+      consigne:
+        "Touche la bougie dont la mèche basse est la plus longue : le prix est descendu loin pendant la période, puis il est remonté avant la clôture.",
+      scene: "lecture-serie",
+      etape: 0,
+      bonnes: [2],
+      corrige:
+        "C'est la troisième bougie : son corps est minuscule (100,20 → 100,30) mais son plus bas descend à 99,20, soit une mèche basse d'un point entier. Les vendeurs ont poussé, les acheteurs ont ramené le prix.",
+      concepts: ["chandelier"],
+    },
+    {
+      id: "pp-06-e2",
+      type: "calcul",
+      consigne:
+        "Une bougie a pour ouverture 101,60, plus haut 101,70, plus bas 100,60 et clôture 100,70. Quelle est la taille de son corps ?",
+      reponse: 0.9,
+      tolerance: 0.01,
+      aide: "Le corps va de l'ouverture à la clôture ; les mèches, jusqu'au plus haut et au plus bas.",
+      corrige:
+        "Corps = |clôture − ouverture| = |100,70 − 101,60| = 0,90. La clôture est sous l'ouverture : c'est une bougie baissière, au corps large et aux mèches courtes (0,10 de chaque côté).",
+      concepts: ["ohlc"],
+    },
+  ],
   quiz: [
     {
       id: "c06-q1",
       type: "unique",
-      enonce: "Une bougie a une ouverture à 50 €, un plus haut à 53 €, un plus bas à 49 € et une clôture à 52 €. Elle est :",
-      choix: ["baissière", "haussière", "neutre", "impossible à dire sans la bougie suivante"],
+      enonce:
+        "Une bougie a une ouverture à 50 €, un plus haut à 53 €, un plus bas à 49 € et une clôture à 52 €. Elle est :",
+      choix: [
+        "baissière",
+        "haussière",
+        "neutre",
+        "impossible à dire sans la bougie suivante",
+      ],
       bonne: 1,
-      explication: "La clôture (52 €) est au-dessus de l'ouverture (50 €) : la bougie est haussière.",
+      explication:
+        "La clôture (52 €) est au-dessus de l'ouverture (50 €) : la bougie est haussière.",
       concepts: ["chandelier", "ohlc"],
     },
     {
       id: "c06-q2",
       type: "unique",
-      enonce: "Pour cette même bougie, quelle est la longueur de la mèche haute ?",
+      enonce:
+        "Pour cette même bougie, quelle est la longueur de la mèche haute ?",
       choix: ["1 €", "2 €", "3 €", "4 €"],
       bonne: 0,
-      explication: "La mèche haute va du haut du corps (la clôture, 52 €) au plus haut (53 €) : 1 €.",
+      explication:
+        "La mèche haute va du haut du corps (la clôture, 52 €) au plus haut (53 €) : 1 €.",
       concepts: ["chandelier"],
     },
     {
       id: "c06-q3",
       type: "vraifaux",
-      enonce: "Pour une bougie baissière, l'ouverture se situe en haut du corps.",
+      enonce:
+        "Pour une bougie baissière, l'ouverture se situe en haut du corps.",
       reponse: true,
-      explication: "Le prix a commencé plus haut qu'il n'a fini : l'ouverture est en haut du corps, la clôture en bas.",
+      explication:
+        "Le prix a commencé plus haut qu'il n'a fini : l'ouverture est en haut du corps, la clôture en bas.",
       concepts: ["chandelier", "ohlc"],
     },
     {
@@ -242,7 +295,8 @@ export const chapitre: Chapitre = {
       type: "vraifaux",
       enonce: "Une longue mèche basse annonce à coup sûr une hausse.",
       reponse: false,
-      explication: "Elle montre que le prix est descendu puis revenu. Ce que cela vaut pour la suite dépend du contexte et doit être mesuré.",
+      explication:
+        "Elle montre que le prix est descendu puis revenu. Ce que cela vaut pour la suite dépend du contexte et doit être mesuré.",
       concepts: ["chandelier"],
     },
   ],

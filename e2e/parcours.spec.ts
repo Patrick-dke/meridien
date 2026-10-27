@@ -38,7 +38,7 @@ test("un débutant suit l'accueil personnalisé puis valide le premier chapitre"
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Qu'est-ce que le trading");
   // Parcourir les étapes avec « Continuer » jusqu'au quiz.
-  for (const etape of ["Capsule", "Cours", "Illustrations", "Exemple", "Erreurs fréquentes", "Résumé", "Quiz"]) {
+  for (const etape of ["Capsule", "Cours", "Illustrations", "Exemple", "Erreurs fréquentes", "Résumé", "Exercices", "Quiz"]) {
     await page.getByRole("button", { name: "Continuer" }).click();
     await expect(page.locator('section[id^="etape-"]:not([hidden])')).toHaveAttribute("aria-label", etape);
   }

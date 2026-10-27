@@ -1,3 +1,5 @@
+import { problemesChapitre } from "./verifier";
+import { moduleDuChapitre } from "./offre";
 import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -97,11 +99,17 @@ describe("chapitres", () => {
     }
   });
 
-  it("ont des capsules de 30 à 95 secondes, à un débit lisible", () => {
+  it("passent le vérificateur commun aux contenus gratuits et payants (exercices compris)", () => {
+    const ctx = { slugsCatalogue, idsConcepts, slugsGlossaire, scenes };
+    const bilan = Object.fromEntries(tousLesChapitres.map((c) => [c.slug, problemesChapitre(c, ctx)]).filter(([, p]) => (p as string[]).length));
+    expect(bilan).toEqual({});
+  });
+
+  it("ont des capsules de 30 à 90 secondes, à un débit lisible", () => {
     for (const c of tousLesChapitres) {
       const duree = c.capsule.scenes.reduce((a, s) => a + s.duree, 0);
       expect(duree, c.slug).toBeGreaterThanOrEqual(30);
-      expect(duree, c.slug).toBeLessThanOrEqual(95);
+      expect(duree, c.slug).toBeLessThanOrEqual(90);
       for (const s of c.capsule.scenes) {
         const mots = texteBrut(s.texte).split(/\s+/).filter(Boolean).length;
         // Au plus 190 mots par minute : le texte doit pouvoir être lu, puis dit, dans la durée de la scène.
@@ -147,10 +155,11 @@ describe("narration des capsules", () => {
 });
 
 describe("concepts et glossaire", () => {
-  it("chaque concept renvoie à un chapitre publié et à des prérequis connus", () => {
+  it("chaque concept renvoie à un chapitre du catalogue (gratuit et publié, ou payant) et à des prérequis connus", () => {
     for (const c of concepts) {
       expect(() => Concept.parse(c)).not.toThrow();
-      expect(chapitresPublies.some((ch) => ch.slug === c.chapitre), c.id).toBe(true);
+      const gratuit = chapitresPublies.some((ch) => ch.slug === c.chapitre);
+      expect(gratuit || Boolean(moduleDuChapitre(c.chapitre)), c.id).toBe(true);
       for (const p of c.prerequis) expect(idsConcepts.has(p), `${c.id} → ${p}`).toBe(true);
     }
   });

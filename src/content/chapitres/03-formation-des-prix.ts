@@ -24,38 +24,55 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 8,
-        texte: "Qui décide du prix d'une action ? Personne en particulier. Le prix naît de la rencontre entre acheteurs et vendeurs.",
+        texte:
+          "Qui décide du prix d'une action ? Personne en particulier. Le prix naît de la rencontre entre acheteurs et vendeurs.",
         visuel: { type: "titre", titre: "D'où vient un prix ?" },
       },
       {
         duree: 11,
-        texte: "Voici un carnet d'ordres. À droite, les vendeurs et le prix auquel ils acceptent de vendre. À gauche, les acheteurs et le prix qu'ils proposent.",
+        texte:
+          "Voici un carnet d'ordres. À droite, les vendeurs et le prix auquel ils acceptent de vendre. À gauche, les acheteurs et le prix qu'ils proposent.",
         visuel: { type: "figure", scene: "carnet-simple" },
       },
       {
         duree: 11,
-        texte: "Le meilleur vendeur demande 50,02 euros : c'est l'ask. Le meilleur acheteur propose 50,00 euros : c'est le bid. L'écart de deux centimes, c'est le spread.",
+        texte:
+          "Le meilleur vendeur demande 50,02 euros : c'est l'ask. Le meilleur acheteur propose 50,00 euros : c'est le bid. L'écart de deux centimes, c'est le spread.",
         visuel: { type: "figure", scene: "carnet-simple" },
       },
       {
         duree: 8,
-        texte: "Tant que personne ne cède, rien ne s'échange. Un échange a lieu quand quelqu'un accepte le prix d'en face.",
+        texte:
+          "Tant que personne ne cède, rien ne s'échange. Un échange a lieu quand quelqu'un accepte le prix d'en face.",
         visuel: { type: "figure", scene: "carnet-mince", etape: 0 },
       },
       {
         duree: 9,
-        texte: "Imaginons un achat immédiat de 1 000 actions. Il prend les 300 actions à 50,02, puis monte aux niveaux suivants, jusqu'à 50,05.",
+        texte:
+          "Imaginons un achat immédiat de 1 000 actions. Il prend les 300 actions à 50,02, puis monte aux niveaux suivants, jusqu'à 50,05.",
         visuel: { type: "figure", scene: "carnet-mince", etape: 1 },
       },
       {
         duree: 11,
-        texte: "Prix moyen obtenu : 50,03. Et le dernier échange s'est fait à 50,05 : le prix affiché a monté. C'est ainsi que la demande fait monter un prix.",
-        visuel: { type: "formule", texte: "50 030 € ÷ 1 000 actions = 50,03 €", legende: "Prix moyen de l'achat" },
+        texte:
+          "Prix moyen obtenu : 50,03. Et le dernier échange s'est fait à 50,05 : le prix affiché a monté. C'est ainsi que la demande fait monter un prix.",
+        visuel: {
+          type: "formule",
+          texte: "50 030 € ÷ 1 000 actions = 50,03 €",
+          legende: "Prix moyen de l'achat",
+        },
       },
       {
         duree: 9,
-        texte: "Retiens : quand les acheteurs sont plus pressés que les vendeurs, le prix monte ; dans le cas inverse, il baisse.",
-        visuel: { type: "points", items: ["Acheteurs pressés : le prix monte", "Vendeurs pressés : le prix baisse"] },
+        texte:
+          "Retiens : quand les acheteurs sont plus pressés que les vendeurs, le prix monte ; dans le cas inverse, il baisse.",
+        visuel: {
+          type: "points",
+          items: [
+            "Acheteurs pressés : le prix monte",
+            "Vendeurs pressés : le prix baisse",
+          ],
+        },
       },
     ],
   },
@@ -98,7 +115,8 @@ export const chapitre: Chapitre = {
         {
           type: "encadre",
           variante: "retenir",
-          texte: "Tu achètes à l'ask et tu vends au bid. Acheter puis revendre immédiatement coûte donc le spread.",
+          texte:
+            "Tu achètes à l'ask et tu vends au bid. Acheter puis revendre immédiatement coûte donc le spread.",
         },
       ],
     },
@@ -134,12 +152,14 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "carnet-simple",
-      legende: "Un carnet d'ordres : 300 actions proposées à 50,02 €, 250 actions demandées à 50,00 €. Le spread est de 0,02 €.",
+      legende:
+        "Un carnet d'ordres : 300 actions proposées à 50,02 €, 250 actions demandées à 50,00 €. Le spread est de 0,02 €.",
     },
     {
       type: "figure",
       scene: "carnet-mince",
-      legende: "Un achat au marché de 1 000 actions consomme quatre niveaux de prix : prix moyen 50,03 € au lieu des 50,02 € affichés.",
+      legende:
+        "Un achat au marché de 1 000 actions consomme quatre niveaux de prix : prix moyen 50,03 € au lieu des 50,02 € affichés.",
     },
   ],
   exemple: {
@@ -147,7 +167,8 @@ export const chapitre: Chapitre = {
     blocs: [
       {
         type: "p",
-        texte: "Reprenons le carnet de la figure. Tu veux acheter 1 000 actions immédiatement. Voici ce que l'ordre prend à chaque niveau :",
+        texte:
+          "Reprenons le carnet de la figure. Tu veux acheter 1 000 actions immédiatement. Voici ce que l'ordre prend à chaque niveau :",
       },
       {
         type: "tableau",
@@ -165,7 +186,8 @@ export const chapitre: Chapitre = {
         type: "formule",
         fiabilite: "calcul",
         texte: "Prix moyen = 50 030,00 € ÷ 1 000 = 50,03 €",
-        legende: "Un centime de plus par action que le meilleur prix affiché, soit 10 € sur l'ensemble de l'ordre.",
+        legende:
+          "Un centime de plus par action que le meilleur prix affiché, soit 10 € sur l'ensemble de l'ordre.",
       },
     ],
   },
@@ -176,13 +198,15 @@ export const chapitre: Chapitre = {
         "Le prix affiché est celui du dernier échange. Tu achètes à l'ask, tu vends au bid, et un ordre important peut être exécuté sur plusieurs niveaux.",
     },
     {
-      titre: "Penser que le prix monte parce qu'il y a plus d'acheteurs que de vendeurs",
+      titre:
+        "Penser que le prix monte parce qu'il y a plus d'acheteurs que de vendeurs",
       texte:
         "Chaque transaction a exactement un acheteur et un vendeur. Le prix monte quand les acheteurs sont plus pressés, c'est-à-dire prêts à accepter le prix des vendeurs.",
     },
     {
       titre: "Oublier qu'on ne voit qu'une partie du marché",
-      texte: "Sur le Forex et les CFD, tu vois les prix de ton courtier, pas l'ensemble des ordres du marché.",
+      texte:
+        "Sur le Forex et les CFD, tu vois les prix de ton courtier, pas l'ensemble des ordres du marché.",
     },
   ],
   resume: [
@@ -190,6 +214,33 @@ export const chapitre: Chapitre = {
     "Le carnet d'ordres liste les ordres en attente : vendeurs (ask) d'un côté, acheteurs (bid) de l'autre.",
     "On achète à l'ask, on vend au bid ; l'écart est le spread.",
     "Un gros ordre au marché consomme plusieurs niveaux : le prix moyen est moins bon que le prix affiché.",
+  ],
+  exercices: [
+    {
+      id: "pp-03-e1",
+      type: "calcul",
+      consigne:
+        "Dans le carnet d'une action, la meilleure offre d'achat (bid) est à 49,95 € et la meilleure offre de vente (ask) à 50,05 €. Si tu achètes au marché puis revends aussitôt au marché, combien perds-tu par action, sans autres frais ?",
+      reponse: 0.1,
+      tolerance: 0.005,
+      unite: "€",
+      corrige:
+        "Tu achètes à l'ask (50,05 €) et revends au bid (49,95 €) : tu perds l'écart, soit 0,10 € par action. C'est le spread, un coût payé à chaque aller-retour.",
+      concepts: ["bid-ask"],
+    },
+    {
+      id: "pp-03-e2",
+      type: "calcul",
+      consigne:
+        "Côté vente, le carnet affiche 200 actions à 50,05 € puis 300 actions à 50,10 €. Tu passes un ordre d'achat au marché de 300 actions. Quel prix moyen paies-tu par action (arrondi au centime) ?",
+      reponse: 50.07,
+      tolerance: 0.01,
+      unite: "€",
+      aide: "Ton ordre consomme d'abord le meilleur prix, puis le niveau suivant.",
+      corrige:
+        "200 actions à 50,05 € = 10 010 €, puis les 100 restantes à 50,10 € = 5 010 €. Total 15 020 € pour 300 actions, soit 50,07 € en moyenne. Un gros ordre au marché « remonte » le carnet.",
+      concepts: ["carnet-ordres", "offre-demande"],
+    },
   ],
   quiz: [
     {
@@ -199,14 +250,20 @@ export const chapitre: Chapitre = {
         "Le meilleur vendeur demande 50,02 € et le meilleur acheteur propose 50,00 €. À quel prix peux-tu acheter immédiatement ?",
       choix: ["50,00 €", "50,01 €", "50,02 €", "Au prix que tu choisis"],
       bonne: 2,
-      explication: "On achète immédiatement au meilleur prix vendeur, l'ask : 50,02 €.",
+      explication:
+        "On achète immédiatement au meilleur prix vendeur, l'ask : 50,02 €.",
       concepts: ["bid-ask", "carnet-ordres"],
     },
     {
       id: "c03-q2",
       type: "unique",
       enonce: "Quel est le spread dans ce carnet ?",
-      choix: ["0,01 €", "0,02 €", "50,01 €", "Il n'y a pas de spread sur les actions"],
+      choix: [
+        "0,01 €",
+        "0,02 €",
+        "50,01 €",
+        "Il n'y a pas de spread sur les actions",
+      ],
       bonne: 1,
       explication: "Spread = ask − bid = 50,02 − 50,00 = 0,02 €.",
       concepts: ["bid-ask"],
@@ -214,7 +271,8 @@ export const chapitre: Chapitre = {
     {
       id: "c03-q3",
       type: "vraifaux",
-      enonce: "Si le prix monte, c'est qu'il y a eu plus d'acheteurs que de vendeurs.",
+      enonce:
+        "Si le prix monte, c'est qu'il y a eu plus d'acheteurs que de vendeurs.",
       reponse: false,
       explication:
         "Chaque échange a un acheteur et un vendeur. Le prix monte quand les acheteurs sont plus pressés : ils acceptent des prix de vente de plus en plus élevés.",
@@ -227,28 +285,33 @@ export const chapitre: Chapitre = {
         "Un achat au marché de 500 actions arrive : il y a 300 actions à 50,02 € puis 450 à 50,03 €. Quel est le prix moyen obtenu ?",
       choix: ["50,02 €", "50,024 €", "50,025 €", "50,03 €"],
       bonne: 1,
-      explication: "300 × 50,02 + 200 × 50,03 = 25 012 € ; divisé par 500 actions, cela fait 50,024 €.",
+      explication:
+        "300 × 50,02 + 200 × 50,03 = 25 012 € ; divisé par 500 actions, cela fait 50,024 €.",
       concepts: ["carnet-ordres"],
     },
     {
       id: "c03-q5",
       type: "ordre",
-      enonce: "Remets dans l'ordre ce qui se passe quand un gros achat au marché arrive.",
+      enonce:
+        "Remets dans l'ordre ce qui se passe quand un gros achat au marché arrive.",
       etapes: [
         "L'ordre prend toute la quantité disponible au meilleur prix vendeur",
         "Il passe au niveau de prix suivant, plus cher",
         "Il continue jusqu'à obtenir toute la quantité demandée",
         "Le dernier prix échangé, donc le prix affiché, a monté",
       ],
-      explication: "L'ordre remonte le carnet niveau par niveau : c'est ainsi qu'un achat important fait monter le prix.",
+      explication:
+        "L'ordre remonte le carnet niveau par niveau : c'est ainsi qu'un achat important fait monter le prix.",
       concepts: ["carnet-ordres", "offre-demande"],
     },
     {
       id: "c03-q6",
       type: "vraifaux",
-      enonce: "Sur le Forex, ton courtier te montre l'ensemble des ordres de tous les participants du marché.",
+      enonce:
+        "Sur le Forex, ton courtier te montre l'ensemble des ordres de tous les participants du marché.",
       reponse: false,
-      explication: "Le Forex est décentralisé : tu vois les prix de ton courtier, pas un carnet central unique.",
+      explication:
+        "Le Forex est décentralisé : tu vois les prix de ton courtier, pas un carnet central unique.",
       concepts: ["carnet-ordres"],
     },
   ],

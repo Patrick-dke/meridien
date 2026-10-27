@@ -3,7 +3,8 @@ import type { Chapitre } from "../schema";
 export const chapitre: Chapitre = {
   slug: "liquidite-et-volatilite",
   titre: "Liquidité et volatilité",
-  sousTitre: "Pourras-tu sortir facilement ? De combien le prix peut-il bouger ?",
+  sousTitre:
+    "Pourras-tu sortir facilement ? De combien le prix peut-il bouger ?",
   academie: "fondamentaux",
   module: "introduction",
   niveau: 1,
@@ -24,42 +25,59 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 10,
-        texte: "Deux mots à ne pas confondre : la liquidité, c'est la facilité à acheter ou vendre. La volatilité, c'est l'ampleur des mouvements de prix.",
+        texte:
+          "Deux mots à ne pas confondre : la liquidité, c'est la facilité à acheter ou vendre. La volatilité, c'est l'ampleur des mouvements de prix.",
         visuel: { type: "titre", titre: "Liquidité ≠ volatilité" },
       },
       {
         duree: 10,
-        texte: "Un marché liquide a beaucoup d'ordres à chaque prix. Ici, un achat de 1 000 actions est exécuté au meilleur prix, sans bouger le marché.",
+        texte:
+          "Un marché liquide a beaucoup d'ordres à chaque prix. Ici, un achat de 1 000 actions est exécuté au meilleur prix, sans bouger le marché.",
         visuel: { type: "figure", scene: "carnet-profond", etape: 1 },
       },
       {
         duree: 8,
-        texte: "Dans un carnet mince, le même ordre consomme plusieurs niveaux : le prix obtenu se dégrade. C'est le slippage.",
+        texte:
+          "Dans un carnet mince, le même ordre consomme plusieurs niveaux : le prix obtenu se dégrade. C'est le slippage.",
         visuel: { type: "figure", scene: "carnet-mince", etape: 1 },
       },
       {
         duree: 6,
-        texte: "La volatilité, maintenant. Ici, les bougies sont petites : le prix bouge peu.",
+        texte:
+          "La volatilité, maintenant. Ici, les bougies sont petites : le prix bouge peu.",
         visuel: { type: "figure", scene: "volatilite-annonce", etape: 0 },
       },
       {
         duree: 10,
-        texte: "Puis une annonce économique tombe : les bougies deviennent quatre à cinq fois plus grandes. Un stop placé trop près peut être touché en quelques secondes.",
+        texte:
+          "Puis une annonce économique tombe : les bougies deviennent quatre à cinq fois plus grandes. Un stop placé trop près peut être touché en quelques secondes.",
         visuel: { type: "figure", scene: "volatilite-annonce", etape: 1 },
       },
       {
         duree: 10,
-        texte: "Liquidité et volatilité changent selon l'heure, les annonces et les jours. Le même actif peut être calme le matin et agité l'après-midi.",
+        texte:
+          "Liquidité et volatilité changent selon l'heure, les annonces et les jours. Le même actif peut être calme le matin et agité l'après-midi.",
         visuel: {
           type: "points",
           titre: "Quand ça change",
-          items: ["Ouverture et fermeture des sessions", "Annonces économiques", "Nuits, week-ends, jours fériés"],
+          items: [
+            "Ouverture et fermeture des sessions",
+            "Annonces économiques",
+            "Nuits, week-ends, jours fériés",
+          ],
         },
       },
       {
         duree: 8,
-        texte: "Retiens : avant d'entrer, demande-toi si tu pourras sortir facilement, et de combien le prix peut bouger contre toi.",
-        visuel: { type: "points", items: ["Pourrai-je sortir facilement ?", "De combien le prix peut-il bouger ?"] },
+        texte:
+          "Retiens : avant d'entrer, demande-toi si tu pourras sortir facilement, et de combien le prix peut bouger contre toi.",
+        visuel: {
+          type: "points",
+          items: [
+            "Pourrai-je sortir facilement ?",
+            "De combien le prix peut-il bouger ?",
+          ],
+        },
       },
     ],
   },
@@ -115,10 +133,26 @@ export const chapitre: Chapitre = {
           fiabilite: "fait",
           entetes: ["Moment", "Liquidité", "Volatilité"],
           lignes: [
-            ["Chevauchement des sessions de Londres et de New York (Forex)", "Élevée", "Souvent élevée"],
-            ["Nuit, fin de session", "Plus faible", "Souvent plus faible, sauf événement"],
-            ["Autour d'une [[annonce-economique|annonce économique]]", "Peut chuter quelques instants", "Très élevée, mouvements brusques"],
-            ["Réouverture après un week-end", "Faible à l'ouverture", "Risque de [[gap|gap]]"],
+            [
+              "Chevauchement des sessions de Londres et de New York (Forex)",
+              "Élevée",
+              "Souvent élevée",
+            ],
+            [
+              "Nuit, fin de session",
+              "Plus faible",
+              "Souvent plus faible, sauf événement",
+            ],
+            [
+              "Autour d'une [[annonce-economique|annonce économique]]",
+              "Peut chuter quelques instants",
+              "Très élevée, mouvements brusques",
+            ],
+            [
+              "Réouverture après un week-end",
+              "Faible à l'ouverture",
+              "Risque de [[gap|gap]]",
+            ],
           ],
         },
         {
@@ -145,17 +179,20 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "carnet-profond",
-      legende: "Carnet profond : un achat de 1 000 actions est exécuté entièrement au meilleur prix vendeur.",
+      legende:
+        "Carnet profond : un achat de 1 000 actions est exécuté entièrement au meilleur prix vendeur.",
     },
     {
       type: "figure",
       scene: "carnet-mince",
-      legende: "Carnet mince : le même achat consomme quatre niveaux, prix moyen 50,03 € au lieu de 50,02 €.",
+      legende:
+        "Carnet mince : le même achat consomme quatre niveaux, prix moyen 50,03 € au lieu de 50,02 €.",
     },
     {
       type: "figure",
       scene: "volatilite-annonce",
-      legende: "Après l'annonce, l'amplitude des bougies est multipliée par quatre à cinq.",
+      legende:
+        "Après l'annonce, l'amplitude des bougies est multipliée par quatre à cinq.",
     },
   ],
   exemple: {
@@ -176,15 +213,18 @@ export const chapitre: Chapitre = {
   erreurs: [
     {
       titre: "Confondre les deux sens de « liquidité »",
-      texte: "Facilité d'échange d'un côté, zones de stops supposées de l'autre (écoles ICT et SMC). Précise toujours de quel sens il s'agit.",
+      texte:
+        "Facilité d'échange d'un côté, zones de stops supposées de l'autre (écoles ICT et SMC). Précise toujours de quel sens il s'agit.",
     },
     {
       titre: "Utiliser le même stop quelle que soit la volatilité",
-      texte: "Un stop doit tenir compte de l'amplitude habituelle du prix. Trop serré, il est touché par le bruit ; plus large, il impose une position plus petite.",
+      texte:
+        "Un stop doit tenir compte de l'amplitude habituelle du prix. Trop serré, il est touché par le bruit ; plus large, il impose une position plus petite.",
     },
     {
       titre: "Trader une annonce sans le savoir",
-      texte: "Consulte le calendrier des annonces avant de prendre position. Une annonce peut transformer un trade calme en trade très risqué en quelques secondes.",
+      texte:
+        "Consulte le calendrier des annonces avant de prendre position. Une annonce peut transformer un trade calme en trade très risqué en quelques secondes.",
     },
   ],
   resume: [
@@ -193,6 +233,29 @@ export const chapitre: Chapitre = {
     "Les deux varient selon l'heure, les annonces et les jours.",
     "Plus de volatilité impose un stop plus large et une position plus petite pour le même risque.",
     "En ICT et SMC, « liquidité » désigne aussi des zones de stops supposées : c'est un autre sens, d'école.",
+  ],
+  exercices: [
+    {
+      id: "pp-05-e1",
+      type: "calcul",
+      consigne:
+        "Sur un actif très liquide, le spread vaut 0,05 € ; sur un actif peu liquide, 0,30 €. Tu fais 20 allers-retours d'une action. Combien te coûte en plus l'actif peu liquide, en spread seulement ?",
+      reponse: 5,
+      tolerance: 0.05,
+      unite: "€",
+      corrige:
+        "Différence de spread : 0,30 − 0,05 = 0,25 € par aller-retour. Sur 20 allers-retours : 0,25 × 20 = 5,00 €. La liquidité se paie (ou s'économise) à chaque transaction.",
+      concepts: ["liquidite"],
+    },
+    {
+      id: "pp-05-e2",
+      type: "reflexion",
+      consigne:
+        "Une annonce économique importante tombe dans dix minutes sur la paire que tu trades. Cite deux effets possibles sur tes ordres et une précaution à prendre.",
+      corrige:
+        "Effets possibles : écartement du spread, glissement (slippage) à l'exécution, stop exécuté plus loin que prévu, mouvements brusques dans les deux sens. Précautions : ne pas ouvrir de position juste avant, réduire la taille, ou vérifier que le stop et le risque restent acceptables même avec du glissement.",
+      concepts: ["volatilite"],
+    },
   ],
   quiz: [
     {
@@ -206,7 +269,8 @@ export const chapitre: Chapitre = {
         "Un marché ouvert 24 heures sur 24",
       ],
       bonne: 1,
-      explication: "La liquidité, c'est la facilité d'échange : beaucoup d'ordres à chaque prix, spread serré, peu de slippage.",
+      explication:
+        "La liquidité, c'est la facilité d'échange : beaucoup d'ordres à chaque prix, spread serré, peu de slippage.",
       concepts: ["liquidite"],
     },
     {
@@ -214,13 +278,15 @@ export const chapitre: Chapitre = {
       type: "vraifaux",
       enonce: "La volatilité mesure la facilité à trouver un acheteur.",
       reponse: false,
-      explication: "C'est la liquidité. La volatilité mesure l'amplitude des mouvements de prix.",
+      explication:
+        "C'est la liquidité. La volatilité mesure l'amplitude des mouvements de prix.",
       concepts: ["volatilite", "liquidite"],
     },
     {
       id: "c05-q3",
       type: "multiple",
-      enonce: "Quels moments s'accompagnent souvent d'une volatilité accrue ou d'un risque de saut de prix ?",
+      enonce:
+        "Quels moments s'accompagnent souvent d'une volatilité accrue ou d'un risque de saut de prix ?",
       choix: [
         "La publication d'une annonce économique importante",
         "La réouverture du marché après un week-end",
@@ -228,13 +294,15 @@ export const chapitre: Chapitre = {
         "Une décision de taux d'une banque centrale",
       ],
       bonnes: [0, 1, 3],
-      explication: "Annonces, décisions de banques centrales et réouvertures concentrent les mouvements brusques et les gaps.",
+      explication:
+        "Annonces, décisions de banques centrales et réouvertures concentrent les mouvements brusques et les gaps.",
       concepts: ["volatilite"],
     },
     {
       id: "c05-q4",
       type: "unique",
-      enonce: "La volatilité d'un actif double. Pour garder le même risque en euros avec un stop adapté, que fais-tu ?",
+      enonce:
+        "La volatilité d'un actif double. Pour garder le même risque en euros avec un stop adapté, que fais-tu ?",
       choix: [
         "Je garde le même stop et la même taille",
         "J'élargis le stop et je réduis la taille de position",
@@ -242,15 +310,18 @@ export const chapitre: Chapitre = {
         "Je supprime le stop",
       ],
       bonne: 1,
-      explication: "Un stop plus large tient compte de mouvements plus grands ; une taille plus petite garde la perte possible au même niveau.",
+      explication:
+        "Un stop plus large tient compte de mouvements plus grands ; une taille plus petite garde la perte possible au même niveau.",
       concepts: ["volatilite"],
     },
     {
       id: "c05-q5",
       type: "vraifaux",
-      enonce: "Dans les écoles ICT et SMC, « liquidité » peut désigner des zones où des ordres stop seraient regroupés.",
+      enonce:
+        "Dans les écoles ICT et SMC, « liquidité » peut désigner des zones où des ordres stop seraient regroupés.",
       reponse: true,
-      explication: "C'est un second sens, propre à ces écoles et non démontré comme mécanisme. Le sens courant reste la facilité d'échange.",
+      explication:
+        "C'est un second sens, propre à ces écoles et non démontré comme mécanisme. Le sens courant reste la facilité d'échange.",
       concepts: ["liquidite"],
     },
     {
@@ -264,7 +335,8 @@ export const chapitre: Chapitre = {
         "fait baisser le prix",
       ],
       bonne: 1,
-      explication: "Faute de quantité au meilleur prix, l'ordre remonte le carnet : c'est le slippage dû au manque de liquidité.",
+      explication:
+        "Faute de quantité au meilleur prix, l'ordre remonte le carnet : c'est le slippage dû au manque de liquidité.",
       concepts: ["liquidite"],
     },
   ],

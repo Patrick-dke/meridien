@@ -3,7 +3,8 @@ import type { Chapitre } from "../schema";
 export const chapitre: Chapitre = {
   slug: "marge-et-levier",
   titre: "Marge et effet de levier",
-  sousTitre: "L'outil qui rend le trading accessible, et celui qui fait perdre le plus vite",
+  sousTitre:
+    "L'outil qui rend le trading accessible, et celui qui fait perdre le plus vite",
   academie: "fondamentaux",
   module: "outils-du-trader",
   niveau: 2,
@@ -24,42 +25,64 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 10,
-        texte: "Avec 1 000 euros, tu peux ouvrir une position de 30 000 euros. Comment ? Grâce à l'effet de levier. Et c'est là que le danger commence.",
-        visuel: { type: "titre", titre: "1 000 € → 30 000 €", sousTitre: "L'effet de levier" },
+        texte:
+          "Avec 1 000 euros, tu peux ouvrir une position de 30 000 euros. Comment ? Grâce à l'effet de levier. Et c'est là que le danger commence.",
+        visuel: {
+          type: "titre",
+          titre: "1 000 € → 30 000 €",
+          sousTitre: "L'effet de levier",
+        },
       },
       {
         duree: 11,
-        texte: "Le courtier ne te donne pas cet argent : il bloque une garantie, la marge. Avec un levier de 1 pour 30, elle vaut un trentième de la position.",
-        visuel: { type: "formule", texte: "Marge = taille de la position ÷ levier", legende: "30 000 € ÷ 30 = 1 000 €" },
+        texte:
+          "Le courtier ne te donne pas cet argent : il bloque une garantie, la marge. Avec un levier de 1 pour 30, elle vaut un trentième de la position.",
+        visuel: {
+          type: "formule",
+          texte: "Marge = taille de la position ÷ levier",
+          legende: "30 000 € ÷ 30 = 1 000 €",
+        },
       },
       {
         duree: 6,
-        texte: "Sans levier, une position de 1 000 euros : une baisse de 1 % te coûte 10 euros.",
+        texte:
+          "Sans levier, une position de 1 000 euros : une baisse de 1 % te coûte 10 euros.",
         visuel: { type: "figure", scene: "levier-comparaison", etape: 0 },
       },
       {
         duree: 10,
-        texte: "Avec un levier de 1 pour 10, et toute la position permise : 10 000 euros. La même baisse coûte 100 euros, 10 % du capital.",
+        texte:
+          "Avec un levier de 1 pour 10, et toute la position permise : 10 000 euros. La même baisse coûte 100 euros, 10 % du capital.",
         visuel: { type: "figure", scene: "levier-comparaison", etape: 1 },
       },
       {
         duree: 8,
-        texte: "Avec 1 pour 30 : 30 000 euros de position. 300 euros perdus, soit 30 % du capital pour un mouvement de 1 %.",
+        texte:
+          "Avec 1 pour 30 : 30 000 euros de position. 300 euros perdus, soit 30 % du capital pour un mouvement de 1 %.",
         visuel: { type: "figure", scene: "levier-comparaison", etape: 2 },
       },
       {
         duree: 9,
-        texte: "Si tes pertes réduisent trop ton capital, le courtier ferme tes positions : c'est l'appel de marge, souvent au pire moment.",
+        texte:
+          "Si tes pertes réduisent trop ton capital, le courtier ferme tes positions : c'est l'appel de marge, souvent au pire moment.",
         visuel: {
           type: "points",
           titre: "L'appel de marge",
-          items: ["Les pertes réduisent ton capital", "Sous un seuil, le courtier ferme tes positions"],
+          items: [
+            "Les pertes réduisent ton capital",
+            "Sous un seuil, le courtier ferme tes positions",
+          ],
         },
       },
       {
         duree: 10,
-        texte: "Retiens : le levier ne change pas le marché, il change la taille de ta position. Le risque se maîtrise par la taille, pas par le levier disponible.",
-        visuel: { type: "titre", titre: "Le risque, c'est la taille", sousTitre: "Pas le levier disponible" },
+        texte:
+          "Retiens : le levier ne change pas le marché, il change la taille de ta position. Le risque se maîtrise par la taille, pas par le levier disponible.",
+        visuel: {
+          type: "titre",
+          titre: "Le risque, c'est la taille",
+          sousTitre: "Pas le levier disponible",
+        },
       },
     ],
   },
@@ -77,7 +100,8 @@ export const chapitre: Chapitre = {
           type: "formule",
           fiabilite: "calcul",
           texte: "Marge requise = taille de la position ÷ levier",
-          legende: "Position de 30 000 € avec un levier de 1:30 : 30 000 ÷ 30 = 1 000 € de marge.",
+          legende:
+            "Position de 30 000 € avec un levier de 1:30 : 30 000 ÷ 30 = 1 000 € de marge.",
         },
         {
           type: "p",
@@ -98,8 +122,10 @@ export const chapitre: Chapitre = {
         {
           type: "formule",
           fiabilite: "calcul",
-          texte: "Perte en % du capital = levier utilisé × variation du prix en %",
-          legende: "Avec une position de 30 fois le capital, une baisse de 1 % coûte 30 % du capital ; une baisse d'environ 3,3 % l'efface entièrement.",
+          texte:
+            "Perte en % du capital = levier utilisé × variation du prix en %",
+          legende:
+            "Avec une position de 30 fois le capital, une baisse de 1 % coûte 30 % du capital ; une baisse d'environ 3,3 % l'efface entièrement.",
         },
         {
           type: "encadre",
@@ -146,7 +172,8 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "levier-comparaison",
-      legende: "Même capital de 1 000 €, même baisse de 1 % : la perte dépend de la taille de position que le levier a permise.",
+      legende:
+        "Même capital de 1 000 €, même baisse de 1 % : la perte dépend de la taille de position que le levier a permise.",
     },
   ],
   exemple: {
@@ -178,15 +205,18 @@ export const chapitre: Chapitre = {
   erreurs: [
     {
       titre: "Confondre levier disponible et levier utilisé",
-      texte: "Un levier de 1:30 est un plafond. Ce qui compte, c'est la taille de position réellement ouverte par rapport au capital.",
+      texte:
+        "Un levier de 1:30 est un plafond. Ce qui compte, c'est la taille de position réellement ouverte par rapport au capital.",
     },
     {
       titre: "Croire que la marge est la perte maximale",
-      texte: "Les pertes se calculent sur la position entière ; elles peuvent consommer tout le capital du compte.",
+      texte:
+        "Les pertes se calculent sur la position entière ; elles peuvent consommer tout le capital du compte.",
     },
     {
       titre: "Choisir un courtier pour son levier élevé",
-      texte: "Un levier de 1:500 n'améliore aucune méthode : il permet seulement de perdre plus vite.",
+      texte:
+        "Un levier de 1:500 n'améliore aucune méthode : il permet seulement de perdre plus vite.",
     },
   ],
   resume: [
@@ -196,11 +226,40 @@ export const chapitre: Chapitre = {
     "L'appel de marge puis le stop out ferment les positions quand le capital ne couvre plus la marge.",
     "Le risque se maîtrise par la taille de position, pas par le levier disponible.",
   ],
+  exercices: [
+    {
+      id: "pp-12-e1",
+      type: "calcul",
+      consigne:
+        "Tu ouvres une position de 20 000 $ avec un levier de 1:50. Quelle marge ton courtier immobilise-t-il ?",
+      reponse: 400,
+      tolerance: 1,
+      unite: "$",
+      aide: "Marge requise = taille de la position ÷ levier.",
+      corrige:
+        "20 000 ÷ 50 = 400 $. La marge n'est pas un coût : c'est un dépôt bloqué tant que la position est ouverte. Le risque, lui, porte sur les 20 000 $.",
+      concepts: ["marge"],
+    },
+    {
+      id: "pp-12-e2",
+      type: "calcul",
+      consigne:
+        "Ta position vaut 10 fois ton capital (levier utilisé de 10). Le prix baisse de 3 %. Combien perds-tu, en pourcentage de ton capital ?",
+      reponse: 30,
+      tolerance: 0.5,
+      unite: "%",
+      aide: "Perte en % du capital = levier utilisé × variation du prix en %.",
+      corrige:
+        "10 × 3 % = 30 % du capital. Une petite variation de prix devient une grosse perte : c'est pourquoi le levier se règle d'après le risque, jamais d'après le gain espéré.",
+      concepts: ["levier"],
+    },
+  ],
   quiz: [
     {
       id: "c12-q1",
       type: "unique",
-      enonce: "Position de 20 000 € avec un levier de 1:20. Quelle est la marge requise ?",
+      enonce:
+        "Position de 20 000 € avec un levier de 1:20. Quelle est la marge requise ?",
       choix: ["20 €", "200 €", "1 000 €", "20 000 €"],
       bonne: 2,
       explication: "20 000 ÷ 20 = 1 000 €.",
@@ -209,24 +268,29 @@ export const chapitre: Chapitre = {
     {
       id: "c12-q2",
       type: "unique",
-      enonce: "Capital de 1 000 €, position de 10 000 €. Le prix baisse de 2 %. Quelle est la perte ?",
+      enonce:
+        "Capital de 1 000 €, position de 10 000 €. Le prix baisse de 2 %. Quelle est la perte ?",
       choix: ["2 €", "20 €", "200 €", "2 000 €"],
       bonne: 2,
-      explication: "La perte se calcule sur la position : 2 % de 10 000 € = 200 €, soit 20 % du capital.",
+      explication:
+        "La perte se calcule sur la position : 2 % de 10 000 € = 200 €, soit 20 % du capital.",
       concepts: ["levier"],
     },
     {
       id: "c12-q3",
       type: "vraifaux",
-      enonce: "Ta perte maximale sur une position est égale à la marge bloquée.",
+      enonce:
+        "Ta perte maximale sur une position est égale à la marge bloquée.",
       reponse: false,
-      explication: "La perte dépend de la taille de la position et du mouvement du prix ; elle peut dépasser largement la marge.",
+      explication:
+        "La perte dépend de la taille de la position et du mouvement du prix ; elle peut dépasser largement la marge.",
       concepts: ["marge", "levier"],
     },
     {
       id: "c12-q4",
       type: "unique",
-      enonce: "Avec une position de 30 fois ton capital, quelle baisse de prix efface environ tout le capital ?",
+      enonce:
+        "Avec une position de 30 fois ton capital, quelle baisse de prix efface environ tout le capital ?",
       choix: ["0,3 %", "3,3 %", "30 %", "100 %"],
       bonne: 1,
       explication: "30 × 3,33 % ≈ 100 % : une baisse d'environ 3,3 % suffit.",
@@ -243,7 +307,8 @@ export const chapitre: Chapitre = {
         "Choisir le courtier qui propose le levier le plus élevé",
       ],
       bonnes: [0, 2],
-      explication: "Le risque se maîtrise par la taille de position ; le levier maximal n'est qu'un plafond à ne pas viser.",
+      explication:
+        "Le risque se maîtrise par la taille de position ; le levier maximal n'est qu'un plafond à ne pas viser.",
       concepts: ["levier", "marge"],
     },
   ],

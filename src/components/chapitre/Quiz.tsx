@@ -4,6 +4,9 @@ import { useMemo, useRef, useState } from "react";
 import type { Question } from "@/content/schema";
 import { estComplete, melangeDeterministe, noter, noterQuiz, reponseVide, SEUIL_REUSSITE, type Reponse } from "@/lib/apprentissage/quiz";
 import { enregistrerQuiz } from "@/lib/progression/store";
+import { useSession } from "@/lib/compte/session";
+import { appeler, comptesDisponibles } from "@/lib/firebase/client";
+import Link from "next/link";
 import { typographie } from "@/lib/typographie";
 import { IconeCoche, IconeCroix } from "../ui/Icones";
 import { Anneau, Jauge } from "../ui/Progression";
@@ -264,8 +267,32 @@ function ChampQuestion({
   return null;
 }
 
+/** Sans compte, le quiz est présenté mais pas ouvert : il faut un compte (gratuit) pour enregistrer un résultat. */
+function PorteQuiz({ slug, chargement }: { slug: string; chargement: boolean }) {
+  const suite = encodeURIComponent(`/chapitre/${slug}/#etape-quiz`);
+  if (chargement) return <div className="carte h-40 animate-pulse" aria-busy="true" />;
+  return (
+    <div className="carte p-6 text-center">
+      <p className="text-lg font-semibold text-ink">Crée ton compte gratuit pour passer le quiz</p>
+      <p className="mx-auto mt-2 max-w-md text-ink-2">
+        Le cours reste ouvert à tous. Le quiz, lui, enregistre un résultat officiel : il te faut un compte, gratuit, sans abonnement. Ta progression sur cet appareil y sera reprise.
+      </p>
+      <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
+        <Link href={`/inscription/?suite=${suite}`} className="btn btn-primaire">
+          Créer un compte
+        </Link>
+        <Link href={`/connexion/?suite=${suite}`} className="btn btn-secondaire">
+          Se connecter
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 /** Quiz de chapitre : une question à la fois, correction immédiate, résultat enregistré par concept. */
 export function Quiz({ slug, questions, nomsConcepts }: { slug: string; questions: Question[]; nomsConcepts: Record<string, string> }) {
+  const session = useSession(true);
+  const [officiel, setOfficiel] = useState<{ statut: "envoi" | "ok" | "erreur"; message?: string; certificat?: string | null } | null>(null);
   const [reponses, setReponses] = useState<Reponse[]>(() => questions.map(reponseVide));
   const [index, setIndex] = useState(0);
   const [verifiees, setVerifiees] = useState<boolean[]>(() => questions.map(() => false));
@@ -275,11 +302,20 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
   const q = questions[index];
   const resultat = useMemo(() => (fini ? noterQuiz(questions, reponses) : null), [fini, questions, reponses]);
 
+  /** Résultat officiel : recalculé par le serveur à partir du corrigé qu'il détient, puis enregistré sur le compte. */
+  const envoyerOfficiel = () => {
+    setOfficiel({ statut: "envoi" });
+    appeler<{ reussi: boolean; certificat: string | null }>("noterQuiz", { slug, reponses })
+      .then((r) => setOfficiel({ statut: "ok", certificat: r.certificat }))
+      .catch((e) => setOfficiel({ statut: "erreur", message: (e as Error).message }));
+  };
+
   const terminer = () => {
     const r = noterQuiz(questions, reponses);
     if (!enregistre.current) {
       enregistrerQuiz(slug, r.score, r.parConcept, r.reussi);
       enregistre.current = true;
+      if (session.etat === "connecte") envoyerOfficiel();
     }
     setFini(true);
   };
@@ -289,8 +325,12 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
     setVerifiees(questions.map(() => false));
     setIndex(0);
     setFini(false);
+    setOfficiel(null);
     enregistre.current = false;
   };
+
+  // Tant que les comptes ne sont pas ouverts, le quiz reste utilisable sur l'appareil (résultat non officiel).
+  if (comptesDisponibles && session.etat !== "connecte") return <PorteQuiz slug={slug} chargement={session.etat === "inconnu"} />;
 
   if (fini && resultat) {
     return (
@@ -312,6 +352,34 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
             </p>
           </div>
         </div>
+        {officiel ? (
+          <p className={`rounded-xl border px-4 py-3 text-sm ${officiel.statut === "erreur" ? "border-warn/50 bg-warn/10" : "border-line bg-surface"}`} role="status">
+            {officiel.statut === "envoi" ? "Enregistrement du résultat officiel sur ton compte…" : null}
+            {officiel.statut === "ok" ? (
+              <>
+                Résultat officiel enregistré sur ton compte.
+                {officiel.certificat ? (
+                  <>
+                    {" "}
+                    Module terminé : ton certificat <span className="font-mono text-ink">{officiel.certificat}</span> est dans{" "}
+                    <Link href="/compte/#certificats" className="text-brand underline">
+                      Mon compte
+                    </Link>
+                    .
+                  </>
+                ) : null}
+              </>
+            ) : null}
+            {officiel.statut === "erreur" ? (
+              <>
+                Résultat gardé sur cet appareil, mais pas encore enregistré sur ton compte : {officiel.message}{" "}
+                <button type="button" className="font-semibold text-brand underline" onClick={envoyerOfficiel}>
+                  Réessayer
+                </button>
+              </>
+            ) : null}
+          </p>
+        ) : null}
         <div>
           <p className="mb-3 text-sm font-semibold text-ink">Par concept</p>
           <ul className="space-y-2.5">

@@ -24,38 +24,79 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 7,
-        texte: "Quand tu achètes, quelqu'un te vend. Qui sont ces autres participants, et pourquoi sont-ils là ?",
+        texte:
+          "Quand tu achètes, quelqu'un te vend. Qui sont ces autres participants, et pourquoi sont-ils là ?",
         visuel: { type: "titre", titre: "Qui est de l'autre côté ?" },
       },
       {
         duree: 8,
-        texte: "Les banques centrales fixent les taux d'intérêt directeurs. Leurs décisions font bouger les devises et des marchés entiers.",
-        visuel: { type: "points", titre: "Banques centrales", items: ["Fixent les taux directeurs", "Pilotent l'inflation et l'activité"] },
+        texte:
+          "Les banques centrales fixent les taux d'intérêt directeurs. Leurs décisions font bouger les devises et des marchés entiers.",
+        visuel: {
+          type: "points",
+          titre: "Banques centrales",
+          items: [
+            "Fixent les taux directeurs",
+            "Pilotent l'inflation et l'activité",
+          ],
+        },
       },
       {
         duree: 8,
-        texte: "Banques, fonds et assureurs gèrent des sommes énormes : épargne, retraites, couverture de risques. Leurs ordres pèsent lourd.",
-        visuel: { type: "points", titre: "Banques et institutions", items: ["Gestion de l'épargne", "Couverture des risques", "Opérations pour leurs clients"] },
+        texte:
+          "Banques, fonds et assureurs gèrent des sommes énormes : épargne, retraites, couverture de risques. Leurs ordres pèsent lourd.",
+        visuel: {
+          type: "points",
+          titre: "Banques et institutions",
+          items: [
+            "Gestion de l'épargne",
+            "Couverture des risques",
+            "Opérations pour leurs clients",
+          ],
+        },
       },
       {
         duree: 10,
-        texte: "Les entreprises achètent des devises pour payer à l'étranger, ou fixent à l'avance le prix d'une matière première. Elles se couvrent, elles ne spéculent pas.",
-        visuel: { type: "points", titre: "Entreprises", items: ["Paiements internationaux", "Couverture des prix futurs"] },
+        texte:
+          "Les entreprises achètent des devises pour payer à l'étranger, ou fixent à l'avance le prix d'une matière première. Elles se couvrent, elles ne spéculent pas.",
+        visuel: {
+          type: "points",
+          titre: "Entreprises",
+          items: ["Paiements internationaux", "Couverture des prix futurs"],
+        },
       },
       {
         duree: 10,
-        texte: "Les teneurs de marché affichent en permanence un prix d'achat et un prix de vente. Ton courtier, lui, te donne accès au marché et exécute tes ordres.",
-        visuel: { type: "points", titre: "Intermédiaires", items: ["Teneurs de marché : gagnent le spread", "Courtiers : donnent accès au marché"] },
+        texte:
+          "Les teneurs de marché affichent en permanence un prix d'achat et un prix de vente. Ton courtier, lui, te donne accès au marché et exécute tes ordres.",
+        visuel: {
+          type: "points",
+          titre: "Intermédiaires",
+          items: [
+            "Teneurs de marché : gagnent le spread",
+            "Courtiers : donnent accès au marché",
+          ],
+        },
       },
       {
         duree: 9,
-        texte: "Et puis les particuliers, comme toi. Ils pèsent peu, paient souvent plus de frais, et n'ont ni la vitesse ni l'information des professionnels.",
-        visuel: { type: "points", titre: "Particuliers", items: ["Petits volumes", "Frais plus élevés", "Moins d'information"] },
+        texte:
+          "Et puis les particuliers, comme toi. Ils pèsent peu, paient souvent plus de frais, et n'ont ni la vitesse ni l'information des professionnels.",
+        visuel: {
+          type: "points",
+          titre: "Particuliers",
+          items: ["Petits volumes", "Frais plus élevés", "Moins d'information"],
+        },
       },
       {
         duree: 10,
-        texte: "Ce n'est pas une raison d'abandonner, mais une raison d'être humble : ton avantage ne viendra ni de la vitesse ni de la taille, mais de la discipline.",
-        visuel: { type: "titre", titre: "Ton terrain", sousTitre: "Patience, discipline, maîtrise du risque" },
+        texte:
+          "Ce n'est pas une raison d'abandonner, mais une raison d'être humble : ton avantage ne viendra ni de la vitesse ni de la taille, mais de la discipline.",
+        visuel: {
+          type: "titre",
+          titre: "Ton terrain",
+          sousTitre: "Patience, discipline, maîtrise du risque",
+        },
       },
     ],
   },
@@ -74,13 +115,41 @@ export const chapitre: Chapitre = {
           fiabilite: "fait",
           entetes: ["Acteur", "Exemples", "Motivation principale"],
           lignes: [
-            ["Banques centrales", "BCE, Réserve fédérale américaine, BEAC, BCEAO", "Politique monétaire : inflation, activité, stabilité financière"],
-            ["Banques", "Grandes banques commerciales et d'investissement", "Opérations pour leurs clients, tenue de marché, gestion de leurs propres risques"],
-            ["Gestionnaires d'actifs", "Fonds d'investissement, fonds de pension, assureurs", "Faire fructifier l'épargne sur le long terme"],
-            ["Entreprises", "Exportateurs, compagnies aériennes, industriels", "Se couvrir contre les variations de devises ou de matières premières"],
-            ["Teneurs de marché", "Sociétés spécialisées, banques", "Gagner le spread en affichant des prix en permanence"],
-            ["Fonds spéculatifs et sociétés de trading", "Fonds alternatifs, trading à haute fréquence", "Profiter des variations de prix ou d'écarts entre prix"],
-            ["Particuliers", "Investisseurs et traders individuels", "Épargne ou spéculation"],
+            [
+              "Banques centrales",
+              "BCE, Réserve fédérale américaine, BEAC, BCEAO",
+              "Politique monétaire : inflation, activité, stabilité financière",
+            ],
+            [
+              "Banques",
+              "Grandes banques commerciales et d'investissement",
+              "Opérations pour leurs clients, tenue de marché, gestion de leurs propres risques",
+            ],
+            [
+              "Gestionnaires d'actifs",
+              "Fonds d'investissement, fonds de pension, assureurs",
+              "Faire fructifier l'épargne sur le long terme",
+            ],
+            [
+              "Entreprises",
+              "Exportateurs, compagnies aériennes, industriels",
+              "Se couvrir contre les variations de devises ou de matières premières",
+            ],
+            [
+              "Teneurs de marché",
+              "Sociétés spécialisées, banques",
+              "Gagner le spread en affichant des prix en permanence",
+            ],
+            [
+              "Fonds spéculatifs et sociétés de trading",
+              "Fonds alternatifs, trading à haute fréquence",
+              "Profiter des variations de prix ou d'écarts entre prix",
+            ],
+            [
+              "Particuliers",
+              "Investisseurs et traders individuels",
+              "Épargne ou spéculation",
+            ],
           ],
         },
       ],
@@ -165,11 +234,13 @@ export const chapitre: Chapitre = {
     },
     {
       titre: "Choisir un courtier pour son bonus",
-      texte: "Bonus de dépôt, levier très élevé et promesses de gains sont des signaux d'alerte. Le premier critère est la réglementation.",
+      texte:
+        "Bonus de dépôt, levier très élevé et promesses de gains sont des signaux d'alerte. Le premier critère est la réglementation.",
     },
     {
       titre: "Croire qu'on peut battre les professionnels sur leur terrain",
-      texte: "Vitesse, information, coûts : un particulier part avec un handicap. Son terrain, c'est la patience et la maîtrise du risque.",
+      texte:
+        "Vitesse, information, coûts : un particulier part avec un handicap. Son terrain, c'est la patience et la maîtrise du risque.",
     },
   ],
   resume: [
@@ -179,6 +250,26 @@ export const chapitre: Chapitre = {
     "Les prix bougent quand l'équilibre des flux change ; beaucoup de ces flux ignorent les graphiques.",
     "« Smart money » et intentions prêtées aux institutions relèvent de l'interprétation d'école.",
   ],
+  exercices: [
+    {
+      id: "pp-04-e1",
+      type: "reflexion",
+      consigne:
+        "Classe ces quatre acteurs : une banque centrale qui relève ses taux, un fonds de pension, un particulier qui trade sur son téléphone, un teneur de marché. Lequel fournit en permanence des prix d'achat et de vente ? Lequel a l'horizon le plus long ? Lequel pèse le moins sur les prix ?",
+      corrige:
+        "Le teneur de marché affiche en continu un prix d'achat et un prix de vente : il fournit la liquidité. Le fonds de pension a l'horizon le plus long (des années). Le particulier pèse le moins sur les prix. La banque centrale n'est pas un « trader » : ses décisions de taux déplacent tout le marché des devises et des taux.",
+      concepts: ["participants"],
+    },
+    {
+      id: "pp-04-e2",
+      type: "reflexion",
+      consigne:
+        "Un courtier inconnu te propose un « bonus de 100 % » sur ton dépôt et un levier de 1:1000. Cite trois vérifications à faire avant d'ouvrir un compte chez lui.",
+      corrige:
+        "Vérifications attendues : 1) la régulation (nom de l'autorité, numéro de licence vérifiable sur le site de cette autorité) ; 2) les conditions du bonus (volume à trader avant tout retrait, souvent impossible à atteindre) ; 3) les modalités et délais de retrait ; aussi la séparation des fonds clients et la protection contre le solde négatif. Un levier extrême et un bonus agressif sont des signaux d'alerte, pas des avantages.",
+      concepts: ["courtier"],
+    },
+  ],
   quiz: [
     {
       id: "c04-q1",
@@ -187,19 +278,30 @@ export const chapitre: Chapitre = {
       paires: [
         ["Banque centrale", "Piloter l'inflation et l'activité par les taux"],
         ["Exportateur", "Se couvrir contre une variation de devise"],
-        ["Teneur de marché", "Gagner le spread en affichant des prix en permanence"],
+        [
+          "Teneur de marché",
+          "Gagner le spread en affichant des prix en permanence",
+        ],
         ["Fonds de pension", "Faire fructifier l'épargne sur le long terme"],
       ],
-      explication: "Chaque acteur a sa logique : politique monétaire, couverture, tenue de marché, gestion d'épargne.",
+      explication:
+        "Chaque acteur a sa logique : politique monétaire, couverture, tenue de marché, gestion d'épargne.",
       concepts: ["participants"],
     },
     {
       id: "c04-q2",
       type: "unique",
-      enonce: "Une compagnie aérienne fixe aujourd'hui le prix du carburant qu'elle achètera dans six mois. Que fait-elle ?",
-      choix: ["Elle spécule sur une hausse du pétrole", "Elle se couvre contre une variation du prix", "Elle fait de la tenue de marché", "Elle manipule le marché"],
+      enonce:
+        "Une compagnie aérienne fixe aujourd'hui le prix du carburant qu'elle achètera dans six mois. Que fait-elle ?",
+      choix: [
+        "Elle spécule sur une hausse du pétrole",
+        "Elle se couvre contre une variation du prix",
+        "Elle fait de la tenue de marché",
+        "Elle manipule le marché",
+      ],
       bonne: 1,
-      explication: "Elle se protège d'une hausse future du carburant : c'est une couverture.",
+      explication:
+        "Elle se protège d'une hausse future du carburant : c'est une couverture.",
       concepts: ["participants"],
     },
     {
@@ -207,24 +309,33 @@ export const chapitre: Chapitre = {
       type: "vraifaux",
       enonce: "Un courtier peut être la contrepartie de tes ordres.",
       reponse: true,
-      explication: "Certains courtiers (teneurs de marché) se placent eux-mêmes de l'autre côté des ordres de leurs clients.",
+      explication:
+        "Certains courtiers (teneurs de marché) se placent eux-mêmes de l'autre côté des ordres de leurs clients.",
       concepts: ["courtier"],
     },
     {
       id: "c04-q4",
       type: "unique",
       enonce: "Quel est le premier critère pour choisir un courtier ?",
-      choix: ["Le bonus offert au dépôt", "Le levier maximal proposé", "Son agrément par une autorité financière reconnue", "Son nombre d'abonnés sur les réseaux sociaux"],
+      choix: [
+        "Le bonus offert au dépôt",
+        "Le levier maximal proposé",
+        "Son agrément par une autorité financière reconnue",
+        "Son nombre d'abonnés sur les réseaux sociaux",
+      ],
       bonne: 2,
-      explication: "La réglementation protège tes fonds ; bonus et levier élevé sont plutôt des signaux d'alerte.",
+      explication:
+        "La réglementation protège tes fonds ; bonus et levier élevé sont plutôt des signaux d'alerte.",
       concepts: ["courtier"],
     },
     {
       id: "c04-q5",
       type: "vraifaux",
-      enonce: "L'idée que les institutions « vont chercher les stops des particuliers » est un fait démontré.",
+      enonce:
+        "L'idée que les institutions « vont chercher les stops des particuliers » est un fait démontré.",
       reponse: false,
-      explication: "C'est une interprétation propre à certaines écoles (SMC, ICT). Elle peut être discutée et testée, mais elle n'est pas établie.",
+      explication:
+        "C'est une interprétation propre à certaines écoles (SMC, ICT). Elle peut être discutée et testée, mais elle n'est pas établie.",
       concepts: ["participants"],
     },
   ],

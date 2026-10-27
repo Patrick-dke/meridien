@@ -328,3 +328,11 @@ export const scenes: Record<string, SceneFigure> = {
     resultats: [2, -1, -1, 2, -1, -1, -1, -1, 2, 2, -1, -1, -1, -1, -1, -1, 2, 2, -1, 2],
   },
 };
+
+/**
+ * Scènes des chapitres payants : elles arrivent avec le contenu, servi par la base à qui a un droit d'accès,
+ * et rejoignent ce registre dans le navigateur. Une scène publique n'est jamais remplacée.
+ */
+export function ajouterScenes(extra: Record<string, SceneFigure>) {
+  for (const [id, s] of Object.entries(extra)) if (!(id in scenes)) scenes[id] = s;
+}

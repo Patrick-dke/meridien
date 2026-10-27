@@ -1,7 +1,8 @@
+import { termesLots } from "./lots";
 import type { Terme } from "./schema";
 
 /** Glossaire interactif : chaque terme est cliquable dans les cours via la syntaxe [[slug]]. */
-export const glossaire: Terme[] = [
+const glossaireBase: Terme[] = [
   {
     slug: "action",
     terme: "Action",
@@ -563,5 +564,8 @@ export const glossaire: Terme[] = [
     voirAussi: ["liquidite"],
   },
 ];
+
+/** Le glossaire complet, trié par terme : base et termes introduits par les modules payants. */
+export const glossaire: Terme[] = [...glossaireBase, ...termesLots].sort((a, b) => a.terme.localeCompare(b.terme, "fr"));
 
 export const termeParSlug = new Map(glossaire.map((t) => [t.slug, t]));

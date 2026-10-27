@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProgression } from "@/lib/progression/store";
 import { Jauge } from "../ui/Progression";
-import { IconeAccueil, IconeGlossaire, IconeLivre, IconeOutils, IconeProfil } from "../ui/Icones";
+import { IconeAccueil, IconeEtoile, IconeGlossaire, IconeLivre, IconeOutils, IconeProfil } from "../ui/Icones";
 import { Logo } from "./Logo";
 
 const liens = [
   { href: "/", libelle: "Accueil", Icone: IconeAccueil, actif: (p: string) => p === "/" },
+  { href: "/formations/", libelle: "Formations", Icone: IconeEtoile, actif: (p: string) => p.startsWith("/formations") || p.startsWith("/paiement") },
   {
     href: "/academies/",
     libelle: "Apprendre",
@@ -16,9 +17,11 @@ const liens = [
     actif: (p: string) => p.startsWith("/academies") || p.startsWith("/chapitre") || p.startsWith("/parcours") || p.startsWith("/commencer"),
   },
   { href: "/outils/", libelle: "Outils", Icone: IconeOutils, actif: (p: string) => p.startsWith("/outils") },
-  { href: "/glossaire/", libelle: "Glossaire", Icone: IconeGlossaire, actif: (p: string) => p.startsWith("/glossaire") },
-  { href: "/tableau-de-bord/", libelle: "Moi", Icone: IconeProfil, actif: (p: string) => p.startsWith("/tableau-de-bord") || p.startsWith("/parametres") },
+  { href: "/glossaire/", libelle: "Glossaire", Icone: IconeGlossaire, actif: (p: string) => p.startsWith("/glossaire"), mobile: false },
+  { href: "/tableau-de-bord/", libelle: "Moi", Icone: IconeProfil, actif: (p: string) => p.startsWith("/tableau-de-bord") || p.startsWith("/parametres") || p.startsWith("/compte") },
 ];
+/** Barre du bas sur mobile : cinq entrées au plus ; le glossaire reste accessible par la recherche et les cours. */
+const liensMobiles = liens.filter((l) => l.mobile !== false);
 
 /** Reprise rapide : le chapitre en cours et son avancement, sous la navigation. */
 function Reprise({ titres, etapes }: { titres: Record<string, string>; etapes: Record<string, number> }) {
@@ -85,7 +88,7 @@ export function BarreLaterale({ titres, etapes }: { titres: Record<string, strin
 /** Barre de navigation inférieure (mobile et tablette), avec pastille active qui glisse. */
 export function BarreBas() {
   const chemin = usePathname();
-  const indice = liens.findIndex((l) => l.actif(chemin));
+  const indice = liensMobiles.findIndex((l) => l.actif(chemin));
   return (
     <nav
       aria-label="Navigation principale"
@@ -99,7 +102,7 @@ export function BarreBas() {
         >
           <span className="mx-auto block h-full w-8 rounded-b-full" style={{ background: "var(--meridien)" }} />
         </span>
-        {liens.map(({ href, libelle, Icone, actif }) => {
+        {liensMobiles.map(({ href, libelle, Icone, actif }) => {
           const courant = actif(chemin);
           return (
             <li key={href}>

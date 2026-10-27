@@ -203,6 +203,44 @@ h3,
   border-radius: 1rem;
 }
 
+/* ——— Formulaires ——— */
+.champ {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line-strong);
+  background: rgb(10 14 24 / 0.7);
+  padding: 0.7rem 0.9rem;
+  color: var(--ink);
+  font-size: 1rem; /* 16 px : pas de zoom automatique sur iPhone */
+  transition:
+    border-color 160ms,
+    box-shadow 160ms;
+}
+.champ::placeholder {
+  color: var(--ink-3);
+}
+.champ:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgb(106 92 246 / 0.3);
+}
+.champ[aria-invalid="true"] {
+  border-color: var(--bad);
+}
+textarea.champ {
+  min-height: 8rem;
+  resize: vertical;
+}
+.etiquette {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
 /* ——— Cartes ——— */
 .carte {
   position: relative;

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const largeurs = [320, 375, 414, 768, 1024, 1440];
-const pages = ["/", "/academies/", "/academies/fondamentaux/outils-du-trader/", "/parcours/premiers-pas/", "/chapitre/stop-loss-take-profit/", "/tableau-de-bord/", "/outils/"];
+const pages = ["/", "/academies/", "/academies/fondamentaux/outils-du-trader/", "/parcours/premiers-pas/", "/chapitre/stop-loss-take-profit/", "/tableau-de-bord/", "/outils/", "/formations/", "/formations/smart-money-concepts/", "/chapitre/rejets-et-meches/", "/inscription/"];
 
 test.describe("mise en page sur plusieurs tailles d'écran", () => {
   test.skip(({ isMobile }) => isMobile, "Les largeurs sont fixées explicitement");

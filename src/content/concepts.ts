@@ -1,10 +1,11 @@
+import { conceptsLots } from "./lots";
 import type { Concept } from "./schema";
 
 /**
  * Concepts suivis par le moteur de maîtrise. `chapitre` est le chapitre qui enseigne le concept ;
  * `prerequis` sert à la règle R2 (revoir d'abord une base fragile).
  */
-export const concepts: Concept[] = [
+const conceptsPremiersPas: Concept[] = [
   { id: "trading", nom: "Le trading", chapitre: "quest-ce-que-le-trading", prerequis: [] },
   { id: "risque-de-perte", nom: "Le risque de perte", chapitre: "quest-ce-que-le-trading", prerequis: [] },
   { id: "position-longue-courte", nom: "Positions acheteuse et vendeuse", chapitre: "quest-ce-que-le-trading", prerequis: ["trading"] },
@@ -39,5 +40,8 @@ export const concepts: Concept[] = [
   { id: "taux-reussite", nom: "Taux de réussite", chapitre: "rendement-risque-esperance", prerequis: [] },
   { id: "esperance", nom: "Espérance mathématique", chapitre: "rendement-risque-esperance", prerequis: ["rendement-risque", "taux-reussite"] },
 ];
+
+/** Tous les concepts suivis : ceux de « Premiers pas » et ceux des modules payants. */
+export const concepts: Concept[] = [...conceptsPremiersPas, ...conceptsLots];
 
 export const conceptParId = new Map(concepts.map((c) => [c.id, c]));

@@ -24,41 +24,60 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 10,
-        texte: "Un trade coûte de l'argent avant même de rapporter quoi que ce soit. Trois coûts principaux : le spread, la commission et le slippage.",
-        visuel: { type: "titre", titre: "Ce que coûte un trade", sousTitre: "Spread, commission, slippage" },
-      },
-      {
-        duree: 9,
-        texte: "Le spread d'abord : tu achètes à l'ask, tu vends au bid. Si tu achètes puis revends aussitôt, tu perds l'écart.",
-        visuel: { type: "figure", scene: "carnet-simple" },
-      },
-      {
-        duree: 9,
-        texte: "La commission, ensuite : des frais fixes ou en pourcentage, à chaque ordre. Sans commission, le spread est souvent plus large.",
+        texte:
+          "Un trade coûte de l'argent avant même de rapporter quoi que ce soit. Trois coûts principaux : le spread, la commission et le slippage.",
         visuel: {
-          type: "points",
-          titre: "La commission",
-          items: ["Fixe par lot ou par ordre", "Ou en pourcentage du montant", "Parfois remplacée par un spread plus large"],
+          type: "titre",
+          titre: "Ce que coûte un trade",
+          sousTitre: "Spread, commission, slippage",
         },
       },
       {
         duree: 9,
-        texte: "Le slippage, enfin : l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur.",
+        texte:
+          "Le spread d'abord : tu achètes à l'ask, tu vends au bid. Si tu achètes puis revends aussitôt, tu perds l'écart.",
+        visuel: { type: "figure", scene: "carnet-simple" },
+      },
+      {
+        duree: 9,
+        texte:
+          "La commission, ensuite : des frais fixes ou en pourcentage, à chaque ordre. Sans commission, le spread est souvent plus large.",
+        visuel: {
+          type: "points",
+          titre: "La commission",
+          items: [
+            "Fixe par lot ou par ordre",
+            "Ou en pourcentage du montant",
+            "Parfois remplacée par un spread plus large",
+          ],
+        },
+      },
+      {
+        duree: 9,
+        texte:
+          "Le slippage, enfin : l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur.",
         visuel: { type: "figure", scene: "carnet-mince", etape: 1 },
       },
       {
         duree: 6,
-        texte: "Il frappe surtout les ordres au marché et les stops, lors des annonces et des gaps.",
+        texte:
+          "Il frappe surtout les ordres au marché et les stops, lors des annonces et des gaps.",
         visuel: { type: "figure", scene: "gap-stop", etape: 1 },
       },
       {
         duree: 8,
-        texte: "Additionne-les : sur un objectif de 10 pips, un coût total de 2 pips représente déjà un cinquième du gain visé.",
-        visuel: { type: "formule", texte: "2 pips ÷ 10 pips = 20 %", legende: "Part de l'objectif absorbée par les coûts" },
+        texte:
+          "Additionne-les : sur un objectif de 10 pips, un coût total de 2 pips représente déjà un cinquième du gain visé.",
+        visuel: {
+          type: "formule",
+          texte: "2 pips ÷ 10 pips = 20 %",
+          legende: "Part de l'objectif absorbée par les coûts",
+        },
       },
       {
         duree: 8,
-        texte: "Retiens : les coûts sont certains, les gains ne le sont pas. Plus ton objectif est petit, plus ils pèsent.",
+        texte:
+          "Retiens : les coûts sont certains, les gains ne le sont pas. Plus ton objectif est petit, plus ils pèsent.",
         visuel: { type: "titre", titre: "Coûts certains, gains incertains" },
       },
     ],
@@ -125,7 +144,8 @@ export const chapitre: Chapitre = {
         {
           type: "formule",
           fiabilite: "calcul",
-          texte: "Coût d'un aller-retour = spread + commissions (entrée et sortie) + slippage",
+          texte:
+            "Coût d'un aller-retour = spread + commissions (entrée et sortie) + slippage",
         },
         {
           type: "p",
@@ -140,14 +160,20 @@ export const chapitre: Chapitre = {
     {
       type: "figure",
       scene: "carnet-simple",
-      legende: "Le spread : 0,02 € entre le meilleur vendeur (50,02 €) et le meilleur acheteur (50,00 €).",
+      legende:
+        "Le spread : 0,02 € entre le meilleur vendeur (50,02 €) et le meilleur acheteur (50,00 €).",
     },
     {
       type: "figure",
       scene: "carnet-mince",
-      legende: "Slippage par manque de profondeur : prix moyen de 50,03 € au lieu des 50,02 € affichés.",
+      legende:
+        "Slippage par manque de profondeur : prix moyen de 50,03 € au lieu des 50,02 € affichés.",
     },
-    { type: "figure", scene: "gap-stop", legende: "Slippage par gap : stop à 47,80 €, exécution à 46,90 €." },
+    {
+      type: "figure",
+      scene: "gap-stop",
+      legende: "Slippage par gap : stop à 47,80 €, exécution à 46,90 €.",
+    },
   ],
   exemple: {
     titre: "Le coût d'un aller-retour sur EUR/USD",
@@ -179,13 +205,19 @@ export const chapitre: Chapitre = {
   erreurs: [
     {
       titre: "Croire les publicités « zéro commission »",
-      texte: "Le courtier se rémunère alors sur le spread, parfois plus large. Compare toujours le coût total.",
+      texte:
+        "Le courtier se rémunère alors sur le spread, parfois plus large. Compare toujours le coût total.",
     },
     {
       titre: "Négliger le slippage dans ses calculs",
-      texte: "Sur les ordres au marché et les stops, surtout autour des annonces, il fait partie du coût réel.",
+      texte:
+        "Sur les ordres au marché et les stops, surtout autour des annonces, il fait partie du coût réel.",
     },
-    { titre: "Viser des objectifs minuscules", texte: "Plus l'objectif est petit, plus la part absorbée par les coûts est grande." },
+    {
+      titre: "Viser des objectifs minuscules",
+      texte:
+        "Plus l'objectif est petit, plus la part absorbée par les coûts est grande.",
+    },
   ],
   resume: [
     "Trois coûts principaux : spread, commission, slippage.",
@@ -194,14 +226,43 @@ export const chapitre: Chapitre = {
     "Le slippage touche les ordres au marché et les stops, surtout lors des annonces et des gaps.",
     "Les coûts pèsent d'autant plus que l'objectif est petit.",
   ],
+  exercices: [
+    {
+      id: "pp-10-e1",
+      type: "calcul",
+      consigne:
+        "Tu fais un aller-retour sur 100 actions : spread de 0,04 € par action, commission de 2 € à l'entrée et 2 € à la sortie, et glissement de 0,02 € par action à l'exécution. Quel est le coût total de l'aller-retour ?",
+      reponse: 10,
+      tolerance: 0.2,
+      unite: "€",
+      aide: "Coût d'un aller-retour = spread + commissions (entrée et sortie) + glissement.",
+      corrige:
+        "Spread : 0,04 × 100 = 4 €. Commissions : 2 + 2 = 4 €. Glissement : 0,02 × 100 = 2 €. Total : 10 €.",
+      concepts: ["spread", "commission", "slippage"],
+    },
+    {
+      id: "pp-10-e2",
+      type: "calcul",
+      consigne:
+        "Ta méthode vise un gain brut moyen de 30 € par trade, et chaque aller-retour coûte 10 €. Quelle part du gain brut les coûts emportent-ils, en pourcentage ?",
+      reponse: 33.3,
+      tolerance: 0.4,
+      unite: "%",
+      corrige:
+        "10 ÷ 30 = 0,333, soit environ 33,3 %. Un tiers du gain visé part en coûts : plus les objectifs sont petits, plus les coûts pèsent.",
+      concepts: ["spread", "commission"],
+    },
+  ],
   quiz: [
     {
       id: "c10-q1",
       type: "unique",
-      enonce: "Sur EUR/USD, l'ask est à 1,08512 et le bid à 1,08500. Quel est le spread ?",
+      enonce:
+        "Sur EUR/USD, l'ask est à 1,08512 et le bid à 1,08500. Quel est le spread ?",
       choix: ["0,12 pip", "1,2 pip", "12 pips", "0,0012 pip"],
       bonne: 1,
-      explication: "1,08512 − 1,08500 = 0,00012, soit 1,2 pip (un pip vaut 0,0001).",
+      explication:
+        "1,08512 − 1,08500 = 0,00012, soit 1,2 pip (un pip vaut 0,0001).",
       concepts: ["spread"],
     },
     {
@@ -209,22 +270,26 @@ export const chapitre: Chapitre = {
       type: "vraifaux",
       enonce: "Un ordre limite peut subir un slippage défavorable.",
       reponse: false,
-      explication: "Un ordre limite s'exécute à son prix ou à un meilleur prix, ou pas du tout.",
+      explication:
+        "Un ordre limite s'exécute à son prix ou à un meilleur prix, ou pas du tout.",
       concepts: ["slippage"],
     },
     {
       id: "c10-q3",
       type: "unique",
-      enonce: "Spread de 1 pip et commission de 7 $ aller-retour pour 1 lot de EUR/USD, compte en dollars. Quel est le coût total, hors slippage ?",
+      enonce:
+        "Spread de 1 pip et commission de 7 $ aller-retour pour 1 lot de EUR/USD, compte en dollars. Quel est le coût total, hors slippage ?",
       choix: ["8 $", "10 $", "17 $", "70 $"],
       bonne: 2,
-      explication: "1 pip × 10 $ = 10 $ de spread, plus 7 $ de commission : 17 $.",
+      explication:
+        "1 pip × 10 $ = 10 $ de spread, plus 7 $ de commission : 17 $.",
       concepts: ["spread", "commission"],
     },
     {
       id: "c10-q4",
       type: "unique",
-      enonce: "Un coût total de 2 pips représente quelle part d'un objectif de 10 pips ?",
+      enonce:
+        "Un coût total de 2 pips représente quelle part d'un objectif de 10 pips ?",
       choix: ["2 %", "5 %", "10 %", "20 %"],
       bonne: 3,
       explication: "2 ÷ 10 = 20 % : un cinquième du gain visé.",
@@ -241,7 +306,8 @@ export const chapitre: Chapitre = {
         "Sur un ordre au marché dans un marché peu liquide",
       ],
       bonnes: [0, 1, 3],
-      explication: "Annonces, gaps et manque de liquidité provoquent le slippage ; un ordre limite n'en subit pas de défavorable.",
+      explication:
+        "Annonces, gaps et manque de liquidité provoquent le slippage ; un ordre limite n'en subit pas de défavorable.",
       concepts: ["slippage"],
     },
   ],

@@ -77,6 +77,19 @@ export const Question = z.discriminatedUnion("type", [
 ]);
 export type Question = z.infer<typeof Question>;
 
+const baseExercice = { id: texte, consigne: texte, corrige: texte, concepts: z.array(texte).min(1) };
+
+/** Exercices d'application, notés à part du quiz : calcul, lecture de graphique, réflexion guidée. */
+export const Exercice = z.discriminatedUnion("type", [
+  /** Réponse numérique, juste si elle est à `tolerance` près de `reponse`. */
+  z.object({ ...baseExercice, type: z.literal("calcul"), reponse: z.number(), tolerance: z.number().min(0), unite: z.string().optional(), aide: z.string().optional() }),
+  /** L'apprenant touche sur le graphique la ou les bougies demandées (indices de `bonnes`, à partir de 0). */
+  z.object({ ...baseExercice, type: z.literal("graphique"), scene: texte, etape: z.number().int().min(0).optional(), bonnes: z.array(z.number().int().min(0)).min(1) }),
+  /** Question ouverte : l'apprenant écrit sa réponse, puis compare au corrigé. */
+  z.object({ ...baseExercice, type: z.literal("reflexion") }),
+]);
+export type Exercice = z.infer<typeof Exercice>;
+
 export const Chapitre = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/),
   titre: texte,
@@ -97,6 +110,7 @@ export const Chapitre = z.object({
   exemple: z.object({ titre: texte, blocs: z.array(Bloc).min(1) }).nullable(),
   erreurs: z.array(z.object({ titre: texte, texte })).min(2).max(4),
   resume: z.array(texte).min(3).max(6),
+  exercices: z.array(Exercice).min(1).max(4),
   quiz: z.array(Question).min(4).max(8),
 });
 export type Chapitre = z.infer<typeof Chapitre>;

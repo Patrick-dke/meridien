@@ -24,46 +24,75 @@ export const chapitre: Chapitre = {
     scenes: [
       {
         duree: 9,
-        texte: "Combien acheter ? La bonne question n'est pas « combien je veux gagner », mais « combien j'accepte de perdre si j'ai tort ».",
-        visuel: { type: "titre", titre: "Combien acheter ?", sousTitre: "Commence par ce que tu acceptes de perdre" },
+        texte:
+          "Combien acheter ? La bonne question n'est pas « combien je veux gagner », mais « combien j'accepte de perdre si j'ai tort ».",
+        visuel: {
+          type: "titre",
+          titre: "Combien acheter ?",
+          sousTitre: "Commence par ce que tu acceptes de perdre",
+        },
       },
       {
         duree: 9,
-        texte: "D'abord, fixe ton risque par opération : un petit pourcentage de ton capital. Avec 2 000 euros et 1 %, c'est 20 euros.",
-        visuel: { type: "points", titre: "Étape 1 : le risque", items: ["Un pourcentage fixe du capital", "Souvent 0,5 à 2 %"] },
+        texte:
+          "D'abord, fixe ton risque par opération : un petit pourcentage de ton capital. Avec 2 000 euros et 1 %, c'est 20 euros.",
+        visuel: {
+          type: "points",
+          titre: "Étape 1 : le risque",
+          items: ["Un pourcentage fixe du capital", "Souvent 0,5 à 2 %"],
+        },
       },
       {
         duree: 9,
-        texte: "Ensuite, place ton stop là où ton idée devient fausse. Ici, entrée à 50 euros, stop à 48 : 2 euros de risque par action.",
+        texte:
+          "Ensuite, place ton stop là où ton idée devient fausse. Ici, entrée à 50 euros, stop à 48 : 2 euros de risque par action.",
         visuel: { type: "figure", scene: "position-stop-distance", etape: 1 },
       },
       {
         duree: 7,
-        texte: "Enfin, divise : 20 euros de risque, 2 euros par action. Tu achètes 10 actions, pas une de plus.",
-        visuel: { type: "formule", texte: "20 € ÷ 2 € = 10 actions", legende: "Étape 3 : la taille" },
+        texte:
+          "Enfin, divise : 20 euros de risque, 2 euros par action. Tu achètes 10 actions, pas une de plus.",
+        visuel: {
+          type: "formule",
+          texte: "20 € ÷ 2 € = 10 actions",
+          legende: "Étape 3 : la taille",
+        },
       },
       {
         duree: 9,
-        texte: "Si le stop est touché, tu perds 20 euros, comme prévu. Le stop a fixé la distance ; ta règle a fixé la taille.",
-        visuel: { type: "points", items: ["Le stop fixe la distance", "La règle de risque fixe la taille"] },
+        texte:
+          "Si le stop est touché, tu perds 20 euros, comme prévu. Le stop a fixé la distance ; ta règle a fixé la taille.",
+        visuel: {
+          type: "points",
+          items: [
+            "Le stop fixe la distance",
+            "La règle de risque fixe la taille",
+          ],
+        },
       },
       {
         duree: 9,
-        texte: "Pourquoi si peu ? Parce que même une méthode gagnante enchaîne les pertes. Ici, six d'affilée, avec une méthode pourtant légèrement gagnante.",
+        texte:
+          "Pourquoi si peu ? Parce que même une méthode gagnante enchaîne les pertes. Ici, six d'affilée, avec une méthode pourtant légèrement gagnante.",
         visuel: { type: "figure", scene: "series-resultats", etape: 2 },
       },
       {
         duree: 8,
-        texte: "Six pertes à 1 % coûtent environ 6 % du capital. À 10 % par trade, près de la moitié.",
+        texte:
+          "Six pertes à 1 % coûtent environ 6 % du capital. À 10 % par trade, près de la moitié.",
         visuel: {
           type: "points",
           titre: "Six pertes d'affilée",
-          items: ["À 1 % par trade : environ −6 %", "À 10 % par trade : environ −47 %"],
+          items: [
+            "À 1 % par trade : environ −6 %",
+            "À 10 % par trade : environ −47 %",
+          ],
         },
       },
       {
         duree: 6,
-        texte: "Retiens : d'abord le risque, ensuite le stop, enfin la taille. Dans cet ordre, toujours.",
+        texte:
+          "Retiens : d'abord le risque, ensuite le stop, enfin la taille. Dans cet ordre, toujours.",
         visuel: { type: "titre", titre: "Risque → stop → taille" },
       },
     ],
@@ -92,8 +121,10 @@ export const chapitre: Chapitre = {
         {
           type: "formule",
           fiabilite: "calcul",
-          texte: "Taille = montant risqué ÷ (distance du stop × valeur d'un point par unité)",
-          legende: "Pour une action, un point vaut 1 € par action : taille = montant risqué ÷ distance du stop.",
+          texte:
+            "Taille = montant risqué ÷ (distance du stop × valeur d'un point par unité)",
+          legende:
+            "Pour une action, un point vaut 1 € par action : taille = montant risqué ÷ distance du stop.",
         },
         {
           type: "liste",
@@ -127,7 +158,12 @@ export const chapitre: Chapitre = {
         {
           type: "tableau",
           fiabilite: "calcul",
-          entetes: ["Pertes d'affilée", "Capital restant à 1 % par trade", "à 5 % par trade", "à 10 % par trade"],
+          entetes: [
+            "Pertes d'affilée",
+            "Capital restant à 1 % par trade",
+            "à 5 % par trade",
+            "à 10 % par trade",
+          ],
           lignes: [
             ["3", "97,0 %", "85,7 %", "72,9 %"],
             ["6", "94,1 %", "73,5 %", "53,1 %"],
@@ -159,11 +195,17 @@ export const chapitre: Chapitre = {
     },
   ],
   illustrations: [
-    { type: "figure", scene: "position-stop-distance", legende: "Entrée prévue à 50,00 €, stop à 48,00 € : 2,00 € de risque par action." },
+    {
+      type: "figure",
+      scene: "position-stop-distance",
+      legende:
+        "Entrée prévue à 50,00 €, stop à 48,00 € : 2,00 € de risque par action.",
+    },
     {
       type: "figure",
       scene: "series-resultats",
-      legende: "Vingt trades d'une méthode qui gagne 2R ou perd 1R avec 35 % de réussite : +1R au total, mais six pertes d'affilée en chemin.",
+      legende:
+        "Vingt trades d'une méthode qui gagne 2R ou perd 1R avec 35 % de réussite : +1R au total, mais six pertes d'affilée en chemin.",
     },
   ],
   exemple: {
@@ -197,9 +239,14 @@ export const chapitre: Chapitre = {
     },
     {
       titre: "Augmenter le risque après une perte pour se refaire",
-      texte: "C'est la façon la plus rapide de transformer une série de pertes normale en perte grave.",
+      texte:
+        "C'est la façon la plus rapide de transformer une série de pertes normale en perte grave.",
     },
-    { titre: "Arrondir vers le haut", texte: "Arrondir la quantité vers le haut dépasse le risque prévu. On arrondit toujours vers le bas." },
+    {
+      titre: "Arrondir vers le haut",
+      texte:
+        "Arrondir la quantité vers le haut dépasse le risque prévu. On arrondit toujours vers le bas.",
+    },
   ],
   resume: [
     "Le risque par opération est la perte acceptée si le stop est touché, souvent 0,5 à 2 % du capital.",
@@ -208,11 +255,36 @@ export const chapitre: Chapitre = {
     "Un petit risque rend supportables les séries de pertes, qui sont normales.",
     "Frais, slippage, gaps et positions corrélées peuvent faire dépasser le risque prévu.",
   ],
+  exercices: [
+    {
+      id: "pp-13-e1",
+      type: "calcul",
+      consigne:
+        "Ton capital est de 500 000 FCFA et tu risques 1 % par trade. Tu veux acheter une action à 2 500 FCFA avec un stop à 2 400 FCFA. Combien d'actions au maximum ?",
+      reponse: 50,
+      tolerance: 0,
+      unite: "actions",
+      aide: "Taille = montant risqué ÷ distance du stop par action.",
+      corrige:
+        "Montant risqué : 1 % × 500 000 = 5 000 FCFA. Distance du stop : 2 500 − 2 400 = 100 FCFA par action. Taille : 5 000 ÷ 100 = 50 actions. Si le stop est touché, la perte est de 5 000 FCFA, comme prévu.",
+      concepts: ["taille-position", "risque-par-trade"],
+    },
+    {
+      id: "pp-13-e2",
+      type: "reflexion",
+      consigne:
+        "Après trois pertes de suite, tu as envie de doubler la taille du prochain trade « pour te refaire ». Que dit la règle du risque fixe par trade, et pourquoi ?",
+      corrige:
+        "Le risque reste le même pourcentage du capital à chaque trade, quel que soit le résultat précédent : les trades sont indépendants et une série de pertes peut continuer. Doubler la taille après des pertes accélère la ruine. Réponse attendue : garder 1 % (ou sa règle), éventuellement le réduire, faire une pause et revoir son journal.",
+      concepts: ["risque-par-trade"],
+    },
+  ],
   quiz: [
     {
       id: "c13-q1",
       type: "unique",
-      enonce: "Capital de 5 000 €, risque de 1 %. Quel montant acceptes-tu de perdre sur ce trade ?",
+      enonce:
+        "Capital de 5 000 €, risque de 1 %. Quel montant acceptes-tu de perdre sur ce trade ?",
       choix: ["5 €", "50 €", "500 €", "1 000 €"],
       bonne: 1,
       explication: "1 % de 5 000 € = 50 €.",
@@ -221,16 +293,19 @@ export const chapitre: Chapitre = {
     {
       id: "c13-q2",
       type: "unique",
-      enonce: "Risque accepté de 50 €, entrée à 80 €, stop à 75 €. Combien d'actions acheter ?",
+      enonce:
+        "Risque accepté de 50 €, entrée à 80 €, stop à 75 €. Combien d'actions acheter ?",
       choix: ["5", "10", "50", "62"],
       bonne: 1,
-      explication: "La perte par action si le stop est touché est de 5 € : 50 ÷ 5 = 10 actions.",
+      explication:
+        "La perte par action si le stop est touché est de 5 € : 50 ÷ 5 = 10 actions.",
       concepts: ["taille-position"],
     },
     {
       id: "c13-q3",
       type: "unique",
-      enonce: "Compte de 3 000 $, risque de 1 %, stop de 30 pips, 10 $ par pip pour 1 lot. Quelle taille en lots ?",
+      enonce:
+        "Compte de 3 000 $, risque de 1 %, stop de 30 pips, 10 $ par pip pour 1 lot. Quelle taille en lots ?",
       choix: ["0,01 lot", "0,1 lot", "1 lot", "3 lots"],
       bonne: 1,
       explication: "30 $ ÷ (30 pips × 10 $) = 0,1 lot.",
@@ -239,9 +314,11 @@ export const chapitre: Chapitre = {
     {
       id: "c13-q4",
       type: "vraifaux",
-      enonce: "Si le stop est plus éloigné, il faut réduire la quantité pour garder le même risque.",
+      enonce:
+        "Si le stop est plus éloigné, il faut réduire la quantité pour garder le même risque.",
       reponse: true,
-      explication: "La perte par unité augmente avec la distance du stop : la quantité doit baisser d'autant.",
+      explication:
+        "La perte par unité augmente avec la distance du stop : la quantité doit baisser d'autant.",
       concepts: ["taille-position", "risque-par-trade"],
     },
     {
@@ -260,10 +337,12 @@ export const chapitre: Chapitre = {
     {
       id: "c13-q6",
       type: "unique",
-      enonce: "Après six pertes d'affilée à 10 % du capital chacune, il reste environ :",
+      enonce:
+        "Après six pertes d'affilée à 10 % du capital chacune, il reste environ :",
       choix: ["40 %", "53 %", "60 %", "94 %"],
       bonne: 1,
-      explication: "0,9 multiplié six fois par lui-même ≈ 0,531 : il reste environ 53 % du capital.",
+      explication:
+        "0,9 multiplié six fois par lui-même ≈ 0,531 : il reste environ 53 % du capital.",
       concepts: ["risque-par-trade"],
     },
   ],

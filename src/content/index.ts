@@ -61,9 +61,9 @@ export function suivantDansParcours(slug: string) {
 
 export const titresChapitres = new Map(chapitresPublies.map((c) => [c.slug, c.titre]));
 
-/** Nombre d'étapes (leçons) d'un chapitre : sept toujours, plus les illustrations et l'exemple s'il y en a. */
+/** Nombre d'étapes (leçons) d'un chapitre : huit toujours (dont les exercices), plus les illustrations et l'exemple s'il y en a. */
 export function nombreEtapes(c: Chapitre) {
-  return 7 + (c.illustrations.length > 0 ? 1 : 0) + (c.exemple ? 1 : 0);
+  return 8 + (c.illustrations.length > 0 ? 1 : 0) + (c.exemple ? 1 : 0);
 }
 
 export const etapesParChapitre = Object.fromEntries(chapitresPublies.map((c) => [c.slug, nombreEtapes(c)]));
