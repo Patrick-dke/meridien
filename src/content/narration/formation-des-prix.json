@@ -1,134 +1,164 @@
 {
  "slug": "formation-des-prix",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "01be6cda",
- "duree": 69.432,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "ad5223e0",
+ "duree": 71.534,
  "audio": "/audio/capsules/formation-des-prix.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 8.02,
+   "fin": 9.037,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 2.096,
+     "fin": 2.319,
      "texte": "Qui décide du prix d'une action ?"
     },
     {
-     "debut": 2.816,
-     "fin": 4.222,
+     "debut": 3.039,
+     "fin": 4.774,
      "texte": "Personne en particulier."
     },
     {
-     "debut": 4.542,
-     "fin": 7.52,
+     "debut": 5.094,
+     "fin": 8.537,
      "texte": "Le prix naît de la rencontre entre acheteurs et vendeurs."
     }
    ]
   },
   {
-   "debut": 8.02,
-   "fin": 18.856,
+   "debut": 9.037,
+   "fin": 19.878,
    "phrases": [
     {
-     "debut": 8.02,
-     "fin": 9.757,
-     "texte": "Voici un carnet d'ordres."
+     "debut": 9.037,
+     "fin": 11.014,
+     "texte": "Regarde ce carnet d'ordres."
     },
     {
-     "debut": 10.077,
-     "fin": 14.322,
-     "texte": "À droite, les vendeurs et le prix auquel ils acceptent de vendre."
+     "debut": 11.334,
+     "fin": 15.775,
+     "texte": "À droite, les vendeurs, avec le prix auquel ils acceptent de vendre."
     },
     {
-     "debut": 14.642,
-     "fin": 18.356,
-     "texte": "À gauche, les acheteurs et le prix qu'ils proposent."
+     "debut": 16.095,
+     "fin": 19.378,
+     "texte": "À gauche, les acheteurs, avec le prix qu'ils proposent."
     }
    ]
   },
   {
-   "debut": 18.856,
-   "fin": 30.872,
+   "debut": 19.878,
+   "fin": 33.023,
    "phrases": [
     {
-     "debut": 18.856,
-     "fin": 22.571,
-     "texte": "Le meilleur vendeur demande 50,02 euros : c'est l'ask."
+     "debut": 19.878,
+     "fin": 23.623,
+     "texte": "Le meilleur vendeur demande 50 euros et 2 centimes."
     },
     {
-     "debut": 22.891,
-     "fin": 27.113,
-     "texte": "Le meilleur acheteur propose 50,00 euros : c'est le bid."
+     "debut": 23.943,
+     "fin": 25.059,
+     "texte": "C'est l'ask."
     },
     {
-     "debut": 27.433,
-     "fin": 30.372,
+     "debut": 25.379,
+     "fin": 28.053,
+     "texte": "Le meilleur acheteur propose 50 euros."
+    },
+    {
+     "debut": 28.373,
+     "fin": 29.497,
+     "texte": "C'est le bid."
+    },
+    {
+     "debut": 29.817,
+     "fin": 32.523,
      "texte": "L'écart de deux centimes, c'est le spread."
     }
    ]
   },
   {
-   "debut": 30.872,
-   "fin": 38.426,
+   "debut": 33.023,
+   "fin": 40.594,
    "phrases": [
     {
-     "debut": 30.872,
-     "fin": 34.102,
+     "debut": 33.023,
+     "fin": 36.051,
      "texte": "Tant que personne ne cède, rien ne s'échange."
     },
     {
-     "debut": 34.422,
-     "fin": 37.926,
+     "debut": 36.371,
+     "fin": 40.094,
      "texte": "Un échange a lieu quand quelqu'un accepte le prix d'en face."
     }
    ]
   },
   {
-   "debut": 38.426,
-   "fin": 50.189,
+   "debut": 40.594,
+   "fin": 50.904,
    "phrases": [
     {
-     "debut": 38.426,
-     "fin": 41.601,
-     "texte": "Imaginons un achat immédiat de 1 000 actions."
+     "debut": 40.594,
+     "fin": 44.057,
+     "texte": "Imagine maintenant un achat immédiat de 1 000 actions."
     },
     {
-     "debut": 41.921,
-     "fin": 49.689,
-     "texte": "Il prend les 300 actions à 50,02, puis monte aux niveaux suivants, jusqu'à 50,05."
+     "debut": 44.377,
+     "fin": 47.805,
+     "texte": "Il prend d'abord les 300 actions du meilleur vendeur."
+    },
+    {
+     "debut": 48.125,
+     "fin": 50.404,
+     "texte": "Puis il monte, niveau après niveau."
     }
    ]
   },
   {
-   "debut": 50.189,
-   "fin": 61.838,
+   "debut": 50.904,
+   "fin": 62.803,
    "phrases": [
     {
-     "debut": 50.189,
-     "fin": 53.372,
-     "texte": "Prix moyen obtenu : 50,03."
+     "debut": 50.904,
+     "fin": 55.169,
+     "texte": "Au final, le prix moyen est de 50 euros et 3 centimes."
     },
     {
-     "debut": 53.692,
-     "fin": 58.857,
-     "texte": "Et le dernier échange s'est fait à 50,05 : le prix affiché a monté."
+     "debut": 55.489,
+     "fin": 58.444,
+     "texte": "Et le dernier échange s'est fait plus haut encore."
     },
     {
-     "debut": 59.177,
-     "fin": 61.338,
-     "texte": "C'est ainsi que la demande fait monter un prix."
+     "debut": 58.764,
+     "fin": 59.596,
+     "texte": "Tu vois ?"
+    },
+    {
+     "debut": 60.316,
+     "fin": 62.303,
+     "texte": "La demande a fait monter le prix."
     }
    ]
   },
   {
-   "debut": 61.838,
-   "fin": 69.432,
+   "debut": 62.803,
+   "fin": 71.534,
    "phrases": [
     {
-     "debut": 61.838,
-     "fin": 68.832,
-     "texte": "Retiens : quand les acheteurs sont plus pressés que les vendeurs, le prix monte ; dans le cas inverse, il baisse."
+     "debut": 62.803,
+     "fin": 64.308,
+     "texte": "Retiens bien ceci."
+    },
+    {
+     "debut": 64.628,
+     "fin": 68.506,
+     "texte": "Quand les acheteurs sont plus pressés que les vendeurs, le prix monte."
+    },
+    {
+     "debut": 68.826,
+     "fin": 70.934,
+     "texte": "Dans le cas inverse, il baisse."
     }
    ]
   }

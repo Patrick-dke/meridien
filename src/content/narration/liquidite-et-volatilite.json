@@ -1,114 +1,154 @@
 {
  "slug": "liquidite-et-volatilite",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "cf90b5c6",
- "duree": 58.064,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "3d201555",
+ "duree": 65.844,
  "audio": "/audio/capsules/liquidite-et-volatilite.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 10.005,
+   "fin": 10.328,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 5.889,
-     "texte": "Deux mots à ne pas confondre : la liquidité, c'est la facilité à acheter ou vendre."
+     "fin": 2.145,
+     "texte": "Deux mots à ne pas confondre."
     },
     {
-     "debut": 6.209,
-     "fin": 9.505,
+     "debut": 2.465,
+     "fin": 6.173,
+     "texte": "La liquidité, c'est la facilité à acheter ou à vendre."
+    },
+    {
+     "debut": 6.493,
+     "fin": 9.828,
      "texte": "La volatilité, c'est l'ampleur des mouvements de prix."
     }
    ]
   },
   {
-   "debut": 10.005,
-   "fin": 18.418,
+   "debut": 10.328,
+   "fin": 20.492,
    "phrases": [
     {
-     "debut": 10.005,
-     "fin": 12.565,
-     "texte": "Un marché liquide a beaucoup d'ordres à chaque prix."
+     "debut": 10.328,
+     "fin": 12.356,
+     "texte": "Regarde ce marché liquide."
     },
     {
-     "debut": 12.885,
-     "fin": 17.918,
-     "texte": "Ici, un achat de 1 000 actions est exécuté au meilleur prix, sans bouger le marché."
+     "debut": 12.676,
+     "fin": 14.883,
+     "texte": "Il y a beaucoup d'ordres à chaque prix."
+    },
+    {
+     "debut": 15.203,
+     "fin": 19.992,
+     "texte": "Un achat de 1 000 actions est servi au meilleur prix, sans bouger le marché."
     }
    ]
   },
   {
-   "debut": 18.418,
-   "fin": 26.199,
+   "debut": 20.492,
+   "fin": 29.241,
    "phrases": [
     {
-     "debut": 18.418,
-     "fin": 24.177,
-     "texte": "Dans un carnet mince, le même ordre consomme plusieurs niveaux : le prix obtenu se dégrade."
+     "debut": 20.492,
+     "fin": 24.63,
+     "texte": "Dans un carnet mince, le même ordre consomme plusieurs niveaux."
     },
     {
-     "debut": 24.497,
-     "fin": 25.699,
+     "debut": 24.95,
+     "fin": 27.036,
+     "texte": "Le prix obtenu se dégrade."
+    },
+    {
+     "debut": 27.356,
+     "fin": 28.741,
      "texte": "C'est le slippage."
     }
    ]
   },
   {
-   "debut": 26.199,
-   "fin": 32.17,
+   "debut": 29.241,
+   "fin": 35.53,
    "phrases": [
     {
-     "debut": 26.199,
-     "fin": 28.179,
-     "texte": "La volatilité, maintenant."
+     "debut": 29.241,
+     "fin": 30.932,
+     "texte": "Passons à la volatilité."
     },
     {
-     "debut": 28.499,
-     "fin": 31.67,
-     "texte": "Ici, les bougies sont petites : le prix bouge peu."
+     "debut": 31.252,
+     "fin": 33.269,
+     "texte": "Ici, les bougies sont petites."
+    },
+    {
+     "debut": 33.589,
+     "fin": 35.03,
+     "texte": "Le prix bouge peu."
     }
    ]
   },
   {
-   "debut": 32.17,
-   "fin": 41.91,
+   "debut": 35.53,
+   "fin": 46.62,
    "phrases": [
     {
-     "debut": 32.17,
-     "fin": 37.643,
-     "texte": "Puis une annonce économique tombe : les bougies deviennent quatre à cinq fois plus grandes."
+     "debut": 35.53,
+     "fin": 37.055,
+     "texte": "Puis une annonce tombe."
     },
     {
-     "debut": 37.963,
-     "fin": 41.41,
-     "texte": "Un stop placé trop près peut être touché en quelques secondes."
+     "debut": 37.375,
+     "fin": 38.21,
+     "texte": "Tu vois ?"
+    },
+    {
+     "debut": 38.93,
+     "fin": 42.258,
+     "texte": "Les bougies deviennent quatre à cinq fois plus grandes."
+    },
+    {
+     "debut": 42.578,
+     "fin": 46.12,
+     "texte": "Un stop placé trop près peut sauter en quelques secondes."
     }
    ]
   },
   {
-   "debut": 41.91,
-   "fin": 50.763,
+   "debut": 46.62,
+   "fin": 56.305,
    "phrases": [
     {
-     "debut": 41.91,
-     "fin": 46.431,
+     "debut": 46.62,
+     "fin": 51.292,
      "texte": "Liquidité et volatilité changent selon l'heure, les annonces et les jours."
     },
     {
-     "debut": 46.751,
-     "fin": 50.263,
-     "texte": "Le même actif peut être calme le matin et agité l'après-midi."
+     "debut": 51.612,
+     "fin": 55.805,
+     "texte": "Le même actif peut être calme le matin, et agité l'après-midi."
     }
    ]
   },
   {
-   "debut": 50.763,
-   "fin": 58.064,
+   "debut": 56.305,
+   "fin": 65.844,
    "phrases": [
     {
-     "debut": 50.763,
-     "fin": 57.464,
-     "texte": "Retiens : avant d'entrer, demande-toi si tu pourras sortir facilement, et de combien le prix peut bouger contre toi."
+     "debut": 56.305,
+     "fin": 58.592,
+     "texte": "Avant d'entrer, pose-toi deux questions."
+    },
+    {
+     "debut": 58.912,
+     "fin": 60.801,
+     "texte": "Pourrai-je sortir facilement ?"
+    },
+    {
+     "debut": 61.521,
+     "fin": 64.524,
+     "texte": "Et de combien le prix peut-il bouger contre moi ?"
     }
    ]
   }

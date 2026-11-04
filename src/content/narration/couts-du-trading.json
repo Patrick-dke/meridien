@@ -1,103 +1,118 @@
 {
  "slug": "couts-du-trading",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "bcad09c1",
- "duree": 55.978,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "76bbf01b",
+ "duree": 58.17,
  "audio": "/audio/capsules/couts-du-trading.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 9.335,
+   "fin": 10.202,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 3.882,
+     "fin": 4.671,
      "texte": "Un trade coûte de l'argent avant même de rapporter quoi que ce soit."
     },
     {
-     "debut": 4.202,
-     "fin": 8.835,
-     "texte": "Trois coûts principaux : le spread, la commission et le slippage."
+     "debut": 4.991,
+     "fin": 9.702,
+     "texte": "Il y a trois coûts principaux : le spread, la commission et le slippage."
     }
    ]
   },
   {
-   "debut": 9.335,
-   "fin": 17.289,
+   "debut": 10.202,
+   "fin": 19.074,
    "phrases": [
     {
-     "debut": 9.335,
-     "fin": 13.281,
-     "texte": "Le spread d'abord : tu achètes à l'ask, tu vends au bid."
+     "debut": 10.202,
+     "fin": 11.691,
+     "texte": "Le spread, d'abord."
     },
     {
-     "debut": 13.601,
-     "fin": 16.789,
-     "texte": "Si tu achètes puis revends aussitôt, tu perds l'écart."
+     "debut": 12.011,
+     "fin": 15.608,
+     "texte": "Tu achètes au prix vendeur, et tu revends au prix acheteur."
+    },
+    {
+     "debut": 15.928,
+     "fin": 18.574,
+     "texte": "Si tu revends aussitôt, tu perds l'écart."
     }
    ]
   },
   {
-   "debut": 17.289,
-   "fin": 27.308,
+   "debut": 19.074,
+   "fin": 27.966,
    "phrases": [
     {
-     "debut": 17.289,
-     "fin": 23.222,
-     "texte": "La commission, ensuite : des frais fixes ou en pourcentage, à chaque ordre."
+     "debut": 19.074,
+     "fin": 24.026,
+     "texte": "La commission, ensuite : des frais fixes, ou un pourcentage, à chaque ordre."
     },
     {
-     "debut": 23.542,
-     "fin": 26.808,
+     "debut": 24.346,
+     "fin": 27.466,
      "texte": "Sans commission, le spread est souvent plus large."
     }
    ]
   },
   {
-   "debut": 27.308,
-   "fin": 35.716,
+   "debut": 27.966,
+   "fin": 37.162,
    "phrases": [
     {
-     "debut": 27.308,
-     "fin": 35.216,
-     "texte": "Le slippage, enfin : l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur."
-    }
-   ]
-  },
-  {
-   "debut": 35.716,
-   "fin": 40.822,
-   "phrases": [
-    {
-     "debut": 35.716,
-     "fin": 40.322,
-     "texte": "Il frappe surtout les ordres au marché et les stops, lors des annonces et des gaps."
-    }
-   ]
-  },
-  {
-   "debut": 40.822,
-   "fin": 48.502,
-   "phrases": [
-    {
-     "debut": 40.822,
-     "fin": 48.002,
-     "texte": "Additionne-les : sur un objectif de 10 pips, un coût total de 2 pips représente déjà un cinquième du gain visé."
-    }
-   ]
-  },
-  {
-   "debut": 48.502,
-   "fin": 55.978,
-   "phrases": [
-    {
-     "debut": 48.502,
-     "fin": 51.944,
-     "texte": "Retiens : les coûts sont certains, les gains ne le sont pas."
+     "debut": 27.966,
+     "fin": 29.596,
+     "texte": "Le slippage, enfin."
     },
     {
-     "debut": 52.264,
-     "fin": 55.378,
+     "debut": 29.916,
+     "fin": 36.662,
+     "texte": "C'est l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur."
+    }
+   ]
+  },
+  {
+   "debut": 37.162,
+   "fin": 43.115,
+   "phrases": [
+    {
+     "debut": 37.162,
+     "fin": 42.615,
+     "texte": "Il frappe surtout les ordres au marché et les stops, pendant les annonces et les gaps."
+    }
+   ]
+  },
+  {
+   "debut": 43.115,
+   "fin": 50.967,
+   "phrases": [
+    {
+     "debut": 43.115,
+     "fin": 44.212,
+     "texte": "Additionne-les."
+    },
+    {
+     "debut": 44.532,
+     "fin": 50.467,
+     "texte": "Sur un objectif de 10 pips, un coût de 2 pips, c'est déjà un cinquième du gain visé."
+    }
+   ]
+  },
+  {
+   "debut": 50.967,
+   "fin": 58.17,
+   "phrases": [
+    {
+     "debut": 50.967,
+     "fin": 54.49,
+     "texte": "Retiens bien : les coûts sont certains, les gains ne le sont pas."
+    },
+    {
+     "debut": 54.81,
+     "fin": 57.57,
      "texte": "Plus ton objectif est petit, plus ils pèsent."
     }
    ]
