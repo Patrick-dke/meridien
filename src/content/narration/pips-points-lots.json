@@ -1,108 +1,113 @@
 {
  "slug": "pips-points-lots",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "4a196623",
- "duree": 60.205,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "3b752abb",
+ "duree": 58.571,
  "audio": "/audio/capsules/pips-points-lots.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 6.364,
+   "fin": 6.392,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 5.864,
-     "texte": "Pips, points et lots : trois mots pour mesurer les mouvements de prix et la taille de tes positions."
+     "fin": 5.892,
+     "texte": "Pips, points et lots : trois mots pour mesurer les mouvements de prix, et la taille de tes positions."
     }
    ]
   },
   {
-   "debut": 6.364,
-   "fin": 15.4,
+   "debut": 6.392,
+   "fin": 13.063,
    "phrases": [
     {
-     "debut": 6.364,
-     "fin": 10.603,
-     "texte": "Sur EUR/USD, le prix est coté avec quatre décimales."
+     "debut": 6.392,
+     "fin": 10.388,
+     "texte": "Sur l'euro dollar, le prix s'affiche avec quatre décimales."
     },
     {
-     "debut": 10.923,
-     "fin": 14.9,
-     "texte": "Le pip, c'est la quatrième : 0,0001."
+     "debut": 10.708,
+     "fin": 12.563,
+     "texte": "Le pip, c'est la quatrième."
     }
    ]
   },
   {
-   "debut": 15.4,
-   "fin": 29.399,
+   "debut": 13.063,
+   "fin": 25.657,
    "phrases": [
     {
-     "debut": 15.4,
-     "fin": 24.373,
-     "texte": "Si EUR/USD passe de 1,0850 à 1,0870, il a monté de 0,0020 : 20 pips."
+     "debut": 13.063,
+     "fin": 20.859,
+     "texte": "Regarde : de 1,0850 à 1,0870, l'euro dollar monte de 20 pips."
     },
     {
-     "debut": 24.693,
-     "fin": 28.899,
-     "texte": "Pour les paires contre le yen, le pip vaut 0,01."
+     "debut": 21.179,
+     "fin": 25.157,
+     "texte": "Pour les paires contre le yen, le pip est la deuxième décimale."
     }
    ]
   },
   {
-   "debut": 29.399,
-   "fin": 35.72,
+   "debut": 25.657,
+   "fin": 32.915,
    "phrases": [
     {
-     "debut": 29.399,
-     "fin": 31.344,
+     "debut": 25.657,
+     "fin": 28.112,
      "texte": "La taille d'une position se compte en lots."
     },
     {
-     "debut": 31.664,
-     "fin": 35.22,
+     "debut": 28.432,
+     "fin": 32.415,
      "texte": "Un lot standard, c'est 100 000 unités de la devise de base."
     }
    ]
   },
   {
-   "debut": 35.72,
-   "fin": 45.098,
+   "debut": 32.915,
+   "fin": 40.299,
    "phrases": [
     {
-     "debut": 35.72,
-     "fin": 42.039,
-     "texte": "Sur EUR/USD, un pip pour un lot vaut 0,0001 fois 100 000, soit 10 dollars."
+     "debut": 32.915,
+     "fin": 36.23,
+     "texte": "Sur l'euro dollar, un pip pour un lot vaut 10 dollars."
     },
     {
-     "debut": 42.359,
-     "fin": 44.598,
-     "texte": "Pour un micro-lot, 10 centimes."
+     "debut": 36.55,
+     "fin": 39.799,
+     "texte": "Pour un micro-lot, cent fois plus petit, 10 centimes."
     }
    ]
   },
   {
-   "debut": 45.098,
-   "fin": 50.796,
+   "debut": 40.299,
+   "fin": 47.031,
    "phrases": [
     {
-     "debut": 45.098,
-     "fin": 50.296,
+     "debut": 40.299,
+     "fin": 46.531,
      "texte": "Notre mouvement de 20 pips vaut donc 200 dollars avec un lot, et 2 dollars avec un micro-lot."
     }
    ]
   },
   {
-   "debut": 50.796,
-   "fin": 60.205,
+   "debut": 47.031,
+   "fin": 58.571,
    "phrases": [
     {
-     "debut": 50.796,
-     "fin": 54.691,
+     "debut": 47.031,
+     "fin": 50.88,
      "texte": "Sur les indices et les matières premières, on parle de points."
     },
     {
-     "debut": 55.011,
-     "fin": 59.605,
+     "debut": 51.2,
+     "fin": 52.667,
+     "texte": "Ici, 50 points."
+    },
+    {
+     "debut": 52.987,
+     "fin": 57.971,
      "texte": "Leur valeur en argent dépend du contrat : lis toujours la fiche de l'instrument."
     }
    ]

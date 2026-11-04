@@ -1,109 +1,144 @@
 {
  "slug": "quest-ce-que-le-trading",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "1afd37fc",
- "duree": 49.509,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "2d2c27c5",
+ "duree": 55.973,
  "audio": "/audio/capsules/quest-ce-que-le-trading.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 9.852,
+   "fin": 10.247,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 6.827,
-     "texte": "Le trading, c'est acheter et vendre des actifs financiers pour profiter de leurs variations de prix."
+     "fin": 6.874,
+     "texte": "Le trading, c'est acheter et vendre des actifs financiers, pour profiter de leurs variations de prix."
     },
     {
-     "debut": 7.147,
-     "fin": 9.352,
-     "texte": "Rien de plus, rien de moins."
+     "debut": 7.194,
+     "fin": 8.318,
+     "texte": "Rien de plus."
+    },
+    {
+     "debut": 8.638,
+     "fin": 9.747,
+     "texte": "Rien de moins."
     }
    ]
   },
   {
-   "debut": 9.852,
-   "fin": 13.615,
+   "debut": 10.247,
+   "fin": 14.906,
    "phrases": [
     {
-     "debut": 9.852,
-     "fin": 13.115,
-     "texte": "Exemple : tu achètes une action à 50 euros."
+     "debut": 10.247,
+     "fin": 11.698,
+     "texte": "Prenons un exemple."
+    },
+    {
+     "debut": 12.018,
+     "fin": 14.406,
+     "texte": "Tu achètes une action à 50 euros."
     }
    ]
   },
   {
-   "debut": 13.615,
-   "fin": 18.534,
+   "debut": 14.906,
+   "fin": 20.513,
    "phrases": [
     {
-     "debut": 13.615,
-     "fin": 16.951,
-     "texte": "Quelques jours plus tard, elle vaut 53,30 euros."
+     "debut": 14.906,
+     "fin": 18.656,
+     "texte": "Quelques jours plus tard, elle vaut 53 euros 30."
     },
     {
-     "debut": 17.271,
-     "fin": 18.034,
+     "debut": 18.976,
+     "fin": 20.013,
      "texte": "Tu la revends."
     }
    ]
   },
   {
-   "debut": 18.534,
-   "fin": 24.738,
+   "debut": 20.513,
+   "fin": 26.472,
    "phrases": [
     {
-     "debut": 18.534,
-     "fin": 24.238,
-     "texte": "Ton gain, c'est l'écart entre les deux prix : 3,30 euros par action, avant les frais."
+     "debut": 20.513,
+     "fin": 22.876,
+     "texte": "Ton gain, c'est l'écart entre les deux prix."
+    },
+    {
+     "debut": 23.196,
+     "fin": 25.972,
+     "texte": "3 euros 30 par action, avant les frais."
     }
    ]
   },
   {
-   "debut": 24.738,
-   "fin": 32.911,
+   "debut": 26.472,
+   "fin": 35.906,
    "phrases": [
     {
-     "debut": 24.738,
-     "fin": 30.289,
-     "texte": "On peut aussi gagner quand le prix baisse : on vend d'abord, on rachète ensuite, moins cher."
+     "debut": 26.472,
+     "fin": 27.957,
+     "texte": "Et quand le prix baisse ?"
     },
     {
-     "debut": 30.609,
-     "fin": 32.411,
+     "debut": 28.677,
+     "fin": 30.125,
+     "texte": "Tu peux aussi gagner."
+    },
+    {
+     "debut": 30.445,
+     "fin": 33.241,
+     "texte": "Tu vends d'abord, puis tu rachètes moins cher."
+    },
+    {
+     "debut": 33.561,
+     "fin": 35.406,
      "texte": "C'est une position vendeuse."
     }
    ]
   },
   {
-   "debut": 32.911,
-   "fin": 40.719,
+   "debut": 35.906,
+   "fin": 45.834,
    "phrases": [
     {
-     "debut": 32.911,
-     "fin": 35.54,
-     "texte": "Mais chaque trade peut aussi perdre."
+     "debut": 35.906,
+     "fin": 37.118,
+     "texte": "Mais attention."
     },
     {
-     "debut": 35.86,
-     "fin": 40.219,
-     "texte": "Le prix peut aller dans le mauvais sens, et les frais s'ajoutent à chaque opération."
+     "debut": 37.438,
+     "fin": 39.425,
+     "texte": "Chaque trade peut aussi perdre."
+    },
+    {
+     "debut": 39.745,
+     "fin": 42.27,
+     "texte": "Le prix part parfois dans le mauvais sens."
+    },
+    {
+     "debut": 42.59,
+     "fin": 45.334,
+     "texte": "Et les frais s'ajoutent, à chaque opération."
     }
    ]
   },
   {
-   "debut": 40.719,
-   "fin": 49.509,
+   "debut": 45.834,
+   "fin": 55.973,
    "phrases": [
     {
-     "debut": 40.719,
-     "fin": 43.063,
-     "texte": "La plupart des débutants perdent de l'argent."
+     "debut": 45.834,
+     "fin": 49.411,
+     "texte": "Autrement dit, la plupart des débutants perdent de l'argent."
     },
     {
-     "debut": 43.383,
-     "fin": 48.909,
-     "texte": "Ici, tu apprendras d'abord à mesurer et à limiter ce risque, en argent fictif."
+     "debut": 49.731,
+     "fin": 55.373,
+     "texte": "Ici, tu apprends d'abord à mesurer ce risque, et à le limiter, en argent fictif."
     }
    ]
   }
