@@ -121,6 +121,30 @@ export async function lirePublic<T = Record<string, unknown>>(chemin: string): P
   return decoder(corps.fields ?? {}) as T;
 }
 
+/**
+ * Identifiants des documents d'une collection dont `champ` vaut `valeur`, sans télécharger leur contenu (requête REST
+ * limitée au nom du document, avec le jeton du compte connecté ; les règles s'appliquent comme pour le SDK).
+ */
+export async function identifiantsOu(collection: string, champ: string, valeur: string): Promise<Set<string>> {
+  const jeton = await (await obtenirAuth()).currentUser?.getIdToken();
+  if (!jeton) throw new Error("Connecte-toi pour continuer.");
+  const base = emulateurs ? `http://${HOTE}:8080/v1` : "https://firestore.googleapis.com/v1";
+  const rep = await fetch(`${base}/projects/${projetFirebase}/databases/(default)/documents:runQuery`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${jeton}` },
+    body: JSON.stringify({
+      structuredQuery: {
+        from: [{ collectionId: collection }],
+        select: { fields: [{ fieldPath: "__name__" }] },
+        where: { fieldFilter: { field: { fieldPath: champ }, op: "EQUAL", value: { stringValue: valeur } } },
+      },
+    }),
+  });
+  if (!rep.ok) throw new Error(`Lecture impossible (${rep.status})`);
+  const lignes = (await rep.json()) as { document?: { name: string } }[];
+  return new Set(lignes.flatMap((l) => (l.document ? [l.document.name.split("/").pop()!] : [])));
+}
+
 type ValeurRest = {
   stringValue?: string;
   integerValue?: string;

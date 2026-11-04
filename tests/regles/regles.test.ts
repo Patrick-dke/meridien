@@ -244,6 +244,41 @@ describe("administration sans fonctions serveur", () => {
   });
 });
 
+describe("activation du premier administrateur par code à usage unique", () => {
+  // Couple de test dont l'empreinte figure dans les règles : une adresse .test ne peut jamais être vérifiée en production.
+  const CODE = "TEST-ACTIVATION-ADMIN";
+  const EMAIL = "chef-activation@meridien.test";
+  const compte = (uid: string, email = EMAIL, verifiee = true) => env.authenticatedContext(uid, { email, email_verified: verifiee }).firestore();
+  const activer = (db: ReturnType<typeof compte>, uid: string, code = CODE, email = EMAIL) => {
+    const f = db as unknown as Firestore;
+    const lot = writeBatch(f);
+    lot.set(doc(f, `admins/${uid}`), { email, activeLe: "2026-11-04T10:00:00.000Z" });
+    lot.set(doc(f, "activations/admin"), { uid, code, date: "2026-11-04T10:00:00.000Z" });
+    return lot.commit();
+  };
+
+  it("le bon code avec l'adresse vérifiée correspondante active le compte, une seule fois", async () => {
+    await assertSucceeds(activer(compte("neo"), "neo"));
+    await assertSucceeds(getDoc(doc(compte("neo"), "admins/neo")));
+    await assertSucceeds(getDoc(doc(compte("neo"), "activations/admin")));
+    await assertSucceeds(getDoc(doc(compte("neo"), "contenus/pa-01")));
+    // Le code ne sert plus : ni pour un autre compte de la même adresse, ni pour recommencer.
+    await assertFails(activer(compte("neo2"), "neo2"));
+    await assertFails(getDoc(doc(membre("awa"), "activations/admin")));
+  });
+
+  it("refusé : mauvais code, autre adresse, adresse non vérifiée, document seul, autre compte", async () => {
+    await assertFails(activer(compte("neo"), "neo", "MAUVAIS-CODE"));
+    await assertFails(activer(compte("neo", "autre@meridien.test"), "neo", CODE, "autre@meridien.test"));
+    await assertFails(activer(compte("neo", EMAIL, false), "neo"));
+    await assertFails(setDoc(doc(compte("neo"), "admins/neo"), { email: EMAIL, activeLe: "2026-11-04T10:00:00.000Z" }));
+    await assertFails(setDoc(doc(compte("neo"), "activations/admin"), { uid: "neo", code: CODE, date: "2026-11-04T10:00:00.000Z" }));
+    await assertFails(activer(compte("neo"), "awa"));
+    // L'adresse est comparée sans tenir compte de la casse.
+    await assertSucceeds(activer(compte("neo", "Chef-Activation@meridien.test"), "neo", CODE, "Chef-Activation@meridien.test"));
+  });
+});
+
 describe("profil et progression", () => {
   it("création du profil avec l'adresse du compte, sans statut ni rôle", async () => {
     await assertSucceeds(setDoc(doc(membre("awa", "awa@x.cm"), "utilisateurs/awa"), profil("awa@x.cm")));

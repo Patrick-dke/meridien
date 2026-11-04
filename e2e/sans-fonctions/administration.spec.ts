@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COMPTES_TEST } from "../../scripts/emulateurs/comptes";
+import { CODE_ACTIVATION_TEST, COMPTES_TEST } from "../../scripts/emulateurs/comptes";
 
 /**
  * Administration sans fonctions serveur, comme en production sur l'offre gratuite de Firebase : site construit
@@ -83,4 +83,46 @@ test("l'administrateur révoque l'accès : le chapitre se verrouille de nouveau"
 test("après la révocation, le chapitre de l'apprenant se verrouille de nouveau", async ({ page }) => {
   await connecter(page, COMPTES_TEST.apprenant, "/chapitre/rejets-et-meches/");
   await expect(page.getByRole("heading", { name: /Ce chapitre fait partie du module/ })).toBeVisible({ timeout: 30_000 });
+});
+
+/** Partie d'un fichier de publication, au format de npm run contenus:preparer. */
+const partie = (nom: string, contenu: Record<string, unknown>) => ({
+  name: nom,
+  mimeType: "application/json",
+  buffer: Buffer.from(JSON.stringify({ version: "e2e-reprise", contenus: [], corriges: [], narrations: [], ...contenu })),
+});
+const PARTIE_1 = partie("partie-1-sur-2.json", {
+  contenus: [{ slug: "essai-publication", module: "price-action", titre: "Essai", chapitre: { titre: "Essai" }, scenes: {} }],
+});
+const PARTIE_2 = partie("partie-2-sur-2.json", {
+  corriges: [{ slug: "essai-publication", module: "price-action", quiz: [] }],
+  narrations: [{ slug: "essai-publication", module: "price-action", morceaux: ["QUJD"] }],
+});
+
+test("publication des contenus en plusieurs parties : après une coupure, rien n'est renvoyé deux fois", async ({ page }) => {
+  test.setTimeout(90_000);
+  await connecter(page, COMPTES_TEST.admin, "/admin/#contenus");
+  const fichiers = page.locator('input[type="file"]');
+  await expect(fichiers).toBeAttached({ timeout: 30_000 });
+  // Première tentative interrompue : seule la première partie est arrivée.
+  await fichiers.setInputFiles([PARTIE_1]);
+  await expect(page.getByText(/Publication e2e-reprise terminée : 1 chapitres, 0 narrations/)).toBeVisible({ timeout: 20_000 });
+  // Reprise avec toutes les parties : le chapitre déjà publié n'est pas renvoyé.
+  await fichiers.setInputFiles([PARTIE_1, PARTIE_2]);
+  await expect(page.getByText(/2 documents envoyés, 1 déjà publiés/)).toBeVisible({ timeout: 20_000 });
+  await fichiers.setInputFiles([PARTIE_1, PARTIE_2]);
+  await expect(page.getByText("Rien à envoyer : la version e2e-reprise de ces fichiers est déjà entièrement publiée.")).toBeVisible({ timeout: 20_000 });
+});
+
+test("le premier administrateur s'active lui-même avec le code à usage unique", async ({ page }) => {
+  test.setTimeout(90_000);
+  await connecter(page, COMPTES_TEST.activation, "/admin/");
+  const champ = page.getByLabel("Code d'activation");
+  await expect(champ).toBeVisible({ timeout: 30_000 });
+  await champ.fill("MRDN-FAUX-CODE");
+  await page.getByRole("button", { name: "Activer mon accès administrateur" }).click();
+  await expect(page.getByText(/Activation refusée/)).toBeVisible({ timeout: 20_000 });
+  await champ.fill(CODE_ACTIVATION_TEST);
+  await page.getByRole("button", { name: "Activer mon accès administrateur" }).click();
+  await expect(page.getByRole("tab", { name: "Modules et prix" })).toBeVisible({ timeout: 30_000 });
 });

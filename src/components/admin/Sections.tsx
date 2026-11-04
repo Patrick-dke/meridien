@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { offre } from "@/content/offre";
-import { fonctionsDisponibles, obtenirDb } from "@/lib/firebase/client";
+import { fonctionsDisponibles, identifiantsOu, obtenirDb } from "@/lib/firebase/client";
 import { Alerte, Champ } from "../compte/Formulaire";
 import { action, cellule, dateHeure, demanderMotif, Etat, fcfa, Tableau, useAction } from "./outils";
 
@@ -869,57 +869,89 @@ type Publication = {
   narrations: ({ slug: string; module: string; audio?: string; morceaux?: string[] } & Record<string, unknown>)[];
 };
 
-/** Publication des contenus payants : fichier préparé hors du dépôt public (npm run contenus:preparer), envoyé ici. */
+/**
+ * Publication des contenus payants : fichiers préparés hors du dépôt public (npm run contenus:preparer, en parties de
+ * moins de 10 Mo), envoyés ici. Reprise sans perte : un document déjà publié dans la même version n'est pas renvoyé,
+ * il suffit de renvoyer les mêmes fichiers après une coupure.
+ */
 export function Contenus() {
   const l = useAction<{ slug: string; module: string; version: string; publieLe: string }[]>("contenus.etat");
   const [avancement, setAvancement] = useState<string | null>(null);
-  const publier = async (fichier: File) => {
+  const publier = async (fichiers: File[]) => {
     try {
-      const p = JSON.parse(await fichier.text()) as Publication;
+      const parties = await Promise.all(fichiers.map(async (f) => JSON.parse(await f.text()) as Publication));
+      const versions = new Set(parties.map((p) => p.version));
+      if (versions.size !== 1) throw new Error("Ces fichiers ne viennent pas de la même préparation : envoie les parties d'une seule version.");
+      const [version] = versions;
       const [db, m] = await Promise.all([obtenirDb(), import("firebase/firestore/lite")]);
+      setAvancement("Recherche de ce qui est déjà publié…");
+      // Une narration n'est marquée de sa version qu'après ses morceaux : sa présence prouve qu'elle est complète.
+      const [dejaContenus, dejaCorriges, dejaNarrations] = await Promise.all(["contenus", "corriges", "narrations"].map((c) => identifiantsOu(c, "version", version)));
+      const contenus = parties.flatMap((p) => p.contenus).filter((c) => !dejaContenus.has(c.slug));
+      const corriges = parties.flatMap((p) => p.corriges).filter((c) => !dejaCorriges.has(c.slug));
+      const narrations = parties.flatMap((p) => p.narrations).filter((c) => !dejaNarrations.has(c.slug));
+      const ignores = dejaContenus.size + dejaCorriges.size + dejaNarrations.size;
       const date = new Date().toISOString();
       let n = 0;
-      const total = p.contenus.length + p.corriges.length + p.narrations.length;
+      const total = contenus.length + corriges.length + narrations.length;
+      const progres = () => setAvancement(`${++n}/${total} envoyés${ignores ? ` (${ignores} déjà publiés, non renvoyés)` : ""}`);
       // Texte JSON : Firestore refuse les tableaux imbriqués (même format que scripts/contenus/publication.ts).
-      for (const c of p.contenus) {
+      for (const c of contenus) {
         await m.setDoc(m.doc(db, "contenus", c.slug), {
           module: c.module,
           titre: c.titre,
           chapitreJson: JSON.stringify(c.chapitre),
           scenesJson: JSON.stringify(c.scenes),
-          version: p.version,
+          version,
           publieLe: date,
         });
-        setAvancement(`${++n}/${total}`);
+        progres();
       }
-      for (const c of p.corriges) {
-        await m.setDoc(m.doc(db, "corriges", c.slug), { module: c.module, quizJson: JSON.stringify(c.quiz), tirage: c.tirage ?? null, version: p.version });
-        setAvancement(`${++n}/${total}`);
+      for (const c of corriges) {
+        await m.setDoc(m.doc(db, "corriges", c.slug), { module: c.module, quizJson: JSON.stringify(c.quiz), tirage: c.tirage ?? null, version });
+        progres();
       }
-      for (const nar of p.narrations) {
+      for (const nar of narrations) {
         const { morceaux, ...reste } = nar;
         if (morceaux)
           for (const [i, donnees] of morceaux.entries())
             await m.setDoc(m.doc(db, "narrations", nar.slug, "morceaux", String(i)), { module: nar.module, donnees });
-        await m.setDoc(m.doc(db, "narrations", nar.slug), { ...reste, ...(morceaux ? { morceaux: morceaux.length } : {}), version: p.version });
-        setAvancement(`${++n}/${total}`);
+        await m.setDoc(m.doc(db, "narrations", nar.slug), { ...reste, ...(morceaux ? { morceaux: morceaux.length } : {}), version });
+        progres();
       }
-      await action("contenus.journaliser", { version: p.version, contenus: p.contenus.length, narrations: p.narrations.length });
-      setAvancement(`Publication ${p.version} terminée : ${p.contenus.length} chapitres, ${p.narrations.length} narrations.`);
+      const chapitres = parties.reduce((a, p) => a + p.contenus.length, 0);
+      const audios = parties.reduce((a, p) => a + p.narrations.length, 0);
+      if (total) await action("contenus.journaliser", { version, contenus: chapitres, narrations: audios });
+      setAvancement(
+        total
+          ? `Publication ${version} terminée : ${chapitres} chapitres, ${audios} narrations (${total} documents envoyés, ${ignores} déjà publiés).`
+          : `Rien à envoyer : la version ${version} de ces fichiers est déjà entièrement publiée.`,
+      );
       l.recharger();
     } catch (e) {
-      setAvancement(`Échec : ${(e as Error).message}`);
+      setAvancement(`Échec : ${(e as Error).message}. Renvoie les mêmes fichiers : la publication reprendra là où elle s'est arrêtée.`);
     }
   };
   return (
     <div className="space-y-4">
       <p className="text-sm text-ink-2">
-        Les chapitres payants ne sont jamais dans le site publié. Prépare le fichier de publication sur l&apos;ordinateur qui détient les sources privées, puis
-        envoie-le ici : il est écrit dans la base, lisible seulement par les acheteurs.
+        Les chapitres payants ne sont jamais dans le site publié. Prépare les fichiers de publication sur l&apos;ordinateur qui détient les sources
+        privées, puis envoie-les ici, toutes les parties ensemble : ils sont écrits dans la base, lisibles seulement par les acheteurs. Garde la page
+        ouverte pendant l&apos;envoi ; après une coupure, renvoie les mêmes fichiers.
       </p>
       <label className="btn btn-primaire w-fit cursor-pointer">
-        Publier un fichier de contenus…
-        <input type="file" accept="application/json" className="sr-only" onChange={(e) => e.target.files?.[0] && void publier(e.target.files[0])} />
+        Publier des fichiers de contenus…
+        <input
+          type="file"
+          accept="application/json"
+          multiple
+          className="sr-only"
+          onChange={(e) => {
+            const fichiers = Array.from(e.target.files ?? []);
+            e.target.value = "";
+            if (fichiers.length) void publier(fichiers);
+          }}
+        />
       </label>
       {avancement ? <Alerte ton="info">{avancement}</Alerte> : null}
       <Etat {...l} />

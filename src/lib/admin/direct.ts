@@ -6,7 +6,8 @@ import { obtenirAuth, obtenirDb } from "@/lib/firebase/client";
  * Administration sans fonctions serveur (offre gratuite de Firebase) : les actions qui ne demandent ni le SDK
  * Admin ni un secret s'exécutent ici, directement dans la base. Les règles Firestore vérifient le rôle et
  * n'acceptent chaque écriture qu'accompagnée, dans le même lot, de son entrée au journal d'audit.
- * Suspendre un compte, nommer un administrateur, les paiements, les outils et les examens restent au serveur.
+ * Suspendre un compte, nommer d'autres administrateurs, les paiements, les outils et les examens restent au
+ * serveur ; seule la toute première activation se fait ici, par code à usage unique (activerAdministrateur).
  */
 type Donnees = Record<string, unknown>;
 type Contexte = { db: Firestore; m: typeof import("firebase/firestore/lite"); acteur: string; d: Donnees };
@@ -262,5 +263,33 @@ export async function actionDirecte<R>(nom: string, d: Donnees = {}): Promise<R>
     return (await action({ db, m, acteur, d })) as R;
   } catch (e) {
     throw (e as { code?: string }).code === "permission-denied" ? new Error(REFUS) : e;
+  }
+}
+
+/**
+ * Première activation d'un administrateur, une seule fois pour tout le site : le code remis au propriétaire, lié à
+ * son adresse vérifiée, est contrôlé par les règles (empreinte SHA-256), qui refusent ensuite toute autre activation.
+ */
+export async function activerAdministrateur(saisie: string) {
+  const code = saisie.trim().toUpperCase();
+  if (!code) throw new Error("Saisis le code d'activation.");
+  const [db, m, auth] = await Promise.all([obtenirDb(), import("firebase/firestore/lite"), obtenirAuth()]);
+  const u = auth.currentUser;
+  if (!u?.email) throw new Error("Connecte-toi pour continuer.");
+  // Le jeton doit porter l'adresse vérifiée : on le renouvelle si la vérification vient d'avoir lieu.
+  await u.getIdToken(true);
+  const lot = m.writeBatch(db);
+  const date = maintenant();
+  lot.set(m.doc(db, "admins", u.uid), { email: u.email, activeLe: date });
+  lot.set(m.doc(db, "activations", "admin"), { uid: u.uid, code, date });
+  try {
+    await lot.commit();
+  } catch (e) {
+    if ((e as { code?: string }).code !== "permission-denied") throw e;
+    throw new Error(
+      u.emailVerified
+        ? "Activation refusée : code incorrect pour cette adresse, ou un administrateur a déjà été activé."
+        : "Vérifie d'abord ton adresse e-mail (lien reçu à l'inscription), puis recommence.",
+    );
   }
 }

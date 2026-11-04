@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useAncre } from "@/lib/adresse";
 import { rafraichirProfil } from "@/lib/compte/session";
+import { activerAdministrateur } from "@/lib/admin/direct";
 import { appeler, fonctionsDisponibles } from "@/lib/firebase/client";
 import { useSession } from "@/lib/compte/session";
 import { BandeauTest } from "../compte/Connexion";
@@ -81,19 +82,60 @@ export function Administration() {
  * adresses vérifiées inscrites dans sa configuration (ADMIN_EMAILS). Sans fonctions, il se désigne dans la console
  * Firebase (document admins/<identifiant>) : la page affiche l'identifiant du compte à y reporter.
  */
+/** Sans fonctions : le premier administrateur s'active avec le code à usage unique reçu du propriétaire du projet. */
+function ActivationParCode({ uid }: { uid: string }) {
+  const [code, setCode] = useState("");
+  const [enCours, setEnCours] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const activer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEnCours(true);
+    setMessage(null);
+    try {
+      await activerAdministrateur(code);
+      await rafraichirProfil();
+      window.location.reload();
+    } catch (err) {
+      setMessage((err as Error).message);
+      setEnCours(false);
+    }
+  };
+  return (
+    <>
+      <p className="text-sm">Ce compte n&apos;a pas le rôle d&apos;administrateur. Pour activer le premier administrateur, saisis le code d&apos;activation reçu :</p>
+      <form onSubmit={activer} className="flex flex-wrap items-end gap-3">
+        <label className="grid gap-1 text-sm">
+          Code d&apos;activation
+          <input
+            className="champ font-mono uppercase"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="MRDN-…"
+          />
+        </label>
+        <button type="submit" className="btn btn-primaire" disabled={enCours || !code.trim()}>
+          {enCours ? "Activation…" : "Activer mon accès administrateur"}
+        </button>
+      </form>
+      {message ? <p className="text-sm text-warn">{message}</p> : null}
+      <p className="text-sm text-ink-3">
+        Le code ne sert qu&apos;une fois, avec l&apos;adresse vérifiée à laquelle il est lié. Autre solution : désigner ce compte dans la console Firebase
+        (collection <code>admins</code>, document au nom de l&apos;identifiant ci-dessous).
+      </p>
+      <p className="break-all rounded-lg bg-surface-2 px-3 py-2 font-mono text-sm text-ink">{uid}</p>
+    </>
+  );
+}
+
 function AccesReserve({ uid }: { uid: string | null }) {
   const [message, setMessage] = useState<string | null>(null);
   return (
     <div className="carte space-y-3 p-6 text-ink-2">
       <p>Accès réservé à l&apos;administration.</p>
       {uid && !fonctionsDisponibles ? (
-        <>
-          <p className="text-sm">
-            Ce compte n&apos;a pas le rôle d&apos;administrateur. Le propriétaire du projet le désigne dans la console Firebase, avec l&apos;identifiant de ce
-            compte :
-          </p>
-          <p className="break-all rounded-lg bg-surface-2 px-3 py-2 font-mono text-sm text-ink">{uid}</p>
-        </>
+        <ActivationParCode uid={uid} />
       ) : uid ? (
         <>
           <button

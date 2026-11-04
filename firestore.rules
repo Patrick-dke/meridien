@@ -3,7 +3,8 @@ rules_version = '2';
 // Règles d'accès de Méridien. Principe : le navigateur lit ce qui le concerne et n'écrit que son profil et sa
 // progression. Tout ce qui touche à l'argent, aux évaluations officielles et aux licences est écrit par les
 // fonctions serveur (SDK Admin), qui contournent ces règles. Seule exception : un administrateur peut accorder ou
-// révoquer un accès et régler un prix depuis le navigateur, toujours avec une trace au journal d'audit.
+// révoquer un accès et régler un prix depuis le navigateur, toujours avec une trace au journal d'audit ; et le
+// premier administrateur s'active lui-même une seule fois, avec un code remis hors du dépôt.
 service cloud.firestore {
   match /databases/{database}/documents {
     function connecte() { return request.auth != null; }
@@ -177,11 +178,36 @@ service cloud.firestore {
     }
 
     // ---- Administration.
-    // Le premier administrateur se désigne côté serveur (fonction revendiquerAdmin, ou console Firebase sans
-    // fonctions) : aucun compte ne se nomme lui-même depuis le navigateur.
+    // Le premier administrateur se désigne côté serveur (fonction revendiquerAdmin), dans la console Firebase, ou une
+    // seule fois depuis le navigateur avec un code à usage unique remis au propriétaire hors du dépôt. Seule l'empreinte du code lié à l'adresse vérifiée figure ici (la seconde, sur une adresse .test
+    // qu'aucun compte ne peut faire vérifier, sert aux tests). Une seule activation possible : elle crée
+    // activations/admin dans le même lot, et ce document empêche toute autre.
+    function activationAdmin(uid) {
+      let d = request.resource.data;
+      let activation = getAfter(/databases/$(database)/documents/activations/admin).data;
+      return moi(uid)
+        && request.auth.token.email_verified == true
+        && d.keys().hasOnly(['email', 'activeLe']) && d.email == request.auth.token.email && d.activeLe is string
+        && !exists(/databases/$(database)/documents/activations/admin)
+        && activation.uid == uid && texte(activation.code, 1, 64)
+        && hashing.sha256(activation.code + '|' + request.auth.token.email.lower()).toHexString().lower() in [
+          'ca1337462985cf4c120a7446625e71beb8375dfd445a515c810d2d9e5fed2a6c',
+          '7f1adbe3bb8d77e8ff9d9655b9e8e431cb9735d245dbb82c501300b8486d2e43'
+        ];
+    }
     match /admins/{uid} {
       allow get: if moi(uid) || admin();
-      allow write: if false;
+      allow create: if activationAdmin(uid);
+      allow update, delete: if false;
+    }
+    match /activations/admin {
+      allow get: if admin();
+      allow create: if connecte()
+        && request.resource.data.keys().hasOnly(['uid', 'code', 'date'])
+        && request.resource.data.uid == request.auth.uid && request.resource.data.date is string
+        && !exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && existsAfter(/databases/$(database)/documents/admins/$(request.auth.uid));
+      allow update, delete: if false;
     }
     // Trace d'une écriture faite par un administrateur sans fonctions : elle doit accompagner, dans le même lot,
     // le droit ou le module qu'elle décrit (pas d'entrée orpheline ni falsifiée).
