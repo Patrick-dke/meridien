@@ -44,7 +44,15 @@ export function GraphiqueBougies({
   const prix = [
     ...scene.bougies.flatMap((b) => [b.h, b.l]),
     ...scene.annotations.flatMap((a) =>
-      a.type === "niveau" ? [a.prix] : a.type === "zone" ? [a.prixHaut, a.prixBas] : a.type === "fleche" ? [a.prix] : [],
+      a.type === "niveau" || a.type === "fleche" || a.type === "etiquette"
+        ? [a.prix]
+        : a.type === "zone"
+          ? [a.prixHaut, a.prixBas]
+          : a.type === "ligne"
+            ? [a.de.prix, a.a.prix]
+            : a.type === "courbe"
+              ? a.points.filter((p): p is number => p !== null)
+              : [],
     ),
   ];
   const brutMin = Math.min(...prix);
@@ -182,6 +190,60 @@ function Marque({ a, x, y, pas, decimales }: Geometrie & { a: Annotation; decima
             {a.label}
           </text>
         ) : null}
+      </g>
+    );
+  }
+  if (a.type === "ligne") {
+    const c = couleurCss[a.couleur];
+    const [x1, y1, x2, y2] = [x(a.de.index), y(a.de.prix), x(a.a.index), y(a.a.prix)];
+    return (
+      <g className="apparition">
+        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={c} strokeWidth={2} strokeLinecap="round" strokeDasharray={a.style === "pointille" ? "6 5" : undefined} />
+        {a.label ? (
+          <text x={x2} y={y2 - 10} textAnchor="end" fontSize={12.5} fontWeight={600} fill={c}>
+            {a.label}
+          </text>
+        ) : null}
+      </g>
+    );
+  }
+  if (a.type === "courbe") {
+    const c = couleurCss[a.couleur];
+    // Une courbe par segment continu : les valeurs nulles l'interrompent (début d'une moyenne mobile).
+    const segments: string[] = [];
+    let courant: string[] = [];
+    a.points.forEach((p, i) => {
+      if (p === null) {
+        if (courant.length > 1) segments.push(courant.join(" "));
+        courant = [];
+      } else courant.push(`${x(i).toFixed(1)},${y(p).toFixed(1)}`);
+    });
+    if (courant.length > 1) segments.push(courant.join(" "));
+    const dernier = a.points.reduce<number>((k, p, i) => (p !== null ? i : k), -1);
+    return (
+      <g className="apparition">
+        {segments.map((pts, i) => (
+          <polyline key={i} points={pts} fill="none" stroke={c} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+        ))}
+        {a.label && dernier >= 0 ? (
+          <text x={x(dernier)} y={y(a.points[dernier]!) - 10} textAnchor="end" fontSize={12.5} fontWeight={600} fill={c}>
+            {a.label}
+          </text>
+        ) : null}
+      </g>
+    );
+  }
+  if (a.type === "etiquette") {
+    const c = couleurCss[a.couleur];
+    const haut = (a.position ?? "haut") === "haut";
+    const ty = y(a.prix) + (haut ? -10 : 20);
+    const largeur = a.texte.length * 7.4 + 10;
+    return (
+      <g className="apparition">
+        <rect x={x(a.index) - largeur / 2} y={ty - 13} width={largeur} height={18} rx={4} fill="var(--overlay)" />
+        <text x={x(a.index)} y={ty} textAnchor="middle" fontSize={12.5} fontWeight={700} fill={c}>
+          {a.texte}
+        </text>
       </g>
     );
   }

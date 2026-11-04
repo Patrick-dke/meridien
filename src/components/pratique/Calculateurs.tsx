@@ -21,10 +21,10 @@ export function lireNombre(saisie: string) {
   return Number(propre);
 }
 
-const nombre = (v: number, decimales = 2) =>
+export const nombre = (v: number, decimales = 2) =>
   new Intl.NumberFormat("fr-FR", { minimumFractionDigits: decimales, maximumFractionDigits: decimales }).format(v);
 
-function Champ({
+export function Champ({
   label,
   valeur,
   onChange,
@@ -67,7 +67,7 @@ function Champ({
   );
 }
 
-function Choix<T extends string>({
+export function Choix<T extends string>({
   label,
   valeur,
   options,
@@ -100,7 +100,7 @@ function Choix<T extends string>({
   );
 }
 
-function Resultats({ lignes, erreur, note }: { lignes?: [string, string, boolean?][]; erreur?: string; note?: string }) {
+export function Resultats({ lignes, erreur, note }: { lignes?: [string, string, boolean?][]; erreur?: string; note?: string }) {
   return (
     <div aria-live="polite" className="rounded-xl border border-line bg-chart p-4">
       {erreur ? (
@@ -120,7 +120,7 @@ function Resultats({ lignes, erreur, note }: { lignes?: [string, string, boolean
   );
 }
 
-const incomplet = "Renseignez tous les champs avec des nombres (la virgule est acceptée).";
+const incomplet = "Renseigne tous les champs avec des nombres (la virgule est acceptée).";
 
 export function CalculateurPosition() {
   const [mode, setMode] = useState<"prix" | "lots">("prix");
@@ -151,7 +151,7 @@ export function CalculateurPosition() {
             ]}
             note={
               res.quantiteArrondie * e > c
-                ? "La position vaut plus que votre capital : elle n'est possible qu'avec un effet de levier. Le risque reste celui calculé si le stop est exécuté à son prix, ce qui n'est pas garanti (gap, slippage)."
+                ? "La position vaut plus que ton capital : elle n'est possible qu'avec un effet de levier. Le risque reste celui calculé si le stop est exécuté à son prix, ce qui n'est pas garanti (gap, slippage)."
                 : "Le risque réel peut dépasser ce montant si le stop est exécuté plus loin (gap, slippage) et ne compte pas les frais."
             }
           />
@@ -175,8 +175,8 @@ export function CalculateurPosition() {
             ]}
             note={
               res.lotsArrondis === 0
-                ? "Le risque accepté est trop faible pour ce stop, même avec le plus petit lot (0,01). Élargissez votre risque ou réduisez la distance du stop."
-                : "Montants dans la devise de votre compte. La valeur du pip dépend de la paire et de la devise du compte : utilisez le calculateur de pips en cas de doute."
+                ? "Le risque accepté est trop faible pour ce stop, même avec le plus petit lot (0,01). Élargis ton risque ou réduis la distance du stop."
+                : "Montants dans la devise de ton compte. La valeur du pip dépend de la paire et de la devise du compte : utilise le calculateur de pips en cas de doute."
             }
           />
         );
@@ -205,12 +205,7 @@ export function CalculateurPosition() {
         ) : (
           <>
             <Champ label="Distance du stop" valeur={stopPips} onChange={setStopPips} suffixe="pips" />
-            <Champ
-              label="Valeur d'un pip pour 1 lot"
-              valeur={valeurPip}
-              onChange={setValeurPip}
-              aide="10 pour EUR/USD avec un compte en dollars."
-            />
+            <Champ label="Valeur d'un pip pour 1 lot" valeur={valeurPip} onChange={setValeurPip} aide="10 pour EUR/USD avec un compte en dollars." />
           </>
         )}
       </div>
@@ -246,7 +241,7 @@ export function CalculateurRendementRisque() {
             ["Réussite minimale, sans frais", `${nombre(seuilRentabilite(res.ratio) * 100, 1)} %`],
             ["Réussite minimale, frais inclus", `${nombre(seuilRentabiliteAvecFrais(res.ratio, fraisR) * 100, 1)} %`, true],
           ]}
-          note="La réussite minimale est le taux de trades gagnants en dessous duquel cette configuration perd de l'argent sur la durée. Elle ne dit rien de vos chances réelles : seule une mesure sur vos propres trades le peut."
+          note="La réussite minimale est le taux de trades gagnants en dessous duquel cette configuration perd de l'argent sur la durée. Elle ne dit rien de tes chances réelles : seule une mesure sur tes propres trades le peut."
         />
       );
     }
@@ -315,7 +310,13 @@ export function CalculateurPips() {
       <div className="grid gap-4 sm:grid-cols-2">
         <Champ label="Premier prix" valeur={prixA} onChange={setPrixA} />
         <Champ label="Second prix" valeur={prixB} onChange={setPrixB} />
-        <Champ label="Taille de la position" valeur={taille} onChange={setTaille} suffixe="unités" aide="1 lot = 100 000 ; mini-lot = 10 000 ; micro-lot = 1 000." />
+        <Champ
+          label="Taille de la position"
+          valeur={taille}
+          onChange={setTaille}
+          suffixe="unités"
+          aide="1 lot = 100 000 ; mini-lot = 10 000 ; micro-lot = 1 000."
+        />
         <Champ label="Conversion vers la devise du compte" valeur={conversion} onChange={setConversion} />
       </div>
       {contenu}

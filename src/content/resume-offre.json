@@ -1,0 +1,58 @@
+{
+  "premiers-pas": {
+    "chapitres": 14,
+    "dureeMin": 158,
+    "capsules": 14,
+    "questions": 154,
+    "exercices": 32
+  },
+  "marches-et-plateformes": {
+    "chapitres": 16,
+    "dureeMin": 219,
+    "capsules": 16,
+    "questions": 177,
+    "exercices": 32
+  },
+  "risque-et-discipline": {
+    "chapitres": 18,
+    "dureeMin": 233,
+    "capsules": 21,
+    "questions": 216,
+    "exercices": 38
+  },
+  "analyse-technique": {
+    "chapitres": 12,
+    "dureeMin": 164,
+    "capsules": 16,
+    "questions": 132,
+    "exercices": 27
+  },
+  "price-action": {
+    "chapitres": 14,
+    "dureeMin": 181,
+    "capsules": 20,
+    "questions": 164,
+    "exercices": 28
+  },
+  "smart-money-concepts": {
+    "chapitres": 16,
+    "dureeMin": 214,
+    "capsules": 21,
+    "questions": 174,
+    "exercices": 32
+  },
+  "liquidite-ict": {
+    "chapitres": 18,
+    "dureeMin": 261,
+    "capsules": 23,
+    "questions": 187,
+    "exercices": 36
+  },
+  "modeles-et-methode": {
+    "chapitres": 12,
+    "dureeMin": 194,
+    "capsules": 16,
+    "questions": 138,
+    "exercices": 24
+  }
+}

@@ -32,6 +32,12 @@ export type Annotation = AvecEtape &
       }
     | { type: "fleche"; index: number; prix: number; sens: "haut" | "bas"; label?: string; couleur: Couleur }
     | { type: "repere"; index: number; label?: string; couleur: Couleur }
+    /** Droite oblique entre deux points (tendance, canal, trajectoire d'un mouvement). */
+    | { type: "ligne"; de: { index: number; prix: number }; a: { index: number; prix: number }; label?: string; couleur: Couleur; style?: "plein" | "pointille" }
+    /** Courbe : une valeur par bougie (null pour ne rien tracer), par exemple une moyenne mobile. */
+    | { type: "courbe"; points: (number | null)[]; label?: string; couleur: Couleur }
+    /** Court texte posé sur le graphique (HH, HL, BOS, FVG…), au-dessus ou au-dessous d'un prix. */
+    | { type: "etiquette"; index: number; prix: number; texte: string; position?: "haut" | "bas"; couleur: Couleur }
   );
 
 export type SceneBougies = {

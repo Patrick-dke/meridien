@@ -1,4 +1,4 @@
-import { problemesChapitre } from "./verifier";
+import { ecartsCibles, problemesChapitre } from "./verifier";
 import { moduleDuChapitre } from "./offre";
 import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -105,6 +105,11 @@ describe("chapitres", () => {
     expect(bilan).toEqual({});
   });
 
+  it.skipIf(!process.env.CIBLE)("atteignent les cibles pédagogiques (cahier de rédaction v2)", () => {
+    const bilan = Object.fromEntries(tousLesChapitres.map((c) => [c.slug, ecartsCibles(c)]).filter(([, e]) => (e as string[]).length));
+    expect(bilan).toEqual({});
+  });
+
   it("ont des capsules de 30 à 90 secondes, à un débit lisible", () => {
     for (const c of tousLesChapitres) {
       const duree = c.capsule.scenes.reduce((a, s) => a + s.duree, 0);
@@ -127,6 +132,8 @@ describe("narration des capsules", () => {
       if (!n) continue;
       // Un texte modifié sans régénérer la voix ferait dire autre chose que ce qui est affiché.
       expect(n.empreinte, `${c.slug} : narration périmée (npm run voix)`).toBe(empreinteTextes(c.capsule.scenes.map((s) => s.texte)));
+      // La voix créditée dans les mentions légales est Kokoro (ff_siwis) : aucune capsule ne doit en avoir une autre.
+      expect(n.voix, `${c.slug} : narration d'une autre voix (npm run voix)`).toMatch(/Kokoro-82M, voix ff_siwis/);
       expect(n.scenes).toHaveLength(c.capsule.scenes.length);
       expect(n.duree, c.slug).toBeLessThanOrEqual(90);
       expect(n.duree, c.slug).toBeGreaterThanOrEqual(25);

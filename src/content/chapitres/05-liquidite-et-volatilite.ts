@@ -10,7 +10,7 @@ export const chapitre: Chapitre = {
   niveau: 1,
   dureeMin: 12,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Définir la liquidité et reconnaître un marché liquide",
     "Définir la volatilité et ses effets sur le risque",
@@ -26,37 +26,37 @@ export const chapitre: Chapitre = {
       {
         duree: 10,
         texte:
-          "Deux mots à ne pas confondre : la liquidité, c'est la facilité à acheter ou vendre. La volatilité, c'est l'ampleur des mouvements de prix.",
+          "Deux mots à ne pas confondre. La liquidité, c'est la facilité à acheter ou à vendre. La volatilité, c'est l'ampleur des mouvements de prix.",
         visuel: { type: "titre", titre: "Liquidité ≠ volatilité" },
       },
       {
         duree: 10,
         texte:
-          "Un marché liquide a beaucoup d'ordres à chaque prix. Ici, un achat de 1 000 actions est exécuté au meilleur prix, sans bouger le marché.",
+          "Regarde ce marché liquide. Il y a beaucoup d'ordres à chaque prix. Un achat de 1 000 actions est servi au meilleur prix, sans bouger le marché.",
         visuel: { type: "figure", scene: "carnet-profond", etape: 1 },
       },
       {
         duree: 8,
         texte:
-          "Dans un carnet mince, le même ordre consomme plusieurs niveaux : le prix obtenu se dégrade. C'est le slippage.",
+          "Dans un carnet mince, le même ordre consomme plusieurs niveaux. Le prix obtenu se dégrade. C'est le slippage.",
         visuel: { type: "figure", scene: "carnet-mince", etape: 1 },
       },
       {
         duree: 6,
         texte:
-          "La volatilité, maintenant. Ici, les bougies sont petites : le prix bouge peu.",
-        visuel: { type: "figure", scene: "volatilite-annonce", etape: 0 },
+          "Passons à la volatilité. Ici, les bougies sont petites. Le prix bouge peu.",
+        visuel: { type: "figure", scene: "pp-stop-volatilite", etape: 0 },
       },
       {
         duree: 10,
         texte:
-          "Puis une annonce économique tombe : les bougies deviennent quatre à cinq fois plus grandes. Un stop placé trop près peut être touché en quelques secondes.",
-        visuel: { type: "figure", scene: "volatilite-annonce", etape: 1 },
+          "Puis une annonce tombe. Tu vois ? Les bougies deviennent quatre à cinq fois plus grandes. Un stop placé trop près peut sauter en quelques secondes.",
+        visuel: { type: "figure", scene: "pp-stop-volatilite", etape: 1 },
       },
       {
         duree: 10,
         texte:
-          "Liquidité et volatilité changent selon l'heure, les annonces et les jours. Le même actif peut être calme le matin et agité l'après-midi.",
+          "Liquidité et volatilité changent selon l'heure, les annonces et les jours. Le même actif peut être calme le matin, et agité l'après-midi.",
         visuel: {
           type: "points",
           titre: "Quand ça change",
@@ -70,7 +70,7 @@ export const chapitre: Chapitre = {
       {
         duree: 8,
         texte:
-          "Retiens : avant d'entrer, demande-toi si tu pourras sortir facilement, et de combien le prix peut bouger contre toi.",
+          "Avant d'entrer, pose-toi deux questions. Pourrai-je sortir facilement ? Et de combien le prix peut-il bouger contre moi ?",
         visuel: {
           type: "points",
           items: [
@@ -99,6 +99,13 @@ export const chapitre: Chapitre = {
             "**Moins liquides** : les petites entreprises cotées, de nombreuses cryptomonnaies secondaires, certaines paires de devises dites exotiques.",
             "**Variable** : la liquidité d'un même actif change selon l'heure, le jour et l'actualité.",
           ],
+        },
+        {
+          type: "figure",
+          scene: "pp-carnet-illiquide",
+          fiabilite: "calcul",
+          legende:
+            "Une petite action peu échangée, cotée en FCFA : 2 450 à l'achat, 2 550 à la vente. L'écart de 100 FCFA représente environ 4 % du prix, et seules quelques dizaines d'actions attendent à chaque niveau : vendre 60 actions d'un coup ferait déjà baisser le prix.",
         },
         {
           type: "encadre",
@@ -204,6 +211,12 @@ export const chapitre: Chapitre = {
           "Sur une paire de devises calme, les bougies d'un quart d'heure font environ 4 pips. Un stop placé à 10 pips de l'entrée laisse au prix de la marge pour respirer. Après une annonce, ces bougies font 18 pips : le même stop de 10 pips peut être touché par une seule bougie, sans que ton scénario soit pour autant faux.",
       },
       {
+        type: "figure",
+        scene: "pp-stop-volatilite",
+        legende:
+          "EUR/USD en bougies de 15 minutes. Avant l'annonce, environ 4 pips par bougie : le stop placé 10 pips sous l'entrée reste loin du bruit. Après l'annonce, environ 18 pips par bougie : la première grande bougie touche le stop, puis le prix repasse au-dessus de l'entrée.",
+      },
+      {
         type: "p",
         texte:
           "Deux réponses cohérentes : ne pas avoir de position au moment de l'annonce, ou élargir le stop et réduire la taille de position pour garder le même risque en euros. La pire réponse : garder un stop serré par habitude.",
@@ -260,6 +273,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c05-q1",
+      difficulte: 1,
       type: "unique",
       enonce: "Qu'est-ce qu'un marché liquide ?",
       choix: [
@@ -275,6 +289,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c05-q2",
+      difficulte: 1,
       type: "vraifaux",
       enonce: "La volatilité mesure la facilité à trouver un acheteur.",
       reponse: false,
@@ -284,6 +299,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c05-q3",
+      difficulte: 2,
       type: "multiple",
       enonce:
         "Quels moments s'accompagnent souvent d'une volatilité accrue ou d'un risque de saut de prix ?",
@@ -300,6 +316,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c05-q4",
+      difficulte: 2,
       type: "unique",
       enonce:
         "La volatilité d'un actif double. Pour garder le même risque en euros avec un stop adapté, que fais-tu ?",
@@ -316,6 +333,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c05-q5",
+      difficulte: 2,
       type: "vraifaux",
       enonce:
         "Dans les écoles ICT et SMC, « liquidité » peut désigner des zones où des ordres stop seraient regroupés.",
@@ -326,6 +344,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c05-q6",
+      difficulte: 2,
       type: "unique",
       enonce: "Dans un carnet mince, un gros achat au marché :",
       choix: [
@@ -338,6 +357,66 @@ export const chapitre: Chapitre = {
       explication:
         "Faute de quantité au meilleur prix, l'ordre remonte le carnet : c'est le slippage dû au manque de liquidité.",
       concepts: ["liquidite"],
+    },
+    {
+      id: "c05-q7",
+      type: "graphique",
+      difficulte: 2,
+      enonce:
+        "Achat d'EUR/USD à 1,0850 (trait pointillé), stop à 1,0840. Touche la bougie qui touche le stop.",
+      scene: "pp-q-stop-serre",
+      bonnes: [9],
+      explication:
+        "Cette bougie descend jusqu'à 1,0837, 3 pips sous le stop : c'est la seule à l'atteindre. Avant elle, les bougies faisaient 3 à 5 pips ; à partir de là, le marché s'agite et un stop à 10 pips est à la portée d'une seule bougie. Le prix repart ensuite vers le haut, sans toi.",
+      concepts: ["volatilite"],
+    },
+    {
+      id: "c05-q8",
+      type: "comparaison",
+      difficulte: 3,
+      enonce: "Tu veux acheter 1 000 actions au marché. Dans quel carnet ton prix moyen sera-t-il le plus bas ?",
+      graphiques: [{ scene: "pp-q-profondeur-a" }, { scene: "pp-q-profondeur-b" }],
+      bonne: 1,
+      explication:
+        "En A, le meilleur prix est plus bas, 50,01 €, mais seules 200 actions y sont proposées : l'ordre consomme quatre niveaux, 50 026 € au total, soit 50,026 € en moyenne. En B, 3 000 actions attendent à 50,02 € : les 1 000 sont servies à ce prix. La profondeur compte plus que le meilleur prix affiché.",
+      concepts: ["liquidite"],
+    },
+    {
+      id: "c05-q9",
+      type: "unique",
+      difficulte: 3,
+      contexte:
+        "Avant l'annonce, tu trades 0,2 lot avec un stop de 10 pips : chaque pip vaut 2 $ pour cette taille, soit 20 $ de risque. Après l'annonce, tu veux un stop de 20 pips pour tenir compte des bougies plus grandes, en gardant 20 $ de risque.",
+      figure: { scene: "pp-stop-volatilite", etape: 1, legende: "EUR/USD en bougies de 15 minutes, avant et après l'annonce." },
+      enonce: "Quelle taille de position prends-tu ?",
+      choix: ["0,4 lot", "0,2 lot", "0,1 lot", "0,05 lot"],
+      bonne: 2,
+      explication:
+        "Avec 20 pips de stop et 20 $ de risque, chaque pip doit valoir 20 ÷ 20 = 1 $, deux fois moins qu'à 0,2 lot : il faut donc 0,1 lot. Stop deux fois plus large, taille deux fois plus petite, risque inchangé.",
+      concepts: ["volatilite"],
+    },
+    {
+      id: "c05-q10",
+      type: "unique",
+      difficulte: 2,
+      contexte: "Tu détiens 60 actions de cette petite société et tu veux tout vendre immédiatement, au marché.",
+      figure: { scene: "pp-carnet-illiquide", legende: "Carnet d'une petite action cotée en FCFA." },
+      enonce: "Quel prix moyen obtiens-tu par action ?",
+      choix: ["2 450 FCFA", "2 437,50 FCFA", "2 425 FCFA", "2 500 FCFA"],
+      bonne: 1,
+      explication:
+        "L'ordre prend 35 actions à 2 450, 20 à 2 425 et 5 à 2 400 FCFA : 146 250 FCFA en tout, soit 2 437,50 FCFA en moyenne. Le dernier échange se fait à 2 400 : même une petite vente fait baisser le prix d'un actif peu liquide.",
+      concepts: ["liquidite"],
+    },
+    {
+      id: "c05-q11",
+      type: "vraifaux",
+      difficulte: 1,
+      enonce: "Un marché peut être à la fois très liquide et très volatil.",
+      reponse: true,
+      explication:
+        "Pendant une annonce, une grande paire de devises reste très échangée, mais son prix bouge fortement. Liquidité et volatilité sont deux notions différentes.",
+      concepts: ["liquidite", "volatilite"],
     },
   ],
 };

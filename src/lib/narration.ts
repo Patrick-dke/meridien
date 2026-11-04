@@ -2,6 +2,9 @@ import { texteBrut } from "./typographie";
 
 /** Minutage d'une capsule narrée, produit par scripts/voix (une entrée par scène, une par phrase). */
 export type Phrase = { debut: number; fin: number; texte: string };
+/** Narration de la k-ième capsule d'un chapitre (0 = principale). */
+export const identifiantNarration = (slug: string, k: number) => (k === 0 ? slug : `${slug}--${k + 1}`);
+
 export type SceneNarree = { debut: number; fin: number; phrases: Phrase[] };
 export type Narration = {
   slug: string;

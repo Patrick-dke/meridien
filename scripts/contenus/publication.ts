@@ -8,9 +8,9 @@ import { pathToFileURL } from "node:url";
 import { chapitresPublies } from "../../src/content";
 import { moduleDuChapitre } from "../../src/content/offre";
 import type { Chapitre } from "../../src/content/schema";
-import { scenesUtilisees } from "../../src/content/verifier";
+import { capsules, scenesUtilisees } from "../../src/content/verifier";
 import type { SceneFigure } from "../../src/lib/chartkit/types";
-import { empreinteTextes } from "../../src/lib/narration";
+import { empreinteTextes, identifiantNarration } from "../../src/lib/narration";
 
 /** Taille maximale d'un morceau d'audio en base64 : un document Firestore ne dépasse pas 1 Mio. */
 const MORCEAU = 700_000;
@@ -18,7 +18,7 @@ const MORCEAU = 700_000;
 export type Publication = {
   version: string;
   contenus: { slug: string; module: string; titre: string; chapitre: Chapitre; scenes: Record<string, SceneFigure> }[];
-  corriges: { slug: string; module: string; quiz: Chapitre["quiz"] }[];
+  corriges: { slug: string; module: string; quiz: Chapitre["quiz"]; tirage?: number }[];
   narrations: ({ slug: string; module: string; type: string; audio?: string; morceaux?: string[] } & Record<string, unknown>)[];
   avertissements: string[];
 };
@@ -30,7 +30,7 @@ export type Publication = {
 export function versDocuments(p: Publication) {
   return {
     contenus: p.contenus.map((c) => ({ id: c.slug, donnees: { module: c.module, titre: c.titre, chapitreJson: JSON.stringify(c.chapitre), scenesJson: JSON.stringify(c.scenes), version: p.version } })),
-    corriges: p.corriges.map((c) => ({ id: c.slug, donnees: { module: c.module, quizJson: JSON.stringify(c.quiz), version: p.version } })),
+    corriges: p.corriges.map((c) => ({ id: c.slug, donnees: { module: c.module, quizJson: JSON.stringify(c.quiz), tirage: c.tirage ?? null, version: p.version } })),
   };
 }
 
@@ -46,33 +46,41 @@ export async function preparerPublication(racine = process.cwd()): Promise<Publi
     for (const c of chapitres) {
       const scenes = Object.fromEntries(scenesUtilisees(c).filter((id) => id in prive.scenesPrivees).map((id) => [id, prive.scenesPrivees[id]]));
       contenus.push({ slug: c.slug, module, titre: c.titre, chapitre: c, scenes });
-      const minutage = join(racine, "prive", "narration", `${c.slug}.json`);
-      const mp3 = join(racine, "prive", "audio", `${c.slug}.mp3`);
-      if (!existsSync(minutage) || !existsSync(mp3)) {
-        avertissements.push(`${c.slug} : pas de narration (npm run voix -- prives)`);
-        continue;
+      for (const [k, capsule] of capsules(c).entries()) {
+        const id = identifiantNarration(c.slug, k);
+        const minutage = join(racine, "prive", "narration", `${id}.json`);
+        const mp3 = join(racine, "prive", "audio", `${id}.mp3`);
+        if (!existsSync(minutage) || !existsSync(mp3)) {
+          avertissements.push(`${id} : pas de narration (npm run voix -- prives)`);
+          continue;
+        }
+        const n = JSON.parse(readFileSync(minutage, "utf8"));
+        if (n.empreinte !== empreinteTextes(capsule.scenes.map((s) => s.texte))) {
+          avertissements.push(`${id} : narration périmée, non publiée (npm run voix -- prives)`);
+          continue;
+        }
+        // La voix créditée dans les mentions légales est Kokoro (ff_siwis) : une autre voix n'est pas publiée.
+        if (!/Kokoro-82M, voix ff_siwis/.test(String(n.voix))) {
+          avertissements.push(`${id} : narration d'une autre voix, non publiée (npm run voix -- prives ${module})`);
+          continue;
+        }
+        const audio = readFileSync(mp3).toString("base64");
+        const { audio: _chemin, ...reste } = n;
+        void _chemin;
+        narrations.push({
+          ...reste,
+          slug: id,
+          module,
+          type: "audio/mpeg",
+          ...(audio.length > MORCEAU ? { morceaux: audio.match(new RegExp(`.{1,${MORCEAU}}`, "g"))! } : { audio }),
+        });
       }
-      const n = JSON.parse(readFileSync(minutage, "utf8"));
-      if (n.empreinte !== empreinteTextes(c.capsule.scenes.map((s) => s.texte))) {
-        avertissements.push(`${c.slug} : narration périmée, non publiée (npm run voix -- prives)`);
-        continue;
-      }
-      const audio = readFileSync(mp3).toString("base64");
-      const { audio: _chemin, ...reste } = n;
-      void _chemin;
-      narrations.push({
-        ...reste,
-        slug: c.slug,
-        module,
-        type: "audio/mpeg",
-        ...(audio.length > MORCEAU ? { morceaux: audio.match(new RegExp(`.{1,${MORCEAU}}`, "g"))! } : { audio }),
-      });
     }
   }
 
   const corriges: Publication["corriges"] = [
-    ...contenus.map((c) => ({ slug: c.slug, module: c.module, quiz: c.chapitre.quiz })),
-    ...chapitresPublies.map((c) => ({ slug: c.slug, module: moduleDuChapitre(c.slug)?.id ?? "premiers-pas", quiz: c.quiz })),
+    ...contenus.map((c) => ({ slug: c.slug, module: c.module, quiz: c.chapitre.quiz, tirage: c.chapitre.tirage })),
+    ...chapitresPublies.map((c) => ({ slug: c.slug, module: moduleDuChapitre(c.slug)?.id ?? "premiers-pas", quiz: c.quiz, tirage: c.tirage })),
   ];
   const empreinte = createHash("sha256").update(JSON.stringify(contenus)).update(JSON.stringify(corriges)).digest("hex").slice(0, 8);
   const version = `${new Date().toISOString().slice(0, 10)}-${empreinte}`;

@@ -6,7 +6,7 @@ import { typographie } from "@/lib/typographie";
 
 export const metadata: Metadata = {
   title: "Méthode et fiabilité",
-  description: "Comment Méridien enseigne, comment les contenus sont vérifiés, et ce que signifient les badges de fiabilité.",
+  description: "Comment Méridien enseigne, comment les contenus sont vérifiés, et ce que signifient les mentions de fiabilité.",
 };
 
 const exemples: Record<Fiabilite, string> = {
@@ -63,10 +63,10 @@ export default function PageMethode() {
         </ul>
       </Section>
 
-      <Section id="fiabilite" titre="Les badges de fiabilité">
+      <Section id="fiabilite" titre="Les mentions de fiabilité">
         <p>
           {typographie(
-            "En trading, faits, conventions et croyances d'école se mélangent facilement. Chaque bloc de cours porte donc un badge qui dit ce qu'il est.",
+            "En trading, faits, conventions et croyances d'école se mélangent facilement. Chaque bloc de cours porte donc une mention qui dit ce qu'il est.",
           )}
         </p>
         <ul className="not-prose space-y-3">
@@ -80,7 +80,7 @@ export default function PageMethode() {
         </ul>
         <p>
           {typographie(
-            "Aucune stratégie n'est présentée comme validée statistiquement : le badge « Résultat mesuré » n'apparaîtra qu'avec un rapport de test traçable (données, période, frais, méthode, nombre de trades).",
+            "Aucune stratégie n'est présentée comme validée statistiquement : la mention « Résultat mesuré » n'apparaîtra qu'avec un rapport de test traçable (données, période, frais, méthode, nombre de trades).",
           )}
         </p>
       </Section>
@@ -94,7 +94,7 @@ export default function PageMethode() {
         <ul>
           <li>{typographie("Tous les calculs des cours, des figures et des corrigés sont recalculés par des tests automatiques à chaque mise à jour.")}</li>
           <li>{typographie("Chaque terme cité, chaque concept et chaque figure est vérifié automatiquement (existence, cohérence des bougies, des corrigés, du rythme des capsules).")}</li>
-          <li>{typographie("Les affirmations sont classées par badge ; les interprétations d'école sont rédigées au conditionnel.")}</li>
+          <li>{typographie("Les affirmations sont classées par mention ; les interprétations d'école sont rédigées au conditionnel.")}</li>
           <li>{typographie("Une relecture par un trader expérimenté est prévue pour les académies avancées.")}</li>
         </ul>
         <p>

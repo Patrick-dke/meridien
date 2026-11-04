@@ -29,11 +29,11 @@ export const libellesStrategies: Record<Strategie, string> = {
 
 /** Teinte de chaque académie : elle colore ses cartes, ses vignettes et l'en-tête de ses chapitres. */
 export const teintesAcademies: Record<string, string> = {
-  fondamentaux: "#8f84ff",
-  "price-action": "#45d7f2",
-  "smart-money-concepts": "#c38bff",
-  "liquidite-ict": "#f5c463",
-  "modeles-et-methode": "#ff9f7a",
+  fondamentaux: "var(--teinte-fondamentaux)",
+  "price-action": "var(--teinte-price-action)",
+  "smart-money-concepts": "var(--teinte-smc)",
+  "liquidite-ict": "var(--teinte-ict)",
+  "modeles-et-methode": "var(--teinte-modeles)",
 };
 
 export const motifsAcademies: Record<string, Motif> = {

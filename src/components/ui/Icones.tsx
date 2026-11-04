@@ -190,3 +190,37 @@ export const IconeEclair = (p: Props) => (
     <path d="M13 3 5 13.5h6L10 21l8-10.5h-6z" />
   </Svg>
 );
+
+/* Icônes de navigation dessinées pour Méridien : traits nets, motifs de marché. */
+export const IconeBougies = (p: Props) => (
+  <Svg {...p}>
+    <path d="M6 3v4M6 15v6M12 6v3M12 17v3M18 2v5M18 13v6" />
+    <rect x="4" y="7" width="4" height="8" />
+    <rect x="10" y="9" width="4" height="8" />
+    <rect x="16" y="7" width="4" height="6" />
+  </Svg>
+);
+export const IconeModules = (p: Props) => (
+  <Svg {...p}>
+    <path d="M4 5h16M4 10.5h12M4 16h8M4 21h4" />
+  </Svg>
+);
+export const IconeRobot = (p: Props) => (
+  <Svg {...p}>
+    <rect x="5" y="7" width="14" height="12" rx="1" />
+    <path d="M12 3v4M9 12h.01M15 12h.01M9 16h6M2 12v3M22 12v3" />
+  </Svg>
+);
+export const IconeMeridien = (p: Props) => (
+  <Svg {...p}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="1.5" />
+    <path d="M12 6v12" />
+    <rect x="9.5" y="9.5" width="5" height="5" fill="currentColor" stroke="none" />
+  </Svg>
+);
+export const IconeLicence = (p: Props) => (
+  <Svg {...p}>
+    <circle cx="8" cy="15" r="4" />
+    <path d="m11 12 9-9M17 6l3 3M14 9l2 2" />
+  </Svg>
+);

@@ -73,6 +73,17 @@ export function Parametres() {
           Affichage
         </h2>
         <Option
+          legende="Thème"
+          aide="Le thème sombre repose les yeux le soir ; « Système » suit le réglage de ton téléphone."
+          valeur={reglages.theme ?? "clair"}
+          onChange={(theme) => maj({ theme })}
+          options={[
+            { valeur: "clair", libelle: "Clair" },
+            { valeur: "sombre", libelle: "Sombre" },
+            { valeur: "systeme", libelle: "Système" },
+          ]}
+        />
+        <Option
           legende="Couleurs de hausse et de baisse"
           aide="Bleu et orange se distinguent mieux que vert et rouge en cas de daltonisme."
           valeur={reglages.palette}
@@ -115,7 +126,7 @@ export function Parametres() {
           à un serveur. Pour changer d&apos;appareil, exporte un fichier puis importe-le sur l&apos;autre appareil.
         </p>
         <div className="flex flex-wrap gap-3">
-          <button type="button" onClick={telecharger} className="rounded-lg bg-brand-solid px-4 py-2.5 text-sm font-medium text-white hover:brightness-110">
+          <button type="button" onClick={telecharger} className="btn btn-primaire">
             Exporter ma progression
           </button>
           <label className="cursor-pointer rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium text-ink hover:border-ink-3">

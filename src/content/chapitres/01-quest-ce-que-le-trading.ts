@@ -10,7 +10,7 @@ export const chapitre: Chapitre = {
   niveau: 1,
   dureeMin: 10,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Expliquer ce qu'est le trading et comment une opération gagne ou perd de l'argent",
     "Distinguer une position acheteuse d'une position vendeuse",
@@ -26,7 +26,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Le trading, c'est acheter et vendre des actifs financiers pour profiter de leurs variations de prix. Rien de plus, rien de moins.",
+          "Le trading, c'est acheter et vendre des actifs financiers, pour profiter de leurs variations de prix. Rien de plus. Rien de moins.",
         visuel: {
           type: "titre",
           titre: "Qu'est-ce que le trading ?",
@@ -35,31 +35,31 @@ export const chapitre: Chapitre = {
       },
       {
         duree: 5,
-        texte: "Exemple : tu achètes une action à 50 euros.",
+        texte: "Prenons un exemple. Tu achètes une action à 50 euros.",
         visuel: { type: "figure", scene: "trading-aller-retour", etape: 1 },
       },
       {
         duree: 5,
         texte:
-          "Quelques jours plus tard, elle vaut 53,30 euros. Tu la revends.",
+          "Quelques jours plus tard, elle vaut 53 euros 30. Tu la revends.",
         visuel: { type: "figure", scene: "trading-aller-retour", etape: 2 },
       },
       {
         duree: 6,
         texte:
-          "Ton gain, c'est l'écart entre les deux prix : 3,30 euros par action, avant les frais.",
+          "Ton gain, c'est l'écart entre les deux prix. 3 euros 30 par action, avant les frais.",
         visuel: { type: "figure", scene: "trading-aller-retour", etape: 3 },
       },
       {
         duree: 9,
         texte:
-          "On peut aussi gagner quand le prix baisse : on vend d'abord, on rachète ensuite, moins cher. C'est une position vendeuse.",
+          "Et quand le prix baisse ? Tu peux aussi gagner. Tu vends d'abord, puis tu rachètes moins cher. C'est une position vendeuse.",
         visuel: { type: "figure", scene: "trading-vente-decouvert", etape: 3 },
       },
       {
         duree: 10,
         texte:
-          "Mais chaque trade peut aussi perdre. Le prix peut aller dans le mauvais sens, et les frais s'ajoutent à chaque opération.",
+          "Mais attention. Chaque trade peut aussi perdre. Le prix part parfois dans le mauvais sens. Et les frais s'ajoutent, à chaque opération.",
         visuel: {
           type: "points",
           titre: "Ce que le trading n'est pas",
@@ -73,7 +73,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "La plupart des débutants perdent de l'argent. Ici, tu apprendras d'abord à mesurer et à limiter ce risque, en argent fictif.",
+          "Autrement dit, la plupart des débutants perdent de l'argent. Ici, tu apprends d'abord à mesurer ce risque, et à le limiter, en argent fictif.",
         visuel: {
           type: "titre",
           titre: "D'abord le risque",
@@ -105,6 +105,13 @@ export const chapitre: Chapitre = {
           texte:
             "Exemple : tu achètes 10 actions à 50,00 € et tu les revends à 53,30 €. Le résultat brut est de (53,30 − 50,00) × 10 = 33 €. Si le prix était tombé à 47,00 €, la perte aurait été de 30 €.",
         },
+        {
+          type: "figure",
+          scene: "pp-achat-perte",
+          fiabilite: "calcul",
+          legende:
+            "Le cas perdant : achat à 50,00 €, revente à 47,00 € après la baisse. La bande rouge mesure 3,00 € de perte par action, soit 30 € pour 10 actions, avant frais.",
+        },
       ],
     },
     {
@@ -120,6 +127,13 @@ export const chapitre: Chapitre = {
           type: "p",
           texte:
             "Vendre ce que l'on ne possède pas peut surprendre. Sur le [[forex|Forex]] ou avec des [[cfd|CFD]], c'est pourtant aussi simple qu'acheter : le [[courtier|courtier]] gère l'opération. En contrepartie, la perte d'une position vendeuse n'a pas de plafond théorique, puisque le prix peut monter sans limite.",
+        },
+        {
+          type: "figure",
+          scene: "pp-vente-perte",
+          fiabilite: "calcul",
+          legende:
+            "Une position vendeuse qui perd : vente à 60,50 € (1), rachat à 62,00 € (2) après une hausse. Perte de 1,50 € par unité, 15 € pour 10 unités ; rien n'empêchait le prix de monter plus haut.",
         },
         {
           type: "encadre",
@@ -253,6 +267,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c01-q1",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Tu achètes 20 actions à 40 € et tu les revends à 43 €. Quel est le résultat brut ?",
@@ -263,6 +278,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c01-q2",
+      difficulte: 1,
       type: "vraifaux",
       enonce: "Une position vendeuse gagne de l'argent quand le prix baisse.",
       reponse: true,
@@ -272,6 +288,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c01-q3",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Tu vends 10 unités à 60,50 €, puis tu les rachètes à 62,00 €. Quel est le résultat brut ?",
@@ -283,6 +300,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c01-q4",
+      difficulte: 2,
       type: "multiple",
       enonce: "Parmi ces affirmations, lesquelles sont vraies ?",
       choix: [
@@ -298,6 +316,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c01-q5",
+      difficulte: 2,
       type: "vraifaux",
       enonce:
         "La perte maximale d'une position vendeuse est limitée au prix de vente.",
@@ -308,6 +327,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c01-q6",
+      difficulte: 1,
       type: "unique",
       enonce: "Quel est l'objectif principal de cette académie ?",
       choix: [
@@ -320,6 +340,69 @@ export const chapitre: Chapitre = {
       explication:
         "La plateforme est un environnement d'apprentissage, ni un service de signaux ni une promesse de gains.",
       concepts: ["trading"],
+    },
+    {
+      id: "c01-q7",
+      type: "graphique",
+      difficulte: 2,
+      enonce:
+        "Tu as ouvert une position vendeuse à 60,50 € sur la bougie marquée « Vente ». Touche la bougie qui atteint le prix le plus bas après ta vente.",
+      scene: "pp-q-vente-rachat",
+      bonnes: [11],
+      explication:
+        "Cette bougie descend jusqu'à 57,70 €, le plus bas de toute la période. Racheter là aurait rapporté 60,50 − 57,70 = 2,80 € par unité. Personne ne connaît ce point à l'avance : c'est pourquoi on fixe sa sortie avant d'entrer, au lieu d'espérer le meilleur prix.",
+      concepts: ["position-longue-courte"],
+    },
+    {
+      id: "c01-q8",
+      type: "unique",
+      difficulte: 2,
+      contexte: "Mireille achète 20 actions à 50,00 € et les revend quelques séances plus tard à 48,50 €. On ne compte pas les frais.",
+      figure: { scene: "pp-q-achat-vente", legende: "Achat à 50,00 €, revente à 48,50 €." },
+      enonce: "Quel est son résultat brut ?",
+      choix: ["+30 €", "−30 €", "−1,50 €", "−15 €"],
+      bonne: 1,
+      explication:
+        "(48,50 − 50,00) × 20 = −1,50 × 20 = −30 €. Elle a acheté puis le prix a baissé : une position acheteuse perd quand on revend moins cher qu'on a acheté. −1,50 € est la perte pour une seule action.",
+      concepts: ["trading", "risque-de-perte"],
+    },
+    {
+      id: "c01-q9",
+      type: "comparaison",
+      difficulte: 1,
+      enonce:
+        "Dans les deux graphiques, on vend à 60,50 € puis on rachète huit séances plus tard. Lequel montre une position vendeuse gagnante ?",
+      graphiques: [{ scene: "pp-q-vente-a" }, { scene: "pp-q-vente-b" }],
+      bonne: 0,
+      explication:
+        "En A, le prix a baissé entre la vente et le rachat, qui se fait vers 59,00 € : on rachète moins cher qu'on a vendu, soit environ 1,50 € de gain par unité. En B, le prix a monté jusque vers 61,60 € : racheter plus cher fait perdre environ 1,10 € par unité.",
+      concepts: ["position-longue-courte"],
+    },
+    {
+      id: "c01-q10",
+      type: "unique",
+      difficulte: 3,
+      contexte:
+        "Tu achètes 10 actions à 50,00 € et tu les revends à 50,30 €. Les frais d'entrée et de sortie te coûtent 4,00 € au total.",
+      figure: { scene: "pp-q-petit-gain", legende: "Achat à 50,00 €, revente à 50,30 €." },
+      enonce: "Quel est ton résultat net ?",
+      choix: ["+3,00 €", "−1,00 €", "+7,00 €", "−4,00 €"],
+      bonne: 1,
+      explication:
+        "Gain brut : (50,30 − 50,00) × 10 = 3,00 €. Moins 4,00 € de frais : 3,00 − 4,00 = −1,00 €. Le prix est allé dans le bon sens, mais le mouvement était trop petit pour payer les frais.",
+      concepts: ["trading", "risque-de-perte"],
+    },
+    {
+      id: "c01-q11",
+      type: "multiple",
+      difficulte: 3,
+      enonce:
+        "Tu vends à découvert 50 unités à 12,00 €. Sans compter les frais, à quels prix de rachat perds-tu de l'argent ?",
+      choix: ["12,40 €", "11,50 €", "15,00 €", "12,00 €"],
+      bonnes: [0, 2],
+      explication:
+        "Une position vendeuse perd quand on rachète plus cher qu'on a vendu : à 12,40 €, (12,00 − 12,40) × 50 = −20 € ; à 15,00 €, −150 €. À 11,50 €, c'est un gain de 25 €. À 12,00 €, le résultat brut est nul, mais les frais le rendraient négatif.",
+      concepts: ["position-longue-courte", "risque-de-perte"],
     },
   ],
 };

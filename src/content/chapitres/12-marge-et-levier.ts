@@ -10,7 +10,7 @@ export const chapitre: Chapitre = {
   niveau: 2,
   dureeMin: 12,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Expliquer la marge et la calculer",
     "Comprendre ce que l'effet de levier amplifie réellement",
@@ -36,7 +36,7 @@ export const chapitre: Chapitre = {
       {
         duree: 11,
         texte:
-          "Le courtier ne te donne pas cet argent : il bloque une garantie, la marge. Avec un levier de 1 pour 30, elle vaut un trentième de la position.",
+          "Le courtier ne te donne pas cet argent. Il bloque une garantie : la marge. Avec un levier de un pour trente, elle vaut un trentième de la position.",
         visuel: {
           type: "formule",
           texte: "Marge = taille de la position ÷ levier",
@@ -46,38 +46,31 @@ export const chapitre: Chapitre = {
       {
         duree: 6,
         texte:
-          "Sans levier, une position de 1 000 euros : une baisse de 1 % te coûte 10 euros.",
+          "Sans levier, sur une position de 1 000 euros, une baisse de 1 % te coûte 10 euros.",
         visuel: { type: "figure", scene: "levier-comparaison", etape: 0 },
       },
       {
         duree: 10,
         texte:
-          "Avec un levier de 1 pour 10, et toute la position permise : 10 000 euros. La même baisse coûte 100 euros, 10 % du capital.",
+          "Avec un levier de un pour dix, et toute la position permise, tu tiens 10 000 euros. La même baisse coûte 100 euros : 10 % de ton capital.",
         visuel: { type: "figure", scene: "levier-comparaison", etape: 1 },
       },
       {
         duree: 8,
         texte:
-          "Avec 1 pour 30 : 30 000 euros de position. 300 euros perdus, soit 30 % du capital pour un mouvement de 1 %.",
+          "Avec un pour trente : 30 000 euros de position. Tu perds 300 euros, soit 30 % du capital, pour un mouvement de 1 %.",
         visuel: { type: "figure", scene: "levier-comparaison", etape: 2 },
       },
       {
         duree: 9,
         texte:
-          "Si tes pertes réduisent trop ton capital, le courtier ferme tes positions : c'est l'appel de marge, souvent au pire moment.",
-        visuel: {
-          type: "points",
-          titre: "L'appel de marge",
-          items: [
-            "Les pertes réduisent ton capital",
-            "Sous un seuil, le courtier ferme tes positions",
-          ],
-        },
+          "Si tes pertes réduisent trop ton capital, le courtier ferme ta position. Souvent au pire moment : ici, le prix remonte juste après.",
+        visuel: { type: "figure", scene: "pp-stop-out", etape: 1 },
       },
       {
         duree: 10,
         texte:
-          "Retiens : le levier ne change pas le marché, il change la taille de ta position. Le risque se maîtrise par la taille, pas par le levier disponible.",
+          "Retiens bien : le levier ne change pas le marché, il change la taille de ta position. Le risque se règle par la taille, pas par le levier disponible.",
         visuel: {
           type: "titre",
           titre: "Le risque, c'est la taille",
@@ -128,6 +121,13 @@ export const chapitre: Chapitre = {
             "Avec une position de 30 fois le capital, une baisse de 1 % coûte 30 % du capital ; une baisse d'environ 3,3 % l'efface entièrement.",
         },
         {
+          type: "figure",
+          scene: "pp-levier-3pct",
+          fiabilite: "calcul",
+          legende:
+            "Capital de 1 000 €, baisse du prix de 3 % : 30 € de perte pour une position de 1 000 €, 150 € pour 5 000 €, 300 € pour 10 000 €. En part du capital : 3 %, 15 % et 30 %, soit le levier utilisé multiplié par 3 %.",
+        },
+        {
           type: "encadre",
           variante: "risque",
           fiabilite: "fait",
@@ -144,6 +144,13 @@ export const chapitre: Chapitre = {
           fiabilite: "fait",
           texte:
             "Tant qu'une position est ouverte, le courtier compare ton capital, pertes et gains latents compris, à la marge requise. Si ce capital passe sous un seuil, il te demande de déposer des fonds ou réduit tes positions : c'est l'[[appel-de-marge|appel de marge]]. Au-delà d'un second seuil, souvent appelé stop out, il ferme lui-même tes positions.",
+        },
+        {
+          type: "figure",
+          scene: "pp-stop-out",
+          fiabilite: "fait",
+          legende:
+            "Capital de 1 000 €, position de 20 000 € sur un indice à 1 € par point, achetée à 20 000, avec 1 000 € de marge. Quand les pertes ramènent le capital à 500 €, la moitié de la marge, le courtier ferme la position à 19 500 : c'est le seuil imposé aux CFD des particuliers dans l'Union européenne. Le prix remonte ensuite, sans toi.",
         },
         {
           type: "p",
@@ -194,6 +201,13 @@ export const chapitre: Chapitre = {
           ["Perte pour une baisse de 2 %", "1 200 €", "100 €"],
           ["Part du capital perdue", "60 %", "5 %"],
         ],
+      },
+      {
+        type: "figure",
+        scene: "pp-levier-2pct",
+        fiabilite: "calcul",
+        legende:
+          "Capital de 2 000 €, baisse de 2 % : 40 € de perte sans levier, 400 € avec une position de 10 fois le capital, 1 200 € avec 30 fois, soit 60 % du capital.",
       },
       {
         type: "p",
@@ -257,6 +271,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c12-q1",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Position de 20 000 € avec un levier de 1:20. Quelle est la marge requise ?",
@@ -267,6 +282,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c12-q2",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Capital de 1 000 €, position de 10 000 €. Le prix baisse de 2 %. Quelle est la perte ?",
@@ -278,6 +294,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c12-q3",
+      difficulte: 1,
       type: "vraifaux",
       enonce:
         "Ta perte maximale sur une position est égale à la marge bloquée.",
@@ -288,6 +305,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c12-q4",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Avec une position de 30 fois ton capital, quelle baisse de prix efface environ tout le capital ?",
@@ -298,6 +316,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c12-q5",
+      difficulte: 2,
       type: "multiple",
       enonce: "Quelles pratiques réduisent le risque lié au levier ?",
       choix: [
@@ -310,6 +329,80 @@ export const chapitre: Chapitre = {
       explication:
         "Le risque se maîtrise par la taille de position ; le levier maximal n'est qu'un plafond à ne pas viser.",
       concepts: ["levier", "marge"],
+    },
+    {
+      id: "c12-q6",
+      type: "graphique",
+      difficulte: 3,
+      enonce:
+        "Capital de 1 000 €, position de 20 000 € à 1 € par point, achetée à 20 000. Le courtier ferme la position dès que le capital restant tombe à 500 €. Touche la bougie où la position est fermée.",
+      scene: "pp-q-stop-out",
+      bonnes: [10],
+      explication:
+        "Le capital tombe à 500 € après 500 € de perte, soit 500 points à 1 € : le seuil est à 19 500. Seule cette bougie descend jusque-là, avec un plus bas à 19 470. La position est fermée, même si le prix remonte ensuite.",
+      concepts: ["marge", "levier"],
+    },
+    {
+      id: "c12-q7",
+      type: "unique",
+      difficulte: 2,
+      figure: { scene: "levier-comparaison", legende: "Capital de 1 000 €, baisse de 1 % : la perte selon la taille de position." },
+      enonce: "Ta position vaut 10 fois ton capital. Quelle baisse du prix efface tout ton capital ?",
+      choix: ["10 %", "1 %", "3,3 %", "30 %"],
+      bonne: 0,
+      explication:
+        "Perte en % du capital = levier utilisé × variation du prix : 10 × 10 % = 100 %. Sur la figure, 1 % de baisse coûte déjà 10 % du capital avec 1:10. Avec une position de 30 fois le capital, 3,3 % suffiraient.",
+      concepts: ["levier"],
+    },
+    {
+      id: "c12-q8",
+      type: "unique",
+      difficulte: 2,
+      contexte:
+        "Ton capital est de 2 000 €. Tu as acheté cet indice à 20 000 points, avec une position à 2 € par point.",
+      figure: { scene: "pp-q-levier-baisse", legende: "L'indice depuis ton achat." },
+      enonce: "Le prix cote maintenant 19 600. Quelle part de ton capital as-tu perdue ?",
+      choix: ["40 %", "2 %", "20 %", "4 %"],
+      bonne: 0,
+      explication:
+        "Baisse : 20 000 − 19 600 = 400 points, soit 400 × 2 € = 800 €. 800 ÷ 2 000 = 40 % du capital, pour un prix qui n'a baissé que de 2 % : ta position vaut 40 000 €, 20 fois ton capital.",
+      concepts: ["levier"],
+    },
+    {
+      id: "c12-q9",
+      type: "unique",
+      difficulte: 2,
+      figure: { scene: "pp-levier-3pct", legende: "Capital de 1 000 €, baisse de 3 % : la perte selon la taille de position." },
+      enonce:
+        "Même capital de 1 000 €, même baisse de 3 %, mais cette fois une position de 20 000 €. Quelle part du capital perds-tu ?",
+      choix: ["60 %", "3 %", "30 %", "6 %"],
+      bonne: 0,
+      explication:
+        "La position vaut 20 fois le capital : 20 × 3 % = 60 %. En euros : 3 % de 20 000 € = 600 €, sur 1 000 € de capital.",
+      concepts: ["levier"],
+    },
+    {
+      id: "c12-q10",
+      type: "unique",
+      difficulte: 2,
+      contexte:
+        "Ton compte contient 500 000 FCFA. Ton courtier t'autorise un levier de 1:30 et tu ouvres la plus grosse position possible.",
+      enonce: "Le prix baisse de 1 %. Combien perds-tu ?",
+      choix: ["150 000 FCFA", "5 000 FCFA", "15 000 FCFA", "50 000 FCFA"],
+      bonne: 0,
+      explication:
+        "Position maximale : 500 000 × 30 = 15 000 000 FCFA. 1 % de 15 000 000 = 150 000 FCFA, soit 30 % de ton capital. 5 000 FCFA serait la perte sans levier.",
+      concepts: ["levier", "marge"],
+    },
+    {
+      id: "c12-q11",
+      type: "vraifaux",
+      difficulte: 1,
+      enonce: "La marge est un coût que le courtier prélève définitivement à l'ouverture de la position.",
+      reponse: false,
+      explication:
+        "La marge est une garantie bloquée, libérée à la fermeture. Les coûts, eux, sont le spread, les commissions et les frais de financement.",
+      concepts: ["marge"],
     },
   ],
 };

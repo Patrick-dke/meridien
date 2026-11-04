@@ -27,8 +27,10 @@ async function main() {
     for (const e of extraits) if (tout.includes(e) && !textePublic.includes(e)) fuites.push(`${c.slug} : « ${e} »`);
   }
   // Les identifiants de scènes peuvent coïncider avec des identifiants de concepts publics : on cherche leurs données.
+  // Série complète : les séries fictives partent souvent du même prix, et leurs premières bougies peuvent coïncider
+  // avec celles d'un chapitre gratuit (mm-sessions-journee et participants-du-marche ont 3 bougies communes sur 24).
   const scenes = Object.entries(prive.scenesPrivees)
-    .filter(([, s]) => (s.description && tout.includes(s.description.slice(0, 60))) || (s.bougies && tout.includes(JSON.stringify(s.bougies.slice(0, 3)).slice(1, -1))))
+    .filter(([, s]) => (s.description && tout.includes(s.description.slice(0, 60))) || (s.bougies && tout.includes(JSON.stringify(s.bougies).slice(1, -1))))
     .map(([id]) => id);
   console.log(`${fichiers.length} fichiers publiés, ${prive.chapitresPrives.length} chapitres payants contrôlés (6 extraits chacun).`);
   for (const f of [...fuites, ...scenes.map((s) => `scène ${s}`)]) console.error(`FUITE ${f}`);

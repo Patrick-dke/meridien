@@ -62,3 +62,7 @@ next-env.d.ts
 /database-debug.log
 /.emulateurs/
 /out-test/
+/out-sans-fonctions/
+
+# Secret de signature des licences, compilé dans le robot : jamais versionné.
+outils/mt5/MeridienSecret.mqh

@@ -7,7 +7,7 @@ export default function PageIntrouvable() {
       <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Cette page n&apos;existe pas</h1>
       <p className="mt-3 text-ink-2">Le lien est peut-être ancien, ou le chapitre pas encore publié.</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Link href="/" className="rounded-lg bg-brand-solid px-4 py-2.5 text-sm font-medium text-white">
+        <Link href="/" className="btn btn-primaire">
           Accueil
         </Link>
         <Link href="/academies/" className="rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium text-ink">

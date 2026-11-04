@@ -1,234 +1,324 @@
 import Link from "next/link";
-import { BougieVivante } from "@/components/accueil/BougieVivante";
-import { ChampMarche } from "@/components/accueil/ChampMarche";
-import { CarteEnsemble } from "@/components/catalogue/CarteEnsemble";
-import { CarteParcours } from "@/components/catalogue/Parcours";
+import { ApercuOutils } from "@/components/accueil/ApercuOutils";
+import { ApercuSeance } from "@/components/accueil/ApercuSeance";
 import { Contact } from "@/components/accueil/Contact";
-import { CarteModule } from "@/components/offre/Offre";
-import { modulesPresentes } from "@/content/presentation";
+import { PrixDepart, ProgrammeTarifs } from "@/components/offre/Programme";
+import { duree } from "@/lib/duree";
 import { BoutonReprendre } from "@/components/progression/Indicateurs";
-import { IconeBouclier, IconeBoussole, IconeCible, IconeEclair, IconeGraphique, IconeLivre, IconeOeil, IconeOutils } from "@/components/ui/Icones";
-import { academies, fiche, parcours, titresChapitres } from "@/content";
-import { motifsAcademies, teintesAcademies } from "@/content/identite";
+import { fiche, parcours, titresChapitres } from "@/content";
+import { modulesPresentes } from "@/content/presentation";
 import { typographie } from "@/lib/typographie";
 
-const etapesApprentissage = [
-  { titre: "Comprendre", texte: "Une capsule narrée de 90 secondes au plus, puis un cours qui se dévoile notion par notion.", Icone: IconeLivre },
-  { titre: "Observer", texte: "Des graphiques qu'on explore du doigt : chaque bougie se lit, chaque zone s'explique.", Icone: IconeOeil },
-  { titre: "Pratiquer", texte: "Des calculateurs pour manipuler risque, pips et levier sur tes propres chiffres.", Icone: IconeOutils },
-  { titre: "Évaluer", texte: "Un quiz corrigé à chaque chapitre, noté concept par concept.", Icone: IconeCible },
-  { titre: "Corriger", texte: "Des recommandations qui disent quoi revoir, et pourquoi.", Icone: IconeBoussole },
+const totalChapitres = modulesPresentes.reduce((a, m) => a + m.chapitres.length, 0);
+const totalMinutes = modulesPresentes.reduce((a, m) => a + (m.resume?.dureeMin ?? 0), 0);
+const introduction = modulesPresentes.find((m) => m.gratuit)!;
+
+const deroule = [
+  { titre: "Capsule", texte: "Une à quatre vidéos narrées d'une à deux minutes : le graphique s'annote au rythme de la voix." },
+  { titre: "Cours", texte: "Le texte complet, illustré de figures et de graphiques annotés, notion par notion." },
+  { titre: "Exemple", texte: "Un cas chiffré, pas à pas, sur un graphique." },
+  { titre: "Exercices", texte: "Repérer une zone, toucher la bougie qui casse la structure, calculer un risque." },
+  { titre: "Quiz", texte: "Tiré d'une banque de questions, réponses mélangées, corrigé détaillé." },
+  { titre: "Examen", texte: "À la fin du module : connaissances, application et graphiques jamais vus." },
 ];
 
-const principes = [
+/** Les questions d'un visiteur qui débute, et l'endroit du parcours qui y répond. */
+const questions = [
   {
-    titre: "Aucune promesse de gains",
-    texte: "Pas de signaux, pas de « méthode infaillible ». La plupart des particuliers perdent de l'argent en trading : on commence par là.",
-    Icone: IconeBouclier,
+    question: "Par où commencer quand on part de zéro ?",
+    reponse: "Trois questions sur ton niveau et le temps dont tu disposes, et Méridien t'indique ton point de départ. Sans compte, sans e-mail.",
+    lien: "/commencer/",
+    action: "Trouver mon point de départ",
   },
   {
-    titre: "Chaque affirmation a son badge",
-    texte: "Fait établi, calcul, convention, interprétation d'école ou hypothèse à tester : tu sais toujours ce qui est prouvé, et ce qui ne l'est pas.",
-    Icone: IconeGraphique,
+    question: "Comment lit-on un graphique ?",
+    reponse: "Corps, mèches, clôtures, unités de temps : un chapitre gratuit pour lire ce que le prix a fait, bougie par bougie.",
+    lien: "/chapitre/chandeliers-japonais/",
+    action: "Lire le chapitre",
   },
   {
-    titre: "Des chiffres vérifiés",
-    texte: "Les calculs des cours et des quiz sont recalculés par des tests automatiques à chaque mise à jour du site.",
-    Icone: IconeCible,
+    question: "Comment repère-t-on une opportunité ?",
+    reponse:
+      "Supports, structure de marché, rejets, cassures et retests : tu apprends à repérer les zones où le prix réagit, puis à attendre que le contexte confirme.",
+    lien: "/formations/analyse-technique/",
+    action: "Découvrir l'analyse technique",
   },
   {
-    titre: "Gratuit, sans compte, léger",
-    texte: "Ta progression reste dans ton navigateur. Le site est pensé pour les téléphones modestes et les connexions irrégulières.",
-    Icone: IconeEclair,
+    question: "Comment construire une stratégie ?",
+    reponse:
+      "Huit modèles présentés comme des hypothèses, puis la méthode pour écrire tes propres règles, les tester sur un grand nombre de cas et passer au compte démo.",
+    lien: "/formations/modeles-et-methode/",
+    action: "Explorer les stratégies",
   },
+  {
+    question: "Comment éviter les décisions impulsives ?",
+    reponse:
+      "Un plan écrit avant d'entrer, un journal tenu après chaque position, et les biais qui poussent à agir trop vite, reconnus avant qu'ils ne coûtent.",
+    lien: "/formations/risque-et-discipline/",
+    action: "Développer ma discipline",
+  },
+  {
+    question: "Comment s'entraîner avant d'engager de l'argent réel ?",
+    reponse:
+      "Le compte d'entraînement rejoue un marché bougie par bougie avec un solde fictif, en FCFA, en euros ou en dollars. Tu appliques tes règles et tu mesures le résultat.",
+    lien: "/pratique/",
+    action: "Essayer le compte d'entraînement",
+  },
+  {
+    question: "Quels outils utilisent les traders ?",
+    reponse:
+      "TradingView et MetaTrader 5 pris en main pas à pas, des calculateurs de position et de risque, puis l'indicateur et le robot Méridien pour appliquer tes règles.",
+    lien: "/outils/",
+    action: "Explorer les outils",
+  },
+];
+
+const pratique = [
+  { titre: "Compte d'entraînement", texte: "Un compte fictif en FCFA, euros ou dollars, sur un marché rejoué bougie par bougie." },
+  { titre: "Calculateurs", texte: "Taille de position, rendement/risque avec frais, valeur du pip, espérance." },
+  { titre: "Journal de trading", texte: "Chaque position notée, puis taux de réussite, espérance et drawdown." },
 ];
 
 export default function Accueil() {
   const titres = Object.fromEntries(titresChapitres);
   return (
     <div>
-      <section className="relative isolate overflow-hidden">
-        {/* Le champ forme un horizon sous le texte et la démonstration, fondu vers le haut et sur les côtés. */}
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-[46%] opacity-80 [mask-image:linear-gradient(to_top,#000_35%,transparent)] lg:h-[38%]">
-          <ChampMarche />
+      <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-16 pt-8 sm:px-6 lg:grid-cols-[1fr_1.08fr] lg:gap-14 lg:pb-24 lg:pt-16">
+        <div className="min-w-0">
+          <h1 className="text-[1.7rem] leading-[1.08] text-ink min-[360px]:text-[2rem] sm:text-5xl lg:text-[2.85rem]">
+            <span className="block">Comprends les marchés.</span> <span className="block">Construis ta méthode.</span>{" "}
+            <span className="accent block">Passe à la pratique.</span>
+          </h1>
+          <p className="mt-5 max-w-[34rem] text-[1.0625rem] leading-relaxed text-ink-2 sm:text-lg">
+            {typographie(
+              "Et si tu apprenais enfin à lire un graphique, à repérer une opportunité et à décider avec méthode ? Huit modules progressifs, du premier chandelier aux modèles avancés, et un marché d'entraînement pour essayer sans argent réel.",
+            )}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <BoutonReprendre parcours={parcours} titres={titres} />
+            <Link href="/formations/" className="btn btn-secondaire btn-grand">
+              Découvrir le programme
+            </Link>
+          </div>
+          <p className="mt-4 text-sm text-ink-3">
+            Le premier module est gratuit, en entier. Les suivants se débloquent un par un
+            <PrixDepart prefixe=", à partir de " />, en paiement unique.
+          </p>
         </div>
-        <div className="grille-ciel pointer-events-none absolute inset-0 -z-20 opacity-60" aria-hidden="true" />
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-24 pt-10 sm:px-6 lg:grid-cols-2 lg:pb-44 lg:pt-16">
-          <div>
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3 py-1 text-sm font-medium text-cyan">
-              <span className="size-1.5 rounded-full bg-cyan" aria-hidden="true" /> Académie de trading gratuite
-            </p>
-            <h1 className="text-[2.6rem] font-semibold leading-[1.04] text-ink sm:text-6xl lg:text-[3.4rem] xl:text-6xl">
-              Apprendre à lire les marchés <span className="accent">avec méthode.</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-2">
-              {typographie(
-                "Sans argent réel, sans promesse de gains. Des capsules narrées, des graphiques à explorer, des quiz corrigés et des calculateurs pour comprendre — et maîtriser — ton risque.",
-              )}
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <BoutonReprendre parcours={parcours} titres={titres} />
-              <Link href="/academies/" className="btn btn-secondaire btn-grand">
-                Explorer les cours
-              </Link>
-            </div>
-            <p className="mt-4 text-sm text-ink-3">Aucune inscription. Ta progression reste dans ce navigateur.</p>
-          </div>
-          <div className="lg:pl-6">
-            <BougieVivante />
-          </div>
+        <div className="min-w-0 lg:pl-2">
+          <ApercuSeance />
         </div>
       </section>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <section aria-labelledby="titre-parcours" className="revele py-10">
-          <h2 id="titre-parcours" className="sr-only">
-            Le parcours « Premiers pas »
-          </h2>
-          <CarteParcours
-            fiches={parcours.map((s) => fiche(s)!)}
-            titre="Premiers pas"
-            description={`${parcours.length} chapitres pour partir de zéro : marchés, graphiques, ordres, coûts, levier et risque.`}
-          />
-        </section>
+        <dl className="grid grid-cols-2 border-y border-line-strong sm:grid-cols-4">
+          {[
+            [String(modulesPresentes.length), "modules, du débutant à l'avancé"],
+            [String(totalChapitres), "chapitres"],
+            [`${Math.round(totalMinutes / 60)} h`, "de cours, capsules comprises"],
+            ["Gratuit", "le premier module, en entier"],
+          ].map(([chiffre, libelle], i) => (
+            <div
+              key={libelle}
+              className={`py-5 pr-4 ${i % 2 ? "pl-4 sm:pl-5" : ""} ${i > 0 ? "sm:border-l sm:border-line sm:pl-5" : ""} ${i > 1 ? "border-t border-line sm:border-t-0" : ""}`}
+            >
+              <dt className="sr-only">{libelle}</dt>
+              <dd>
+                <span className="block font-[family-name:var(--font-display)] text-2xl text-ink sm:text-3xl">{chiffre}</span>
+                <span className="mt-1 block text-sm text-ink-2">{libelle}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
 
-        <section aria-labelledby="titre-methode" className="hors-ecran py-12">
-          <p className="text-sm font-medium text-cyan">La méthode</p>
-          <h2 id="titre-methode" className="mt-1 max-w-2xl text-3xl font-semibold text-ink">
-            Comprendre, observer, pratiquer, <span className="accent">être évalué, corriger</span>
-          </h2>
-          <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {etapesApprentissage.map(({ titre, texte, Icone }, i) => (
-              <li key={titre} className="revele carte p-5" style={{ ["--i" as string]: i }}>
-                <span className="flex size-11 items-center justify-center rounded-xl border border-brand/30 bg-brand-soft text-brand">
-                  <Icone className="size-5" />
-                </span>
-                <p className="mt-4 font-mono text-xs text-ink-3">0{i + 1}</p>
-                <p className="mt-1 font-semibold text-ink">{titre}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{typographie(texte)}</p>
+        <section aria-labelledby="titre-questions" className="grid gap-10 pt-20 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+            <p className="surtitre">Tes questions</p>
+            <h2 id="titre-questions" className="mt-2 text-3xl text-ink sm:text-4xl">
+              Ce que tu veux savoir, et où l&apos;apprendre
+            </h2>
+            <p className="mt-4 max-w-md text-ink-2">
+              {typographie("Les questions que se pose presque tout le monde au départ. Chacune a sa réponse quelque part dans le parcours : la voici.")}
+            </p>
+          </div>
+          <ol className="min-w-0 border-t border-line">
+            {questions.map((q, i) => (
+              <li key={q.question} className="revele grid gap-2 border-b border-line py-5 sm:grid-cols-[2rem_1fr] sm:gap-x-4">
+                <span className="hidden font-mono text-xs text-ink-3 tabular sm:block sm:pt-1.5">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="text-xl leading-snug text-ink">{typographie(q.question)}</h3>
+                  <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-2">{typographie(q.reponse)}</p>
+                  <Link href={q.lien} className="lien mt-2 inline-block text-sm">
+                    {typographie(q.action)}
+                  </Link>
+                </div>
               </li>
             ))}
           </ol>
         </section>
 
-        <section aria-labelledby="titre-academies" className="hors-ecran py-12">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-sm font-medium text-cyan">Le catalogue</p>
-              <h2 id="titre-academies" className="mt-1 text-3xl font-semibold text-ink">
-                Les académies
-              </h2>
-            </div>
-            <Link href="/academies/" className="btn btn-discret">
-              Tout explorer
-            </Link>
+        <section aria-labelledby="titre-programme" className="pt-24">
+          <div className="grid gap-6 md:grid-cols-[1fr_1.4fr] md:items-end">
+            <h2 id="titre-programme" className="text-3xl text-ink sm:text-4xl">
+              Un parcours en huit étapes
+            </h2>
+            <p className="text-ink-2 md:text-right">
+              {typographie(
+                "Chaque module s'appuie sur le précédent : tu sais ce que tu as acquis et ce qui vient ensuite. Paiement unique par module, accès sans limite de durée.",
+              )}
+            </p>
           </div>
-          <ul className="rangee -mx-4 mt-6 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
-            {academies.map((a, i) => {
-              const chapitres = a.modules.flatMap((m) => m.chapitres.map((c) => c.slug));
-              return (
-                <li key={a.slug} className="revele w-[82%] shrink-0 sm:w-auto" style={{ ["--i" as string]: i }}>
-                  <CarteEnsemble
-                    href={`/academies/${a.slug}/`}
-                    surtitre={`${a.code} · ${a.niveau}`}
-                    titre={a.titre}
-                    description={a.description}
-                    motif={motifsAcademies[a.slug]}
-                    teinte={teintesAcademies[a.slug]}
-                    publies={chapitres.filter((s) => fiche(s)?.publie)}
-                    total={chapitres.length}
-                    details={[`${chapitres.length} chapitres`]}
-                    ecole={a.ecole}
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        <section aria-labelledby="titre-formations" className="hors-ecran py-12">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-sm font-medium text-cyan">Les formations</p>
-              <h2 id="titre-formations" className="mt-1 text-3xl font-semibold text-ink">
-                Commence gratuitement, <span className="accent">avance à ton rythme</span>
-              </h2>
-              <p className="mt-2 max-w-2xl text-ink-2">{typographie("« Premiers pas » est gratuit. Les modules suivants se débloquent un par un, par Orange Money ou MTN MoMo.")}</p>
-            </div>
-            <Link href="/formations/" className="btn btn-discret">
-              Toutes les formations
-            </Link>
+          <div className="mt-8">
+            <ProgrammeTarifs modules={modulesPresentes} />
           </div>
-          <ul className="rangee -mx-4 mt-6 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
-            {modulesPresentes.slice(0, 3).map((m, i) => (
-              <li key={m.id} className="revele w-[82%] shrink-0 sm:w-auto" style={{ ["--i" as string]: i }}>
-                <CarteModule m={m} />
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="titre-outils-inclus" className="hors-ecran py-12">
-          <div className="carte relative overflow-hidden p-6 sm:p-10">
-            <div className="grille-ciel pointer-events-none absolute inset-0" aria-hidden="true" />
-            <div className="relative max-w-2xl">
-              <p className="text-sm font-medium text-cyan">Outils MetaTrader 5</p>
-              <h2 id="titre-outils-inclus" className="mt-1 text-3xl font-semibold text-ink">
-                Votre formation terminée, accédez à nos outils de trading inclus.
-              </h2>
-              <p className="mt-3 text-ink-2">
-                {typographie(
-                  "Un indicateur et un Expert Advisor pour MetaTrader 5, remis aux apprenants qui ont terminé le parcours requis et réussi ses évaluations. Ils aident à appliquer la méthode enseignée : ils ne garantissent aucun résultat, se testent d'abord sur un compte de démonstration, et le risque de perte reste entier.",
-                )}
-              </p>
-              <ol className="mt-5 grid gap-2 text-sm text-ink-2 sm:grid-cols-3">
-                <li className="rounded-xl border border-line bg-surface/60 p-3">
-                  <span className="font-mono text-xs text-ink-3">01</span>
-                  <span className="block text-ink">Crée ton compte</span>
-                </li>
-                <li className="rounded-xl border border-line bg-surface/60 p-3">
-                  <span className="font-mono text-xs text-ink-3">02</span>
-                  <span className="block text-ink">Termine le parcours et réussis les quiz</span>
-                </li>
-                <li className="rounded-xl border border-line bg-surface/60 p-3">
-                  <span className="font-mono text-xs text-ink-3">03</span>
-                  <span className="block text-ink">Demande l&apos;accès depuis ton espace</span>
-                </li>
-              </ol>
-              <Link href="/compte/#outils" className="btn btn-primaire mt-6">
-                Voir mes conditions d&apos;accès
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section aria-labelledby="titre-principes" className="hors-ecran py-12">
-          <p className="text-sm font-medium text-cyan">Nos principes</p>
-          <h2 id="titre-principes" className="mt-1 text-3xl font-semibold text-ink">
-            Ce qui guide Méridien
-          </h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {principes.map(({ titre, texte, Icone }, i) => (
-              <div key={titre} className="revele carte flex gap-4 p-5" style={{ ["--i" as string]: i }}>
-                <Icone className="mt-0.5 size-6 shrink-0 text-cyan" />
-                <div>
-                  <p className="font-semibold text-ink">{typographie(titre)}</p>
-                  <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ink-2">{typographie(texte)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-5 text-sm">
-            <Link href="/methode/" className="text-brand underline underline-offset-4 hover:text-ink">
-              La méthode et les badges de fiabilité en détail
+          <p className="mt-4 text-sm">
+            <Link href="/formations/" className="lien">
+              Découvrir les formations
             </Link>
           </p>
         </section>
 
-        <section id="contact" aria-labelledby="titre-contact" className="hors-ecran scroll-mt-20 py-12">
-          <p className="text-sm font-medium text-cyan">Contact</p>
-          <h2 id="titre-contact" className="mb-6 mt-1 text-3xl font-semibold text-ink">
-            Une question ? Écris-nous
+        <section aria-labelledby="titre-introduction" className="grid gap-10 pt-24 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+            <p className="surtitre">Gratuit, en entier</p>
+            <h2 id="titre-introduction" className="mt-2 text-3xl text-ink sm:text-4xl">
+              Premiers pas
+            </h2>
+            <p className="mt-4 max-w-md text-ink-2">
+              {typographie(
+                `${introduction.chapitres.length} chapitres pour poser des bases solides : marchés, prix, chandeliers, ordres, coûts, levier, taille de position. Environ ${duree(introduction.resume?.dureeMin ?? 0)} de cours. Les chapitres s'ouvrent sans compte ; un compte gratuit enregistre ta progression et ouvre les quiz.`,
+              )}
+            </p>
+            <div className="mt-6">
+              <BoutonReprendre parcours={parcours} titres={titres} />
+            </div>
+          </div>
+          <ol className="grid min-w-0 gap-x-8 border-t border-line sm:grid-cols-2">
+            {introduction.chapitres.map((slug, i) => (
+              <li key={slug} className="revele border-b border-line" style={{ animationRangeStart: `entry ${(i % 2) * 8}%` }}>
+                <Link href={`/chapitre/${slug}/`} className="group flex items-baseline gap-3 py-3">
+                  <span className="font-mono text-xs text-ink-3 tabular">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-[0.95rem] text-ink group-hover:underline group-hover:underline-offset-4">
+                    {typographie(fiche(slug)?.titre ?? slug)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section aria-labelledby="titre-deroule" className="pt-24">
+          <h2 id="titre-deroule" className="max-w-xl text-3xl text-ink sm:text-4xl">
+            Comprendre, essayer, vérifier
+          </h2>
+          <p className="mt-3 max-w-xl text-ink-2">
+            {typographie("Chaque chapitre suit le même chemin, de la vidéo à l'examen : tu sais toujours où tu en es.")}
+          </p>
+          <ol className="relative mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-6 lg:gap-5">
+            <span className="absolute left-0 right-0 top-[0.7rem] hidden h-px bg-line-strong lg:block" aria-hidden="true" />
+            {deroule.map((e, i) => (
+              <li key={e.titre} className="revele relative" style={{ animationRangeStart: `entry ${i * 6}%` }}>
+                <span className="relative flex size-6 items-center justify-center bg-bg font-mono text-xs text-ink">
+                  <span className={`absolute inset-0 border ${i === deroule.length - 1 ? "border-accent bg-accent-soft" : "border-line-strong"}`} />
+                  <span className="relative">{i + 1}</span>
+                </span>
+                <p className="mt-3 font-semibold text-ink">{e.titre}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-2">{typographie(e.texte)}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-8 text-sm">
+            <Link href="/methode/" className="lien">
+              La méthode pédagogique en détail
+            </Link>
+          </p>
+        </section>
+      </div>
+
+      <section aria-labelledby="titre-pratique" className="mt-24 bg-brand-solid text-on-solid">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:py-20">
+          <div>
+            <h2 id="titre-pratique" className="text-3xl sm:text-4xl">
+              Passe à la pratique, sans argent réel
+            </h2>
+            <p className="mt-4 max-w-md opacity-75">
+              {typographie(
+                "Ce que tu apprends dans un chapitre, tu l'essaies aussitôt sur un marché rejoué, avec tes propres règles de risque. Ton journal mesure ensuite ce qui fonctionne, et ce qui reste à travailler.",
+              )}
+            </p>
+            <Link href="/pratique/" className="btn btn-grand mt-7 bg-accent !text-[#17160f] hover:brightness-95">
+              Essayer le compte d&apos;entraînement
+            </Link>
+          </div>
+          <ol className="divide-y divide-current/15 border-y border-current/15">
+            {pratique.map((p, i) => (
+              <li key={p.titre} className="revele-gauche flex gap-5 py-5">
+                <span className="font-mono text-sm opacity-60">{String(i + 1).padStart(2, "0")}</span>
+                <span>
+                  <span className="block text-lg font-semibold">{p.titre}</span>
+                  <span className="mt-1 block text-sm leading-relaxed opacity-75">{typographie(p.texte)}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <section aria-labelledby="titre-outils" className="pt-24">
+          <div className="grid gap-6 md:grid-cols-[1fr_1.4fr] md:items-end">
+            <div>
+              <p className="surtitre">Indicateurs et robots</p>
+              <h2 id="titre-outils" className="mt-2 text-3xl text-ink sm:text-4xl">
+                Tes règles, sur ton graphique
+              </h2>
+            </div>
+            <p className="text-ink-2 md:text-right">
+              {typographie(
+                "L'indicateur Méridien pour TradingView et le robot pour MetaTrader 5 reprennent des règles enseignées dans le cours. Ils sont offerts aux apprenants qui terminent la formation et réussissent ses évaluations.",
+              )}
+            </p>
+          </div>
+          <div className="mt-8">
+            <ApercuOutils />
+          </div>
+          <p className="mt-5 text-sm">
+            <Link href="/outils/" className="lien">
+              Explorer les outils
+            </Link>
+          </p>
+        </section>
+
+        <section aria-labelledby="titre-engagements" className="grid gap-8 pt-24 md:grid-cols-[1fr_1.4fr]">
+          <h2 id="titre-engagements" className="text-3xl text-ink sm:text-4xl">
+            Ce qui guide Méridien
+          </h2>
+          <div>
+            <ul className="divide-y divide-line border-y border-line">
+              {[
+                ["Tu apprends à décider.", "Pas de signaux à copier : tu apprends à lire un graphique et à construire tes propres règles."],
+                ["Ton compte reste le tien.", "Personne ne trade à ta place, et aucun outil ne demande ton mot de passe de trading."],
+                [
+                  "Le risque, appris en premier.",
+                  "Le trading peut faire perdre de l'argent, et la plupart des débutants en perdent. La gestion du risque arrive donc dès le premier module, avant toute stratégie.",
+                ],
+              ].map(([titre, texte]) => (
+                <li key={titre} className="py-4">
+                  <span className="font-semibold text-ink">{titre}</span> <span className="text-ink-2">{typographie(texte)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm">
+              <Link href="/legal/risques/" className="lien">
+                Avertissement sur les risques
+              </Link>
+            </p>
+          </div>
+        </section>
+
+        <section id="contact" aria-labelledby="titre-contact" className="scroll-mt-20 pt-24">
+          <h2 id="titre-contact" className="mb-6 text-3xl text-ink sm:text-4xl">
+            Contact
           </h2>
           <Contact />
         </section>

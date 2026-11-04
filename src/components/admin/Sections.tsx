@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { offre } from "@/content/offre";
-import { obtenirDb } from "@/lib/firebase/client";
+import { fonctionsDisponibles, obtenirDb } from "@/lib/firebase/client";
 import { Alerte, Champ } from "../compte/Formulaire";
 import { action, cellule, dateHeure, demanderMotif, Etat, fcfa, Tableau, useAction } from "./outils";
 
@@ -44,7 +44,11 @@ export function VueEnsemble() {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Carte titre="Comptes" valeur={d.utilisateurs} />
         <Carte titre="Accès actifs" valeur={d.droitsActifs} />
-        <Carte titre="Encaissé (production)" valeur={fcfa(d.encaisseProduction)} detail="Paiements confirmés par le prestataire, sur les 500 dernières transactions" />
+        <Carte
+          titre="Encaissé (production)"
+          valeur={fcfa(d.encaisseProduction)}
+          detail="Paiements confirmés par le prestataire, sur les 500 dernières transactions"
+        />
         <Carte titre="Paiements de test" valeur={fcfa(d.encaisseTest)} detail="Simulation ou bac à sable : pas d'argent réel" />
         <Carte titre="À vérifier" valeur={d.aVerifier} detail="Anomalies ou attentes de plus de 48 h" />
         <Carte titre="Paiements en attente" valeur={(d.transactions.en_attente ?? 0) + (d.transactions.initialisation ?? 0)} />
@@ -82,7 +86,13 @@ export function Utilisateurs() {
           setRecherche(q);
         }}
       >
-        <input className="champ" placeholder="E-mail, nom ou téléphone" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Rechercher un utilisateur" />
+        <input
+          className="champ"
+          placeholder="E-mail, nom ou téléphone"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          aria-label="Rechercher un utilisateur"
+        />
         <button className="btn btn-primaire">Rechercher</button>
       </form>
       <Etat {...liste} />
@@ -108,8 +118,17 @@ export function Utilisateurs() {
   );
 }
 
+/** Sans fonctions, le compte d'authentification n'est pas lisible : vérification, fournisseurs et connexion sont inconnus. */
 type Fiche = {
-  compte: { uid: string; email: string; emailVerifie: boolean; fournisseurs: string[]; desactive: boolean; creeLe: string; derniereConnexion: string };
+  compte: {
+    uid: string;
+    email: string;
+    emailVerifie: boolean | null;
+    fournisseurs: string[];
+    desactive: boolean;
+    creeLe: string | null;
+    derniereConnexion: string | null;
+  };
   admin: boolean;
   profil: Record<string, unknown> | null;
   droits: Ligne[];
@@ -150,19 +169,28 @@ function FicheUtilisateur({ uid, fermer }: { uid: string; fermer: () => void }) 
             <div>
               <dt className="text-ink-3">E-mail</dt>
               <dd className="text-ink">
-                {f.donnees.compte.email} {f.donnees.compte.emailVerifie ? "(vérifiée)" : "(non vérifiée)"}
+                {f.donnees.compte.email} {f.donnees.compte.emailVerifie === null ? "" : f.donnees.compte.emailVerifie ? "(vérifiée)" : "(non vérifiée)"}
               </dd>
             </div>
-            <div>
-              <dt className="text-ink-3">Connexion</dt>
-              <dd className="text-ink">{f.donnees.compte.fournisseurs.join(", ")}</dd>
-            </div>
-            <div>
-              <dt className="text-ink-3">Créé / dernière connexion</dt>
-              <dd className="text-ink">
-                {f.donnees.compte.creeLe} / {f.donnees.compte.derniereConnexion}
-              </dd>
-            </div>
+            {fonctionsDisponibles ? (
+              <>
+                <div>
+                  <dt className="text-ink-3">Connexion</dt>
+                  <dd className="text-ink">{f.donnees.compte.fournisseurs.join(", ")}</dd>
+                </div>
+                <div>
+                  <dt className="text-ink-3">Créé / dernière connexion</dt>
+                  <dd className="text-ink">
+                    {f.donnees.compte.creeLe} / {f.donnees.compte.derniereConnexion}
+                  </dd>
+                </div>
+              </>
+            ) : (
+              <div>
+                <dt className="text-ink-3">Inscrit le</dt>
+                <dd className="text-ink">{dateHeure(f.donnees.compte.creeLe ?? undefined)}</dd>
+              </div>
+            )}
             <div>
               <dt className="text-ink-3">Progression</dt>
               <dd className="text-ink">
@@ -170,15 +198,32 @@ function FicheUtilisateur({ uid, fermer }: { uid: string; fermer: () => void }) 
               </dd>
             </div>
           </dl>
-          <div className="flex flex-wrap gap-2">
+          {f.donnees.admin ? <p className="text-sm text-ink-2">Administrateur : accès à tous les modules.</p> : null}
+          <div className={fonctionsDisponibles ? "flex flex-wrap gap-2" : "hidden"}>
             <button
               type="button"
               className="btn btn-secondaire"
-              onClick={() => executer("utilisateurs.suspendre", { uid, suspendu: !f.donnees!.compte.desactive }, f.donnees!.compte.desactive ? "Réactiver ce compte ?" : "Suspendre ce compte (connexion bloquée, sessions fermées) ?")}
+              onClick={() =>
+                executer(
+                  "utilisateurs.suspendre",
+                  { uid, suspendu: !f.donnees!.compte.desactive },
+                  f.donnees!.compte.desactive ? "Réactiver ce compte ?" : "Suspendre ce compte (connexion bloquée, sessions fermées) ?",
+                )
+              }
             >
               {f.donnees.compte.desactive ? "Réactiver le compte" : "Suspendre le compte"}
             </button>
-            <button type="button" className="btn btn-secondaire" onClick={() => executer("utilisateurs.role", { uid, admin: !f.donnees!.admin }, f.donnees!.admin ? "Retirer le rôle d'administrateur ?" : "Nommer cet utilisateur administrateur ?")}>
+            <button
+              type="button"
+              className="btn btn-secondaire"
+              onClick={() =>
+                executer(
+                  "utilisateurs.role",
+                  { uid, admin: !f.donnees!.admin },
+                  f.donnees!.admin ? "Retirer le rôle d'administrateur ?" : "Nommer cet utilisateur administrateur ?",
+                )
+              }
+            >
               {f.donnees.admin ? "Retirer le rôle admin" : "Nommer administrateur"}
             </button>
           </div>
@@ -194,7 +239,11 @@ function FicheUtilisateur({ uid, fermer }: { uid: string; fermer: () => void }) 
                     {d.test ? " · test" : ""}
                   </span>
                   {d.actif ? (
-                    <button type="button" className="text-xs text-bad underline" onClick={() => executer("droits.revoquer", { uid, module: d.module }, `Révoquer l'accès à « ${titreModule(String(d.module))} » ?`)}>
+                    <button
+                      type="button"
+                      className="text-xs text-bad underline"
+                      onClick={() => executer("droits.revoquer", { uid, module: d.module }, `Révoquer l'accès à « ${titreModule(String(d.module))} » ?`)}
+                    >
                       Révoquer
                     </button>
                   ) : null}
@@ -211,23 +260,30 @@ function FicheUtilisateur({ uid, fermer }: { uid: string; fermer: () => void }) 
                     </option>
                   ))}
               </select>
-              <button type="button" className="btn btn-secondaire" onClick={() => executer("droits.accorder", { uid, module }, `Accorder l'accès à « ${titreModule(module)} » sans paiement (geste commercial, partenaire…) ?`)}>
+              <button
+                type="button"
+                className="btn btn-secondaire"
+                onClick={() =>
+                  executer("droits.accorder", { uid, module }, `Accorder l'accès à « ${titreModule(module)} » sans paiement (geste commercial, partenaire…) ?`)
+                }
+              >
                 Accorder l&apos;accès
               </button>
             </div>
           </div>
-          <div>
+          <div className={fonctionsDisponibles ? "" : "hidden"}>
             <p className="mb-2 font-semibold text-ink">Paiements</p>
             <ul className="space-y-1 text-sm">
               {f.donnees.transactions.length === 0 ? <li className="text-ink-3">Aucun.</li> : null}
               {f.donnees.transactions.map((t) => (
                 <li key={t.id}>
-                  {dateHeure(t.creeLe as string)} · {titreModule(String(t.module))} · {fcfa(Number(t.montant))} · <strong>{String(t.statut)}</strong> · {String(t.environnement)} · réf. {t.id.slice(0, 8).toUpperCase()}
+                  {dateHeure(t.creeLe as string)} · {titreModule(String(t.module))} · {fcfa(Number(t.montant))} · <strong>{String(t.statut)}</strong> ·{" "}
+                  {String(t.environnement)} · réf. {t.id.slice(0, 8).toUpperCase()}
                 </li>
               ))}
             </ul>
           </div>
-          <div>
+          <div className={fonctionsDisponibles ? "" : "hidden"}>
             <p className="mb-2 font-semibold text-ink">Évaluations officielles</p>
             <p className="text-sm text-ink-2">
               {f.donnees.evaluations.length} quiz passés, {f.donnees.evaluations.filter((e) => e.reussi).length} réussis.
@@ -245,7 +301,9 @@ export function Modules() {
   const [prix, setPrix] = useState<Record<string, string>>({});
   const initialiser = async () => {
     try {
-      const r = await action<{ crees: string[] }>("modules.initialiser", { modules: offre.map((m) => ({ id: m.id, titre: m.titre, rang: m.rang, gratuit: m.gratuit })) });
+      const r = await action<{ crees: string[] }>("modules.initialiser", {
+        modules: offre.map((m) => ({ id: m.id, titre: m.titre, rang: m.rang, gratuit: m.gratuit })),
+      });
       setRetour(r.crees.length ? `Modules créés avec la grille initiale : ${r.crees.join(", ")}.` : "Tous les modules existent déjà ; rien n'a été modifié.");
       l.recharger();
     } catch (e) {
@@ -266,7 +324,8 @@ export function Modules() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-ink-2">
-        Les prix vivent ici, en base de données : le site les lit au moment de l&apos;affichage, et le serveur les relit au moment du paiement. La grille initiale (niveau 2 = 10 000 FCFA, puis +10 000 FCFA par niveau) ne s&apos;applique qu&apos;aux modules absents.
+        Les prix vivent ici, en base de données : le site les lit au moment de l&apos;affichage, et le serveur les relit au moment du paiement. La grille
+        initiale (niveau 2 = 10 000 FCFA, puis +10 000 FCFA par niveau) ne s&apos;applique qu&apos;aux modules absents.
       </p>
       <button type="button" className="btn btn-secondaire" onClick={initialiser}>
         Créer les modules manquants
@@ -296,14 +355,28 @@ export function Modules() {
                 )}
               </td>
               <td className={cellule}>
-                <button type="button" className={`text-sm font-semibold underline ${m.publie ? "text-ok" : "text-ink-3"}`} onClick={() => modifier(m.id, { publie: !m.publie }, m.publie ? "Retirer ce module de la vente ?" : "Publier ce module ?")}>
+                <button
+                  type="button"
+                  className={`text-sm font-semibold underline ${m.publie ? "text-ok" : "text-ink-3"}`}
+                  onClick={() => modifier(m.id, { publie: !m.publie }, m.publie ? "Retirer ce module de la vente ?" : "Publier ce module ?")}
+                >
                   {m.publie ? "Oui" : "Non"}
                 </button>
               </td>
               <td className={cellule}>{m.acheteurs}</td>
               <td className={cellule}>
                 {!m.gratuit && prix[m.id] !== undefined && Number(prix[m.id]) !== m.prix ? (
-                  <button type="button" className="btn btn-primaire !min-h-9" onClick={() => modifier(m.id, { prix: Number(prix[m.id]) }, `Passer « ${m.titre} » de ${fcfa(m.prix)} à ${fcfa(Number(prix[m.id]))} ? Les paiements déjà lancés gardent leur montant.`)}>
+                  <button
+                    type="button"
+                    className="btn btn-primaire !min-h-9"
+                    onClick={() =>
+                      modifier(
+                        m.id,
+                        { prix: Number(prix[m.id]) },
+                        `Passer « ${m.titre} » de ${fcfa(m.prix)} à ${fcfa(Number(prix[m.id]))} ? Les paiements déjà lancés gardent leur montant.`,
+                      )
+                    }
+                  >
                     Enregistrer
                   </button>
                 ) : null}
@@ -337,7 +410,9 @@ export function Paiements() {
       : "classer";
     const preuve = decision === "accorder_acces" ? window.prompt("Référence de l'opération chez le prestataire ou l'opérateur (obligatoire) :") : "";
     if (decision === "accorder_acces" && !preuve) return;
-    const motif = demanderMotif(decision === "accorder_acces" ? "Pourquoi accorder l'accès malgré l'absence de confirmation automatique ?" : "Pourquoi classer ce paiement ?");
+    const motif = demanderMotif(
+      decision === "accorder_acces" ? "Pourquoi accorder l'accès malgré l'absence de confirmation automatique ?" : "Pourquoi classer ce paiement ?",
+    );
     if (!motif) return;
     void executer(() => action("transactions.resoudre", { id: t.id, decision, motif, preuve }), "Résolution enregistrée au journal.");
   };
@@ -374,12 +449,18 @@ export function Paiements() {
               <td className={cellule}>
                 <strong>{String(t.statut)}</strong>
                 {t.anomalie ? <span className="block text-xs text-warn">Anomalie : {String((t.anomalie as { detail?: string }).detail ?? "")}</span> : null}
-                {Array.isArray(t.resolutions) && t.resolutions.length ? <span className="block text-xs text-ink-3">{t.resolutions.length} résolution(s)</span> : null}
+                {Array.isArray(t.resolutions) && t.resolutions.length ? (
+                  <span className="block text-xs text-ink-3">{t.resolutions.length} résolution(s)</span>
+                ) : null}
               </td>
               <td className={cellule}>{String(t.environnement)}</td>
               <td className={cellule}>
                 <div className="flex flex-col items-start gap-1">
-                  <button type="button" className="text-xs text-brand underline" onClick={() => executer(() => action("transactions.verifier", { id: t.id }), "Statut relu auprès du prestataire.")}>
+                  <button
+                    type="button"
+                    className="text-xs text-brand underline"
+                    onClick={() => executer(() => action("transactions.verifier", { id: t.id }), "Statut relu auprès du prestataire.")}
+                  >
                     Revérifier
                   </button>
                   {t.statut !== "reussi" || t.anomalie ? (
@@ -388,50 +469,6 @@ export function Paiements() {
                     </button>
                   ) : null}
                 </div>
-              </td>
-            </tr>
-          ))}
-        </Tableau>
-      ) : null}
-    </div>
-  );
-}
-
-export function Demandes() {
-  const l = useAction<Ligne[]>("demandes.lister");
-  const traiter = async (id: string, decision: "accordee" | "refusee") => {
-    const note = window.prompt(decision === "accordee" ? "Note pour l'apprenant (lien de téléchargement, instructions d'installation…) :" : "Motif du refus, visible par l'apprenant :");
-    if (note === null) return;
-    await action("demandes.traiter", { id, decision, note }).catch((e) => window.alert((e as Error).message));
-    l.recharger();
-  };
-  return (
-    <div className="space-y-4">
-      <p className="text-sm text-ink-2">
-        L&apos;éligibilité est calculée par le serveur (modules requis achetés, quiz réussis). Après accord, remets l&apos;outil à l&apos;apprenant par un canal sûr : la note s&apos;affiche dans son espace.
-      </p>
-      <Etat {...l} />
-      {l.donnees ? (
-        <Tableau entetes={["Date", "Outil", "Apprenant", "Statut", ""]}>
-          {l.donnees.map((d) => (
-            <tr key={d.id}>
-              <td className={cellule}>{dateHeure(d.creeLe as string)}</td>
-              <td className={cellule}>{String(d.outil)}</td>
-              <td className={cellule}>
-                <span className="font-mono text-xs">{String(d.uid)}</span>
-              </td>
-              <td className={cellule}>{String(d.statut)}</td>
-              <td className={cellule}>
-                {d.statut === "en_attente" ? (
-                  <div className="flex gap-2">
-                    <button type="button" className="text-xs text-ok underline" onClick={() => traiter(d.id, "accordee")}>
-                      Accorder
-                    </button>
-                    <button type="button" className="text-xs text-bad underline" onClick={() => traiter(d.id, "refusee")}>
-                      Refuser
-                    </button>
-                  </div>
-                ) : null}
               </td>
             </tr>
           ))}
@@ -495,7 +532,13 @@ export function Journal() {
           setFiltre(cible);
         }}
       >
-        <input className="champ" placeholder="Filtrer par cible (identifiant de transaction, d'utilisateur…)" value={cible} onChange={(e) => setCible(e.target.value)} aria-label="Cible" />
+        <input
+          className="champ"
+          placeholder="Filtrer par cible (identifiant de transaction, d'utilisateur…)"
+          value={cible}
+          onChange={(e) => setCible(e.target.value)}
+          aria-label="Cible"
+        />
         <button className="btn btn-secondaire">Filtrer</button>
       </form>
       <Etat {...l} />
@@ -519,11 +562,72 @@ export function Journal() {
   );
 }
 
+type ResultatExamen = {
+  uid: string;
+  nom: string;
+  module: string;
+  meilleurScore: number;
+  dernierScore: number;
+  tentatives: number;
+  reussi: boolean;
+  aRevoir: string[];
+  date: string;
+};
+
+export function ResultatsExamens() {
+  const [module, setModule] = useState("");
+  const l = useAction<ResultatExamen[]>("examens.lister", { module });
+  const titre = (id: string) => offre.find((m) => m.id === id)?.titre ?? id;
+  const pct = (x: number) => `${Math.round(x * 100)} %`;
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-ink-2">
+        Résultats des examens de fin de module, notés par le serveur. Le seuil et le nombre de questions se règlent dans Paramètres.
+      </p>
+      <div className="max-w-xs">
+        <label className="etiquette" htmlFor="filtre-examen">
+          Module
+        </label>
+        <select id="filtre-examen" className="champ" value={module} onChange={(e) => setModule(e.target.value)}>
+          <option value="">Tous les modules</option>
+          {offre.map((m) => (
+            <option key={m.id} value={m.id}>
+              {m.titre}
+            </option>
+          ))}
+        </select>
+      </div>
+      <Etat {...l} />
+      {l.donnees ? (
+        l.donnees.length ? (
+          <Tableau entetes={["Date", "Apprenant", "Module", "Meilleur", "Dernier", "Tentatives", "Validé", "À revoir"]}>
+            {l.donnees.map((r) => (
+              <tr key={`${r.uid}_${r.module}`}>
+                <td className={cellule}>{dateHeure(r.date)}</td>
+                <td className={cellule}>{r.nom}</td>
+                <td className={cellule}>{titre(r.module)}</td>
+                <td className={`${cellule} font-mono tabular`}>{pct(r.meilleurScore)}</td>
+                <td className={`${cellule} font-mono tabular`}>{pct(r.dernierScore)}</td>
+                <td className={`${cellule} font-mono tabular`}>{r.tentatives}</td>
+                <td className={cellule}>{r.reussi ? "Oui" : "Non"}</td>
+                <td className={`${cellule} text-xs text-ink-2`}>{r.aRevoir.slice(0, 3).join(", ") || "—"}</td>
+              </tr>
+            ))}
+          </Tableau>
+        ) : (
+          <p className="text-sm text-ink-3">Aucun examen rendu pour l&apos;instant.</p>
+        )
+      ) : null}
+    </div>
+  );
+}
+
 type Params = {
   public: { paiementOuvert?: boolean };
   paiement: { beneficiaire?: Record<string, string | null> };
   outils: { modulesRequis?: string[]; scoreMin?: number };
   contact: { email?: string | null; whatsapp?: { actif?: boolean; numero?: string | null } };
+  examens: { seuil: number; connaissance: number; application: number; transfert: number; attenteMinutes: number };
   serveur: { fournisseur: string; environnement: string | null };
 };
 
@@ -534,10 +638,31 @@ export function Parametres() {
 }
 
 function FormulairesParametres({ p, recharger }: { p: Params; recharger: () => void }) {
-  const [b, setB] = useState({ prestataire: "Fapshi", operateur: "les-deux", nom: "", compteMarchand: "", numero: "", statut: "a_configurer", ...(p.paiement.beneficiaire ?? {}) } as Record<string, string>);
+  const [b, setB] = useState({
+    prestataire: "Fapshi",
+    operateur: "les-deux",
+    nom: "",
+    compteMarchand: "",
+    numero: "",
+    statut: "a_configurer",
+    ...(p.paiement.beneficiaire ?? {}),
+  } as Record<string, string>);
   const [requis, setRequis] = useState<string[]>(p.outils.modulesRequis ?? []);
   const [scoreMin, setScoreMin] = useState(String(p.outils.scoreMin ?? 0.8));
-  const [contact, setContact] = useState({ email: p.contact.email ?? "", whatsappActif: p.contact.whatsapp?.actif ?? false, whatsappNumero: p.contact.whatsapp?.numero ?? "", whatsappPublic: false });
+  const [contact, setContact] = useState({
+    email: p.contact.email ?? "",
+    whatsappActif: p.contact.whatsapp?.actif ?? false,
+    whatsappNumero: p.contact.whatsapp?.numero ?? "",
+    whatsappPublic: false,
+  });
+  const [examens, setExamens] = useState(() =>
+    Object.fromEntries(
+      Object.entries(p.examens ?? { seuil: 0.7, connaissance: 6, application: 6, transfert: 4, attenteMinutes: 0 }).map(([k, v]) => [
+        k,
+        String(k === "seuil" ? Math.round(v * 100) : v),
+      ]),
+    ),
+  );
   const [retour, setRetour] = useState<string | null>(null);
   const enregistrer = async (section: string, valeurs: Record<string, unknown>, question?: string) => {
     const motif = question ? demanderMotif(question) : "";
@@ -557,16 +682,26 @@ function FormulairesParametres({ p, recharger }: { p: Params; recharger: () => v
         <h3 className="text-lg font-semibold text-ink">Paiements</h3>
         <p className="text-sm text-ink-2">
           Prestataire actif côté serveur : <strong>{p.serveur.fournisseur}</strong>
-          {p.serveur.environnement ? ` (${p.serveur.environnement})` : ""}. Il se change dans la configuration des fonctions, pas ici ; les clés d&apos;API restent dans le coffre de secrets du serveur.
+          {p.serveur.environnement ? ` (${p.serveur.environnement})` : ""}. Il se change dans la configuration des fonctions, pas ici ; les clés d&apos;API
+          restent dans le coffre de secrets du serveur.
         </p>
         <label className="flex items-center gap-3 text-sm text-ink">
-          <input type="checkbox" className="size-4 accent-[var(--brand)]" checked={p.public.paiementOuvert === true} onChange={(e) => enregistrer("paiement", { paiementOuvert: e.target.checked }, e.target.checked ? "Ouvrir les paiements au public ?" : "Fermer les paiements ?")} />
+          <input
+            type="checkbox"
+            className="size-4 accent-[var(--brand)]"
+            checked={p.public.paiementOuvert === true}
+            onChange={(e) =>
+              enregistrer("paiement", { paiementOuvert: e.target.checked }, e.target.checked ? "Ouvrir les paiements au public ?" : "Fermer les paiements ?")
+            }
+          />
           Paiements ouverts au public
         </label>
       </section>
       <section className="carte space-y-4 p-5">
         <h3 className="text-lg font-semibold text-ink">Paiements → Compte bénéficiaire</h3>
-        <p className="text-sm text-ink-2">Compte qui reçoit les fonds chez le prestataire. Ces informations restent sur le serveur : elles ne sont jamais envoyées aux visiteurs.</p>
+        <p className="text-sm text-ink-2">
+          Compte qui reçoit les fonds chez le prestataire. Ces informations restent sur le serveur : elles ne sont jamais envoyées aux visiteurs.
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <Champ libelle="Prestataire" value={b.prestataire} onChange={(e) => setB({ ...b, prestataire: e.target.value })} />
           <div>
@@ -607,28 +742,116 @@ function FormulairesParametres({ p, recharger }: { p: Params; recharger: () => v
               .filter((m) => !m.gratuit)
               .map((m) => (
                 <label key={m.id} className="flex items-center gap-2 text-sm text-ink">
-                  <input type="checkbox" className="size-4 accent-[var(--brand)]" checked={requis.includes(m.id)} onChange={(e) => setRequis(e.target.checked ? [...requis, m.id] : requis.filter((x) => x !== m.id))} />
+                  <input
+                    type="checkbox"
+                    className="size-4 accent-[var(--brand)]"
+                    checked={requis.includes(m.id)}
+                    onChange={(e) => setRequis(e.target.checked ? [...requis, m.id] : requis.filter((x) => x !== m.id))}
+                  />
                   {m.titre}
                 </label>
               ))}
           </div>
         </fieldset>
         <Champ libelle="Score minimal à chaque quiz (0,5 à 1)" inputMode="decimal" value={scoreMin} onChange={(e) => setScoreMin(e.target.value)} />
-        <button type="button" className="btn btn-primaire" onClick={() => enregistrer("outils", { modulesRequis: requis, scoreMin: Number(scoreMin.replace(",", ".")) }, "Modifier les conditions d'accès aux outils ?")}>
+        <button
+          type="button"
+          className="btn btn-primaire"
+          onClick={() =>
+            enregistrer("outils", { modulesRequis: requis, scoreMin: Number(scoreMin.replace(",", ".")) }, "Modifier les conditions d'accès aux outils ?")
+          }
+        >
           Enregistrer les conditions
         </button>
       </section>
       <section className="carte space-y-4 p-5">
+        <h3 className="text-lg font-semibold text-ink">Examens de fin de module</h3>
+        <p className="text-sm text-ink-2">
+          Les questions sont tirées dans les quiz des chapitres du module : difficulté 1 pour la connaissance, 2 pour l&apos;application, 3 pour le transfert.
+          Chaque reprise est une nouvelle variante.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Champ
+            libelle="Seuil de réussite (%, 50 à 100)"
+            inputMode="numeric"
+            value={examens.seuil}
+            onChange={(e) => setExamens({ ...examens, seuil: e.target.value })}
+          />
+          <Champ
+            libelle="Attente après un échec (minutes)"
+            inputMode="numeric"
+            value={examens.attenteMinutes}
+            onChange={(e) => setExamens({ ...examens, attenteMinutes: e.target.value })}
+          />
+          <span className="hidden sm:block" />
+          <Champ
+            libelle="Questions de connaissance"
+            inputMode="numeric"
+            value={examens.connaissance}
+            onChange={(e) => setExamens({ ...examens, connaissance: e.target.value })}
+          />
+          <Champ
+            libelle="Questions d'application"
+            inputMode="numeric"
+            value={examens.application}
+            onChange={(e) => setExamens({ ...examens, application: e.target.value })}
+          />
+          <Champ
+            libelle="Questions de transfert"
+            inputMode="numeric"
+            value={examens.transfert}
+            onChange={(e) => setExamens({ ...examens, transfert: e.target.value })}
+          />
+        </div>
+        <button
+          type="button"
+          className="btn btn-primaire"
+          onClick={() =>
+            enregistrer(
+              "examens",
+              {
+                seuil: Number(examens.seuil.replace(",", ".")) / 100,
+                connaissance: Number(examens.connaissance),
+                application: Number(examens.application),
+                transfert: Number(examens.transfert),
+                attenteMinutes: Number(examens.attenteMinutes),
+              },
+              "Modifier les règles des examens ?",
+            )
+          }
+        >
+          Enregistrer les règles des examens
+        </button>
+      </section>
+      <section className="carte space-y-4 p-5">
         <h3 className="text-lg font-semibold text-ink">Contact</h3>
-        <p className="text-sm text-ink-2">Aucune coordonnée n&apos;est publiée tant qu&apos;elle n&apos;est pas saisie ici. Le canal WhatsApp Business se branche ensuite côté serveur (numéro professionnel validé par Meta).</p>
+        <p className="text-sm text-ink-2">
+          Aucune coordonnée n&apos;est publiée tant qu&apos;elle n&apos;est pas saisie ici. Le canal WhatsApp Business se branche ensuite côté serveur (numéro
+          professionnel validé par Meta).
+        </p>
         <Champ libelle="E-mail de contact public" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} />
-        <Champ libelle="Numéro WhatsApp Business" type="tel" value={contact.whatsappNumero} onChange={(e) => setContact({ ...contact, whatsappNumero: e.target.value })} />
+        <Champ
+          libelle="Numéro WhatsApp Business"
+          type="tel"
+          value={contact.whatsappNumero}
+          onChange={(e) => setContact({ ...contact, whatsappNumero: e.target.value })}
+        />
         <label className="flex items-center gap-2 text-sm text-ink">
-          <input type="checkbox" className="size-4 accent-[var(--brand)]" checked={contact.whatsappActif} onChange={(e) => setContact({ ...contact, whatsappActif: e.target.checked })} />
+          <input
+            type="checkbox"
+            className="size-4 accent-[var(--brand)]"
+            checked={contact.whatsappActif}
+            onChange={(e) => setContact({ ...contact, whatsappActif: e.target.checked })}
+          />
           Notifier l&apos;équipe sur WhatsApp à chaque message (quand le canal est connecté)
         </label>
         <label className="flex items-center gap-2 text-sm text-ink">
-          <input type="checkbox" className="size-4 accent-[var(--brand)]" checked={contact.whatsappPublic} onChange={(e) => setContact({ ...contact, whatsappPublic: e.target.checked })} />
+          <input
+            type="checkbox"
+            className="size-4 accent-[var(--brand)]"
+            checked={contact.whatsappPublic}
+            onChange={(e) => setContact({ ...contact, whatsappPublic: e.target.checked })}
+          />
           Afficher ce numéro WhatsApp sur le site
         </label>
         <button type="button" className="btn btn-primaire" onClick={() => enregistrer("contact", contact, "Modifier les coordonnées de contact ?")}>
@@ -642,7 +865,7 @@ function FormulairesParametres({ p, recharger }: { p: Params; recharger: () => v
 type Publication = {
   version: string;
   contenus: { slug: string; module: string; titre: string; chapitre: unknown; scenes: Record<string, unknown> }[];
-  corriges: { slug: string; module: string; quiz: unknown[] }[];
+  corriges: { slug: string; module: string; quiz: unknown[]; tirage?: number }[];
   narrations: ({ slug: string; module: string; audio?: string; morceaux?: string[] } & Record<string, unknown>)[];
 };
 
@@ -659,16 +882,25 @@ export function Contenus() {
       const total = p.contenus.length + p.corriges.length + p.narrations.length;
       // Texte JSON : Firestore refuse les tableaux imbriqués (même format que scripts/contenus/publication.ts).
       for (const c of p.contenus) {
-        await m.setDoc(m.doc(db, "contenus", c.slug), { module: c.module, titre: c.titre, chapitreJson: JSON.stringify(c.chapitre), scenesJson: JSON.stringify(c.scenes), version: p.version, publieLe: date });
+        await m.setDoc(m.doc(db, "contenus", c.slug), {
+          module: c.module,
+          titre: c.titre,
+          chapitreJson: JSON.stringify(c.chapitre),
+          scenesJson: JSON.stringify(c.scenes),
+          version: p.version,
+          publieLe: date,
+        });
         setAvancement(`${++n}/${total}`);
       }
       for (const c of p.corriges) {
-        await m.setDoc(m.doc(db, "corriges", c.slug), { module: c.module, quizJson: JSON.stringify(c.quiz), version: p.version });
+        await m.setDoc(m.doc(db, "corriges", c.slug), { module: c.module, quizJson: JSON.stringify(c.quiz), tirage: c.tirage ?? null, version: p.version });
         setAvancement(`${++n}/${total}`);
       }
       for (const nar of p.narrations) {
         const { morceaux, ...reste } = nar;
-        if (morceaux) for (const [i, donnees] of morceaux.entries()) await m.setDoc(m.doc(db, "narrations", nar.slug, "morceaux", String(i)), { module: nar.module, donnees });
+        if (morceaux)
+          for (const [i, donnees] of morceaux.entries())
+            await m.setDoc(m.doc(db, "narrations", nar.slug, "morceaux", String(i)), { module: nar.module, donnees });
         await m.setDoc(m.doc(db, "narrations", nar.slug), { ...reste, ...(morceaux ? { morceaux: morceaux.length } : {}), version: p.version });
         setAvancement(`${++n}/${total}`);
       }
@@ -682,7 +914,8 @@ export function Contenus() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-ink-2">
-        Les chapitres payants ne sont jamais dans le site publié. Prépare le fichier de publication sur l&apos;ordinateur qui détient les sources privées, puis envoie-le ici : il est écrit dans la base, lisible seulement par les acheteurs.
+        Les chapitres payants ne sont jamais dans le site publié. Prépare le fichier de publication sur l&apos;ordinateur qui détient les sources privées, puis
+        envoie-le ici : il est écrit dans la base, lisible seulement par les acheteurs.
       </p>
       <label className="btn btn-primaire w-fit cursor-pointer">
         Publier un fichier de contenus…

@@ -24,6 +24,8 @@ export const Reglages = z.object({
   leger: z.enum(["auto", "oui", "non"]),
   palette: z.enum(["standard", "daltonien"]),
   texte: z.enum(["normal", "grand"]),
+  /** Absent dans les progressions enregistrées avant l'arrivée du thème sombre : vaut alors « clair ». */
+  theme: z.optional(z.enum(["clair", "sombre", "systeme"])),
 });
 export type Reglages = z.infer<typeof Reglages>;
 

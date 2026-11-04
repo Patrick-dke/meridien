@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { assertFails, assertSucceeds, initializeTestEnvironment, type RulesTestEnvironment } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc, updateDoc, collection, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, collection, getDocs, query, where, deleteDoc, writeBatch, serverTimestamp, type Firestore } from "firebase/firestore";
 import { afterAll, beforeAll, beforeEach, describe, it } from "vitest";
 
 /**
@@ -54,7 +54,7 @@ const anonyme = () => env.unauthenticatedContext().firestore();
 const membre = (uid: string, email = `${uid}@x.cm`) => env.authenticatedContext(uid, { email, email_verified: true }).firestore();
 
 describe("catalogue public", () => {
-  it("tout le monde lit les prix, personne ne les écrit depuis le navigateur", async () => {
+  it("tout le monde lit les prix, personne ne les écrit depuis le navigateur sans trace au journal", async () => {
     await assertSucceeds(getDoc(doc(anonyme(), "modules/price-action")));
     await assertFails(updateDoc(doc(membre("payeur"), "modules/price-action"), { prix: 1 }));
     await assertFails(updateDoc(doc(membre("chef"), "modules/price-action"), { prix: 1 }));
@@ -118,6 +118,132 @@ describe("argent et droits", () => {
   });
 });
 
+describe("administration sans fonctions serveur", () => {
+  const DATE = "2026-11-03T22:00:00.000Z";
+  type Options = { acteur?: string; journal?: string; sansJournal?: boolean; horodatage?: unknown; motif?: string };
+  // Le contexte de test fournit une instance « compat » : writeBatch attend le type modulaire.
+  type Db = ReturnType<typeof membre>;
+  const lotDe = (db: Db) => writeBatch(db as unknown as Firestore);
+  /** Accorde un droit comme le fait l'administration : le droit et sa trace dans le même lot. */
+  const accorder = (db: Db, uid: string, module: string, o: Options = {}) => {
+    const lot = lotDe(db);
+    const j = doc(collection(db, "journalAudit"));
+    const id = `${uid}_${module}`;
+    lot.set(doc(db, "droits", id), {
+      uid,
+      module,
+      actif: true,
+      source: "administration",
+      accordePar: "chef",
+      accordeLe: DATE,
+      motif: o.motif ?? "Geste commercial",
+      journal: o.journal ?? j.id,
+    });
+    if (!o.sansJournal)
+      lot.set(j, {
+        acteur: o.acteur ?? "chef",
+        action: "droit.accorde",
+        cible: id,
+        motif: "Geste commercial",
+        date: DATE,
+        horodatage: o.horodatage ?? serverTimestamp(),
+      });
+    return lot.commit();
+  };
+  const revoquer = (db: Db, id: string, extra: Record<string, unknown> = {}) => {
+    const lot = lotDe(db);
+    const j = doc(collection(db, "journalAudit"));
+    lot.update(doc(db, "droits", id), {
+      actif: false,
+      revoqueLe: DATE,
+      revoquePar: "chef",
+      motifRevocation: "Remboursement",
+      journalRevocation: j.id,
+      ...extra,
+    });
+    lot.set(j, { acteur: "chef", action: "droit.revoque", cible: id, motif: "Remboursement", date: DATE, horodatage: serverTimestamp() });
+    return lot.commit();
+  };
+  const creerModule = (db: Db, id: string, prix: number) => {
+    const lot = lotDe(db);
+    const j = doc(collection(db, "journalAudit"));
+    lot.set(doc(db, "modules", id), {
+      titre: "Smart Money Concepts",
+      rang: 7,
+      ordre: 7,
+      gratuit: false,
+      prix,
+      devise: "XAF",
+      publie: true,
+      modifieLe: DATE,
+      modifiePar: "chef",
+      journal: j.id,
+    });
+    lot.set(j, { acteur: "chef", action: "module.cree", cible: id, details: { prix }, date: DATE, horodatage: serverTimestamp() });
+    return lot.commit();
+  };
+  beforeEach(async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await setDoc(doc(c.firestore(), "utilisateurs/awa"), profil("awa@x.cm"));
+      await setDoc(doc(c.firestore(), "progressions/awa"), { etat: { chapitres: {} }, majLe: DATE });
+    });
+  });
+
+  it("un administrateur accorde un accès avec sa trace, et l'apprenant lit alors le module", async () => {
+    await assertFails(getDoc(doc(membre("awa"), "contenus/pa-01")));
+    await assertSucceeds(accorder(membre("chef"), "awa", "price-action"));
+    await assertSucceeds(getDoc(doc(membre("awa"), "droits/awa_price-action")));
+    await assertSucceeds(getDoc(doc(membre("awa"), "contenus/pa-01")));
+    const traces = await getDocs(query(collection(membre("chef"), "journalAudit"), where("cible", "==", "awa_price-action")));
+    if (traces.size !== 1 || traces.docs[0].get("acteur") !== "chef") throw new Error("Trace absente ou mal attribuée");
+  });
+  it("pas d'accès sans trace, avec la trace d'un autre, une trace réutilisée ou une heure falsifiée", async () => {
+    await assertFails(accorder(membre("chef"), "awa", "price-action", { sansJournal: true }));
+    await assertFails(accorder(membre("chef"), "awa", "price-action", { acteur: "autre" }));
+    await assertFails(accorder(membre("chef"), "awa", "price-action", { journal: "a1", sansJournal: true }));
+    await assertFails(accorder(membre("chef"), "awa", "price-action", { horodatage: "2020-01-01T00:00:00.000Z" }));
+    await assertFails(accorder(membre("chef"), "awa", "price-action", { motif: "ok" }));
+  });
+  it("ni un apprenant, ni un compte inexistant, ni une trace orpheline", async () => {
+    await assertFails(accorder(membre("awa"), "awa", "price-action"));
+    await assertFails(accorder(membre("chef"), "fantome", "price-action"));
+    await assertFails(
+      setDoc(doc(membre("chef"), "journalAudit/j1"), {
+        acteur: "chef",
+        action: "droit.accorde",
+        cible: "awa_price-action",
+        date: DATE,
+        horodatage: serverTimestamp(),
+      }),
+    );
+  });
+  it("une révocation garde le droit en base, désactivé, et ne touche à rien d'autre", async () => {
+    await assertSucceeds(revoquer(membre("chef"), "payeur_price-action"));
+    await assertFails(getDoc(doc(membre("payeur"), "contenus/pa-01")));
+    await assertFails(revoquer(membre("chef"), "suspendu_price-action", { uid: "autre" }));
+    await assertFails(revoquer(membre("payeur"), "suspendu_price-action"));
+  });
+  it("un administrateur crée un module avec un prix valide et sa trace ; personne d'autre", async () => {
+    await assertSucceeds(creerModule(membre("chef"), "smart-money-concepts", 60000));
+    await assertFails(creerModule(membre("chef"), "liquidite-ict", 50));
+    await assertFails(creerModule(membre("payeur"), "liquidite-ict", 70000));
+    await assertFails(deleteDoc(doc(membre("chef"), "modules/price-action")));
+  });
+  it("un administrateur lit les profils, la progression et tous les contenus ; un apprenant non", async () => {
+    await assertSucceeds(getDocs(collection(membre("chef"), "utilisateurs")));
+    await assertSucceeds(getDoc(doc(membre("chef"), "progressions/awa")));
+    await assertSucceeds(getDoc(doc(membre("chef"), "contenus/pa-01")));
+    await assertSucceeds(getDoc(doc(membre("chef"), "admins/chef")));
+    await assertFails(getDocs(collection(membre("awa"), "utilisateurs")));
+    await assertFails(getDoc(doc(membre("awa"), "progressions/payeur")));
+    await assertFails(getDoc(doc(membre("awa"), "admins/chef")));
+  });
+  it("personne ne se nomme administrateur depuis le navigateur", async () => {
+    await assertFails(setDoc(doc(membre("awa"), "admins/awa"), { email: "awa@x.cm" }));
+    await assertFails(setDoc(doc(membre("chef"), "admins/awa"), { email: "awa@x.cm" }));
+  });
+});
+
 describe("profil et progression", () => {
   it("création du profil avec l'adresse du compte, sans statut ni rôle", async () => {
     await assertSucceeds(setDoc(doc(membre("awa", "awa@x.cm"), "utilisateurs/awa"), profil("awa@x.cm")));
@@ -135,5 +261,41 @@ describe("profil et progression", () => {
     await assertSucceeds(ecrire("awa", "awa"));
     await assertFails(ecrire("awa", "bob"));
     await assertFails(setDoc(doc(membre("awa"), "progressions/awa"), { etat: {}, majLe: "x", reussi: true }));
+  });
+});
+
+describe("outils et licences", () => {
+  beforeEach(async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      const db = c.firestore();
+      await setDoc(doc(db, "catalogueOutils/ea"), { nom: "Expert Advisor Méridien", statut: "sur-demande", prix: null, ordre: 2, publie: true });
+      await setDoc(doc(db, "demandesOutils/payeur_ea"), {
+        uid: "payeur",
+        outil: "ea",
+        statut: "en_attente",
+        details: { comptes: [{ numero: "51234567", serveur: "MetaQuotes-Demo" }] },
+      });
+      await setDoc(doc(db, "licences/l1"), { uid: "payeur", outil: "ea", cle: "MER-AAAA-BBBB-CCCC-DDDD", statut: "active", comptes: [], maxComptes: 1 });
+    });
+  });
+  it("les fiches d'outils sont publiques, en lecture seule", async () => {
+    await assertSucceeds(getDoc(doc(anonyme(), "catalogueOutils/ea")));
+    await assertSucceeds(getDocs(collection(anonyme(), "catalogueOutils")));
+    await assertFails(setDoc(doc(membre("chef"), "catalogueOutils/ea"), { prix: 0 }));
+  });
+  it("une licence n'est lue que par son titulaire ou l'administration, et jamais écrite depuis le navigateur", async () => {
+    await assertSucceeds(getDoc(doc(membre("payeur"), "licences/l1")));
+    await assertSucceeds(getDocs(query(collection(membre("payeur"), "licences"), where("uid", "==", "payeur"))));
+    await assertSucceeds(getDoc(doc(membre("chef"), "licences/l1")));
+    await assertFails(getDoc(doc(membre("curieux"), "licences/l1")));
+    await assertFails(getDocs(collection(membre("curieux"), "licences")));
+    await assertFails(updateDoc(doc(membre("payeur"), "licences/l1"), { maxComptes: 10 }));
+    await assertFails(setDoc(doc(membre("payeur"), "licences/l2"), { uid: "payeur", statut: "active" }));
+  });
+  it("une demande d'outil est lue par son auteur et l'administration, écrite par le serveur seulement", async () => {
+    await assertSucceeds(getDoc(doc(membre("payeur"), "demandesOutils/payeur_ea")));
+    await assertSucceeds(getDoc(doc(membre("chef"), "demandesOutils/payeur_ea")));
+    await assertFails(getDoc(doc(membre("curieux"), "demandesOutils/payeur_ea")));
+    await assertFails(updateDoc(doc(membre("payeur"), "demandesOutils/payeur_ea"), { statut: "accordee" }));
   });
 });

@@ -9,7 +9,7 @@ export const chapitre: Chapitre = {
   niveau: 1,
   dureeMin: 12,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Définir le stop loss et le take profit",
     "Placer un stop là où le scénario devient faux, et non à une distance arbitraire",
@@ -25,7 +25,7 @@ export const chapitre: Chapitre = {
       {
         duree: 8,
         texte:
-          "Avant d'entrer dans un trade, pose-toi deux questions : où ai-je tort ? Et où je sors si j'ai raison ?",
+          "Avant d'entrer dans un trade, pose-toi deux questions. Où ai-je tort ? Et où je sors, si j'ai raison ?",
         visuel: {
           type: "titre",
           titre: "Où ai-je tort ?",
@@ -35,36 +35,36 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Le Stop Loss est un ordre qui ferme ta position automatiquement si le prix atteint un niveau de perte fixé à l'avance.",
+          "Le stop loss est un ordre qui ferme ta position tout seul, si le prix atteint un niveau de perte fixé à l'avance.",
         visuel: { type: "figure", scene: "sl-tp-achat", etape: 1 },
       },
       {
         duree: 5,
-        texte: "Le Take Profit la ferme quand le prix atteint ton objectif.",
+        texte: "Le take profit, lui, la ferme quand le prix atteint ton objectif.",
         visuel: { type: "figure", scene: "sl-tp-achat", etape: 2 },
       },
       {
         duree: 12,
         texte:
-          "Un exemple. Tu achètes une action à 50 euros. Ton idée ne tient plus si le prix passe sous 48 : ton Stop Loss va juste en dessous, à 47,80.",
+          "Prenons un exemple. Tu achètes une action à 50 euros. Ton idée ne tient plus si le prix passe sous 48. Alors ton stop va juste en dessous, à 47 euros 80.",
         visuel: { type: "figure", scene: "sl-tp-achat", etape: 2 },
       },
       {
         duree: 10,
         texte:
-          "Ton objectif est à 54,40. Tu risques 2,20 euros par action pour en viser le double. Les deux ordres se posent dès l'entrée.",
+          "Ton objectif est à 54 euros 40. Tu risques 2 euros 20 par action, pour en viser le double. Et les deux ordres se posent dès l'entrée.",
         visuel: { type: "figure", scene: "sl-tp-achat", etape: 3 },
       },
       {
         duree: 11,
         texte:
-          "L'erreur classique : éloigner son Stop quand le prix s'en approche. Et en cas de mouvement brutal, le Stop peut s'exécuter plus loin : c'est le slippage.",
+          "L'erreur classique ? Éloigner son stop quand le prix s'en approche. Et regarde ce gap : en cas de mouvement brutal, le stop s'exécute plus loin. C'est le slippage.",
         visuel: { type: "figure", scene: "gap-stop", etape: 1 },
       },
       {
         duree: 7,
         texte:
-          "À retenir : ton Stop Loss se décide avant d'entrer, là où ton idée devient fausse.",
+          "À retenir : ton stop se décide avant d'entrer, là où ton idée devient fausse.",
         visuel: {
           type: "titre",
           titre: "Le stop se décide avant d'entrer",
@@ -89,6 +89,13 @@ export const chapitre: Chapitre = {
           texte:
             "Techniquement, pour une position acheteuse, le stop loss est une vente stop placée sous le prix d'entrée, et le take profit une vente limite placée au-dessus. Pour une position vendeuse, c'est l'inverse : le stop loss est un achat stop au-dessus, le take profit un achat limite en dessous.",
         },
+        {
+          type: "figure",
+          scene: "pp-sl-tp-vente",
+          fiabilite: "calcul",
+          legende:
+            "Position vendeuse ouverte à 60,50 € : stop loss au-dessus, à 61,70 €, take profit en dessous, à 58,10 €. Le prix monte d'abord sans toucher le stop, puis baisse jusqu'à l'objectif : 2,40 € de gain visé pour 1,20 € de risque.",
+        },
       ],
     },
     {
@@ -101,6 +108,12 @@ export const chapitre: Chapitre = {
             "Le stop se place à l'endroit où ton scénario devient faux, pas à une distance choisie au hasard ni selon la perte que tu « acceptes ». Si tu achètes parce que le prix tient au-dessus de 48 €, ton idée est invalidée quand il passe nettement sous 48 € : le stop va juste en dessous.",
         },
         {
+          type: "figure",
+          scene: "pp-stop-invalidation",
+          legende:
+            "Le prix rebondit trois fois juste au-dessus de 48,00 €. Achat à 50,00 €, stop juste sous ce support, à 47,80 € : s'il est touché, l'idée « le prix tient au-dessus de 48 € » est fausse.",
+        },
+        {
           type: "encadre",
           variante: "retenir",
           texte:
@@ -110,6 +123,12 @@ export const chapitre: Chapitre = {
           type: "p",
           texte:
             "Un stop trop serré est touché par les variations normales du prix, le « bruit », même quand l'idée était bonne. Un stop trop large expose à une perte importante, sauf à réduire fortement la taille de position. La volatilité de l'actif guide cette distance.",
+        },
+        {
+          type: "figure",
+          scene: "pp-stop-trop-serre",
+          legende:
+            "Entrée à 50,00 € avec un stop serré à 49,70 € : une petite baisse ordinaire le touche dès la bougie suivante, puis le prix monte jusqu'à l'objectif de 51,50 €. Un stop sous le dernier creux, à 48,90 €, aurait tenu.",
         },
       ],
     },
@@ -255,6 +274,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c09-q1",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Tu achètes à 30 €. Ton idée est invalidée si le prix passe sous 28 €. Où places-tu ton stop loss ?",
@@ -271,6 +291,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c09-q2",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Entrée à 50 €, stop à 47,80 €, objectif à 54,40 €. Quel est le ratio rendement/risque ?",
@@ -281,6 +302,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c09-q3",
+      difficulte: 2,
       type: "vraifaux",
       enonce:
         "Pour une position vendeuse, le stop loss se place au-dessus du prix d'entrée.",
@@ -291,6 +313,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c09-q4",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Le marché rouvre après le week-end à 46,90 € alors que ton stop était à 47,80 €. À quel prix ta position est-elle probablement vendue ?",
@@ -307,6 +330,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c09-q5",
+      difficulte: 1,
       type: "multiple",
       enonce: "Quelles pratiques sont saines ?",
       choix: [
@@ -322,12 +346,77 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c09-q6",
+      difficulte: 2,
       type: "vraifaux",
       enonce: "Un take profit est un ordre limite.",
       reponse: true,
       explication:
         "Il s'exécute au niveau choisi ou à un meilleur prix : vente limite pour une position acheteuse, achat limite pour une position vendeuse.",
       concepts: ["take-profit"],
+    },
+    {
+      id: "c09-q7",
+      type: "graphique",
+      difficulte: 2,
+      enonce: "Achat à 50,00 € avec un stop loss à 48,80 €. Touche la bougie qui déclenche le stop.",
+      scene: "pp-q-stop-touche",
+      bonnes: [8],
+      explication:
+        "C'est la seule bougie dont le plus bas passe sous 48,80 € : elle descend à 48,70 €. Le stop est exécuté et la perte est limitée à environ 1,20 € par action. Le prix remonte ensuite au-dessus de 50 € : le stop n'a pas « eu tort », il a fait ce qui était prévu.",
+      concepts: ["stop-loss"],
+    },
+    {
+      id: "c09-q8",
+      type: "comparaison",
+      difficulte: 2,
+      enonce:
+        "Même achat à 50,00 €, sur un prix qui a rebondi trois fois au-dessus de 48,00 €. Quel plan place son stop au bon endroit ?",
+      graphiques: [{ scene: "pp-q-plan-a" }, { scene: "pp-q-plan-b" }],
+      bonne: 1,
+      explication:
+        "En B, le stop à 47,80 € est juste sous le support : s'il est touché, l'idée « le prix tient au-dessus de 48 € » est fausse. En A, le stop à 49,40 € ne correspond à rien : un recul ordinaire peut le toucher alors que le scénario tient toujours. C'est ensuite la taille de position qui s'adapte à la distance du stop.",
+      concepts: ["stop-loss"],
+    },
+    {
+      id: "c09-q9",
+      type: "unique",
+      difficulte: 2,
+      contexte:
+        "Tu vends à découvert 100 unités à 60,50 €, avec un stop loss à 61,70 € et un take profit à 58,10 €.",
+      figure: { scene: "pp-sl-tp-vente", etape: 2, legende: "Entrée, stop loss et take profit de la position vendeuse." },
+      enonce: "Combien perds-tu si le stop loss est touché et exécuté à son prix, sans frais ?",
+      choix: ["120 €", "240 €", "60 €", "1,20 €"],
+      bonne: 0,
+      explication:
+        "Pour une position vendeuse, le stop est au-dessus : (61,70 − 60,50) × 100 = 1,20 × 100 = 120 €. Le take profit rapporterait (60,50 − 58,10) × 100 = 240 €, deux fois le risque. 1,20 € est la perte pour une seule unité.",
+      concepts: ["stop-loss", "take-profit"],
+    },
+    {
+      id: "c09-q10",
+      type: "unique",
+      difficulte: 3,
+      figure: { scene: "pp-q-stop-serre-plan", legende: "Achat à 50,00 €, stop à 49,70 €, objectif à 51,50 €." },
+      enonce: "Ce trader a été sorti avec une perte, puis le prix a atteint son objectif. Quelle est la cause la plus probable ?",
+      choix: [
+        "Son stop était trop serré, dans le bruit normal du prix",
+        "Son objectif était trop éloigné de son entrée",
+        "Il aurait dû entrer avec un ordre limite",
+        "Le marché a fait un gap au-delà de son stop",
+      ],
+      bonne: 0,
+      explication:
+        "Le stop à 49,70 € n'était qu'à 0,30 € de l'entrée, alors que chaque bougie parcourt de 0,45 € à 1,00 € : un recul ordinaire l'a touché. Un stop sous le dernier creux, vers 48,90 €, aurait tenu, avec une taille de position réduite pour garder le même risque.",
+      concepts: ["stop-loss"],
+    },
+    {
+      id: "c09-q11",
+      type: "vraifaux",
+      difficulte: 1,
+      enonce: "Le stop loss et le take profit se décident avant d'entrer dans le trade.",
+      reponse: true,
+      explication:
+        "Les deux sorties font partie du plan. Une fois en position, l'émotion pousse à éloigner le stop ou à couper le gain trop tôt.",
+      concepts: ["stop-loss", "take-profit"],
     },
   ],
 };

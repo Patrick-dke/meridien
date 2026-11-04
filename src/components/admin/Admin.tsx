@@ -7,37 +7,51 @@ import { rafraichirProfil } from "@/lib/compte/session";
 import { appeler, fonctionsDisponibles } from "@/lib/firebase/client";
 import { useSession } from "@/lib/compte/session";
 import { BandeauTest } from "../compte/Connexion";
-import { Contenus, Demandes, Journal, Messages, Modules, Paiements, Parametres, Utilisateurs, VueEnsemble } from "./Sections";
+import { Alerte } from "../compte/Formulaire";
+import { Contenus, Journal, Messages, Modules, Paiements, Parametres, ResultatsExamens, Utilisateurs, VueEnsemble } from "./Sections";
+import { CatalogueOutils, DemandesOutils, Licences } from "./SectionsOutils";
 
-const ONGLETS = [
-  { id: "ensemble", libelle: "Vue d'ensemble", composant: VueEnsemble },
-  { id: "utilisateurs", libelle: "Utilisateurs", composant: Utilisateurs },
-  { id: "modules", libelle: "Modules et prix", composant: Modules },
-  { id: "paiements", libelle: "Paiements", composant: Paiements },
-  { id: "demandes", libelle: "Outils MT5", composant: Demandes },
-  { id: "messages", libelle: "Messages", composant: Messages },
-  { id: "contenus", libelle: "Contenus", composant: Contenus },
-  { id: "journal", libelle: "Journal d'audit", composant: Journal },
-  { id: "parametres", libelle: "Paramètres", composant: Parametres },
+/** `direct` : onglet utilisable sans fonctions serveur (lectures et écritures contrôlées par les règles Firestore). */
+const TOUS = [
+  { id: "ensemble", libelle: "Vue d'ensemble", composant: VueEnsemble, direct: true },
+  { id: "utilisateurs", libelle: "Utilisateurs", composant: Utilisateurs, direct: true },
+  { id: "modules", libelle: "Modules et prix", composant: Modules, direct: true },
+  { id: "paiements", libelle: "Paiements", composant: Paiements, direct: false },
+  { id: "outils", libelle: "Outils", composant: CatalogueOutils, direct: false },
+  { id: "demandes", libelle: "Demandes d'accès", composant: DemandesOutils, direct: false },
+  { id: "licences", libelle: "Licences", composant: Licences, direct: false },
+  { id: "examens", libelle: "Examens", composant: ResultatsExamens, direct: false },
+  { id: "messages", libelle: "Messages", composant: Messages, direct: false },
+  { id: "contenus", libelle: "Contenus", composant: Contenus, direct: true },
+  { id: "journal", libelle: "Journal d'audit", composant: Journal, direct: true },
+  { id: "parametres", libelle: "Paramètres", composant: Parametres, direct: false },
 ] as const;
+const ONGLETS = TOUS.filter((o) => fonctionsDisponibles || o.direct);
 
 /**
  * Administration. Cette page ne protège rien par elle-même : chaque donnée est lue et chaque action exécutée
- * par la fonction serveur `admin`, qui vérifie le rôle à chaque appel.
+ * par la fonction serveur `admin`, qui vérifie le rôle à chaque appel, ou, sans fonctions, par la base sous le
+ * contrôle de ses règles.
  */
 export function Administration() {
   const s = useSession(true);
   const ancre = useAncre();
-  const [choisi, setOnglet] = useState<(typeof ONGLETS)[number]["id"] | null>(null);
+  const [choisi, setOnglet] = useState<(typeof TOUS)[number]["id"] | null>(null);
   const onglet = choisi ?? ONGLETS.find((o) => o.id === ancre)?.id ?? "ensemble";
   if (s.etat === "inconnu" || (s.etat === "connecte" && s.profil === null && !s.admin)) return <div className="carte h-40 animate-pulse" aria-busy="true" />;
-  if (!fonctionsDisponibles)
-    return <p className="carte p-6 text-ink-2">L&apos;administration s&apos;ouvrira avec la mise en service des fonctions serveur (offre Blaze de Firebase).</p>;
-  if (!s.admin) return <AccesReserve connecte={s.etat === "connecte"} />;
+  if (!s.admin) return <AccesReserve uid={s.utilisateur?.uid ?? null} />;
   const Actif = ONGLETS.find((o) => o.id === onglet)!.composant;
   return (
     <div>
       <BandeauTest />
+      {!fonctionsDisponibles ? (
+        <div className="mb-5">
+          <Alerte ton="info">
+            Administration sans fonctions serveur : utilisateurs, accès aux modules, prix, contenus et journal. Les paiements, les outils, les examens, les
+            messages, la suspension des comptes et la nomination d&apos;administrateurs s&apos;ouvriront avec les fonctions (offre Blaze de Firebase).
+          </Alerte>
+        </div>
+      ) : null}
       <div role="tablist" aria-label="Sections de l'administration" className="-mx-4 mb-6 flex gap-1 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
         {ONGLETS.map((o) => (
           <button
@@ -63,15 +77,24 @@ export function Administration() {
 }
 
 /**
- * Hors administration. Le premier administrateur s'active ici : le serveur n'accepte que les adresses vérifiées
- * inscrites dans sa configuration (ADMIN_EMAILS) ; pour tout autre compte, la demande est refusée.
+ * Hors administration. Avec les fonctions, le premier administrateur s'active ici : le serveur n'accepte que les
+ * adresses vérifiées inscrites dans sa configuration (ADMIN_EMAILS). Sans fonctions, il se désigne dans la console
+ * Firebase (document admins/<identifiant>) : la page affiche l'identifiant du compte à y reporter.
  */
-function AccesReserve({ connecte }: { connecte: boolean }) {
+function AccesReserve({ uid }: { uid: string | null }) {
   const [message, setMessage] = useState<string | null>(null);
   return (
     <div className="carte space-y-3 p-6 text-ink-2">
       <p>Accès réservé à l&apos;administration.</p>
-      {connecte ? (
+      {uid && !fonctionsDisponibles ? (
+        <>
+          <p className="text-sm">
+            Ce compte n&apos;a pas le rôle d&apos;administrateur. Le propriétaire du projet le désigne dans la console Firebase, avec l&apos;identifiant de ce
+            compte :
+          </p>
+          <p className="break-all rounded-lg bg-surface-2 px-3 py-2 font-mono text-sm text-ink">{uid}</p>
+        </>
+      ) : uid ? (
         <>
           <button
             type="button"

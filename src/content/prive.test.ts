@@ -6,7 +6,7 @@ import { glossaire } from "./glossaire";
 import { offre } from "./offre";
 import { scenes as scenesPubliques } from "./scenes";
 import type { Chapitre } from "./schema";
-import { problemesChapitre } from "./verifier";
+import { ecartsCibles, problemesChapitre } from "./verifier";
 
 // Les contenus payants vivent hors du dépôt public (dossier prive/) : ces tests ne tournent que là où ils existent.
 const trouves = import.meta.glob("../../prive/index.ts", { eager: true }) as Record<
@@ -32,6 +32,12 @@ describe.skipIf(!prive)("contenus des modules payants", () => {
 
       it("chaque chapitre est correct (schéma, concepts, glossaire, scènes, quiz, exercices, capsule)", () => {
         const bilan = Object.fromEntries(chapitres.map((c) => [c.slug, problemesChapitre(c, ctx)]).filter(([, p]) => (p as string[]).length));
+        expect(bilan).toEqual({});
+      });
+
+      // CIBLE=1 : contrôle des cibles du cahier de rédaction v2 (figures, banque de questions visuelles, cas).
+      it.skipIf(!process.env.CIBLE)("chaque chapitre atteint les cibles pédagogiques", () => {
+        const bilan = Object.fromEntries(chapitres.map((c) => [c.slug, ecartsCibles(c)]).filter(([, e]) => (e as string[]).length));
         expect(bilan).toEqual({});
       });
 

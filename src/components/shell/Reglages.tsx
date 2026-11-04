@@ -16,11 +16,15 @@ function legerAutomatique() {
   );
 }
 
-/** Applique les réglages enregistrés à la page entière (palette, taille du texte, mode léger). */
+/** Applique les réglages enregistrés à la page entière (thème, palette, taille du texte, mode léger). */
 export function AppliquerReglages() {
   const { reglages } = useProgression();
   useEffect(() => {
     const racine = document.documentElement;
+    racine.dataset.theme = reglages.theme ?? "clair";
+    // La barre du navigateur prend la couleur du fond réellement affiché.
+    const fond = getComputedStyle(racine).getPropertyValue("--bg").trim();
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", fond || "#f4f2ed");
     racine.dataset.palette = reglages.palette;
     racine.dataset.text = reglages.texte;
     const leger = reglages.leger === "oui" || (reglages.leger === "auto" && legerAutomatique());

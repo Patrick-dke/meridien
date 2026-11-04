@@ -55,11 +55,21 @@ export const Scene = z.object({
 });
 export type Scene = z.infer<typeof Scene>;
 
+/** Graphique montré avec une question (scène de `scenes`, à une étape donnée). */
+export const VisuelQuestion = z.object({ scene: texte, etape: z.number().int().min(0).optional(), legende: z.string().optional() });
+export type VisuelQuestion = z.infer<typeof VisuelQuestion>;
+
 const baseQuestion = {
   id: texte,
   enonce: texte,
   explication: texte,
   concepts: z.array(texte).min(1),
+  /** Étude de cas : la situation de marché, présentée avant la question. */
+  contexte: z.string().optional(),
+  /** Graphique à lire avant de répondre (question illustrée). */
+  figure: VisuelQuestion.optional(),
+  /** 1 facile, 2 intermédiaire, 3 difficile ; sert à équilibrer le tirage. */
+  difficulte: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
 };
 
 export const Question = z.discriminatedUnion("type", [
@@ -74,6 +84,10 @@ export const Question = z.discriminatedUnion("type", [
   z.object({ ...baseQuestion, type: z.literal("association"), paires: z.array(z.tuple([texte, texte])).min(3) }),
   /** `etapes` est donné dans l'ordre correct ; l'interface le mélange. */
   z.object({ ...baseQuestion, type: z.literal("ordre"), etapes: z.array(texte).min(3) }),
+  /** Identification sur graphique : toucher la ou les bougies de `bonnes` (indices à partir de 0). */
+  z.object({ ...baseQuestion, type: z.literal("graphique"), scene: texte, etape: z.number().int().min(0).optional(), bonnes: z.array(z.number().int().min(0)).min(1) }),
+  /** Comparaison : deux graphiques, A et B ; `bonne` désigne celui qui répond à l'énoncé. */
+  z.object({ ...baseQuestion, type: z.literal("comparaison"), graphiques: z.tuple([VisuelQuestion, VisuelQuestion]), bonne: z.union([z.literal(0), z.literal(1)]) }),
 ]);
 export type Question = z.infer<typeof Question>;
 
@@ -90,6 +104,9 @@ export const Exercice = z.discriminatedUnion("type", [
 ]);
 export type Exercice = z.infer<typeof Exercice>;
 
+export const Capsule = z.object({ titre: texte, scenes: z.array(Scene).min(4) });
+export type Capsule = z.infer<typeof Capsule>;
+
 export const Chapitre = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/),
   titre: texte,
@@ -104,14 +121,19 @@ export const Chapitre = z.object({
   concepts: z.array(texte).min(1),
   prerequis: z.array(texte),
   intro: texte,
-  capsule: z.object({ titre: texte, scenes: z.array(Scene).min(4) }),
+  capsule: Capsule,
+  /** Capsules de plus, seulement pour un sujet complexe qui gagne à être découpé (définition, identification,
+   *  confirmations, exemple pratique…), d'une à deux minutes chacune. */
+  capsulesSupplementaires: z.array(Capsule).max(3).optional(),
   cours: z.array(z.object({ titre: texte, blocs: z.array(Bloc).min(1) })).min(2),
   illustrations: z.array(Bloc),
   exemple: z.object({ titre: texte, blocs: z.array(Bloc).min(1) }).nullable(),
   erreurs: z.array(z.object({ titre: texte, texte })).min(2).max(4),
   resume: z.array(texte).min(3).max(6),
   exercices: z.array(Exercice).min(1).max(4),
-  quiz: z.array(Question).min(4).max(8),
+  /** Banque de questions : chaque tentative en tire `tirage` (6 par défaut), dans un ordre et avec des réponses mélangés. */
+  quiz: z.array(Question).min(4).max(16),
+  tirage: z.number().int().min(4).max(10).optional(),
 });
 export type Chapitre = z.infer<typeof Chapitre>;
 

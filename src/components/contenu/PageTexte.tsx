@@ -1,11 +1,12 @@
 import { typographie } from "@/lib/typographie";
 
 /** Page de texte simple (pages légales) : titre, date de mise à jour, sections. */
-export function PageTexte({ titre, maj, sections }: { titre: string; maj: string; sections: { titre: string; paragraphes: string[] }[] }) {
+export function PageTexte({ titre, maj, intro, sections }: { titre: string; maj: string; intro?: string; sections: { titre: string; paragraphes: string[] }[] }) {
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight text-ink">{typographie(titre)}</h1>
       <p className="mt-2 text-sm text-ink-3">Mise à jour : {maj}</p>
+      {intro ? <p className="mt-6 border-l-2 border-accent pl-4 text-ink-2">{typographie(intro)}</p> : null}
       <div className="mt-8 space-y-8">
         {sections.map((s) => (
           <section key={s.titre}>

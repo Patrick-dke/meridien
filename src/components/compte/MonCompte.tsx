@@ -7,12 +7,13 @@ import { fiche } from "@/content";
 import { offre } from "@/content/offre";
 import { deconnecter, renvoyerVerification } from "@/lib/compte/actions";
 import { rafraichirProfil, useSession } from "@/lib/compte/session";
-import { appeler, fonctionsDisponibles, obtenirDb } from "@/lib/firebase/client";
+import { obtenirDb } from "@/lib/firebase/client";
 import { formaterPrix } from "@/lib/offre/commercial";
 import { jourLocal } from "@/lib/progression/etat";
 import { useProgression } from "@/lib/progression/store";
 import { typographie } from "@/lib/typographie";
 import { CarteModule, type ModulePresente } from "../offre/Offre";
+import { MesOutils } from "../outils/MesOutils";
 import { IconeCoche, IconeEtoile } from "../ui/Icones";
 import { Alerte } from "./Formulaire";
 import { BandeauTest } from "./Connexion";
@@ -20,13 +21,6 @@ import { BandeauTest } from "./Connexion";
 type Transaction = { id: string; module: string; montant: number; statut: string; operateur: string; telephoneMasque: string; creeLe: string; environnement: string; confirmeLe?: string };
 type Evaluation = { slug: string; module: string; meilleurScore: number; reussi: boolean; tentatives: number; date: string };
 type Certificat = { numero: string; titreModule: string; date: string; scoreMoyen: number };
-type Eligibilite = {
-  eligible: boolean;
-  scoreMin: number;
-  modules: { module: string; achete: boolean; chapitres: number; valides: number }[];
-  outils: Record<string, { actif: boolean; nom: string }>;
-  demandes: { id: string; outil: string; statut: string; creeLe: string; note: string | null }[];
-};
 
 const STATUTS: Record<string, { texte: string; classe: string }> = {
   reussi: { texte: "Payé", classe: "text-ok" },
@@ -85,8 +79,6 @@ export function MonCompte({ modules }: { modules: ModulePresente[] }) {
   const [transactions, setTransactions] = useState<Transaction[] | null>(null);
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [certificats, setCertificats] = useState<Certificat[]>([]);
-  const [outils, setOutils] = useState<Eligibilite | null>(null);
-  const [erreurOutils, setErreurOutils] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const uid = s.utilisateur?.uid;
   const recompenses = useRecompenses(certificats.length);
@@ -106,23 +98,12 @@ export function MonCompte({ modules }: { modules: ModulePresente[] }) {
     lireListe<Certificat>("certificats", uid)
       .then(setCertificats)
       .catch(() => setCertificats([]));
-    if (fonctionsDisponibles)
-      appeler<Eligibilite>("outils", { action: "eligibilite" })
-        .then(setOutils)
-        .catch((e) => setErreurOutils((e as Error).message));
   }, [uid]);
 
   if (s.etat !== "connecte" || !s.utilisateur) return <div className="carte h-64 animate-pulse" aria-busy="true" />;
   const u = s.utilisateur;
   const nom = s.profil?.nom ?? u.nom ?? u.email ?? "";
 
-  const demander = async (outil: string) => {
-    try {
-      setOutils(await appeler<Eligibilite>("outils", { action: "demander", outil }));
-    } catch (e) {
-      setErreurOutils((e as Error).message);
-    }
-  };
 
   return (
     <div className="space-y-10">
@@ -264,54 +245,8 @@ export function MonCompte({ modules }: { modules: ModulePresente[] }) {
         </ul>
       </Section>
 
-      <Section id="outils" titre="Outils de trading inclus">
-        <div className="carte p-5">
-          <p className="text-ink-2">
-            Un indicateur et un Expert Advisor pour MetaTrader 5 sont remis aux apprenants qui ont terminé le parcours requis et réussi ses évaluations. Ce sont des outils d&apos;aide à
-            l&apos;analyse : ils ne garantissent aucun résultat et s&apos;utilisent d&apos;abord sur un compte de démonstration.
-          </p>
-          {!fonctionsDisponibles ? <p className="mt-3 text-sm text-ink-3">Le suivi de ton éligibilité et les demandes d&apos;accès ouvrent très bientôt.</p> : null}
-          {erreurOutils ? <p className="mt-3 text-sm text-warn">{erreurOutils}</p> : null}
-          {outils ? (
-            <>
-              <ul className="mt-4 space-y-2">
-                {outils.modules.map((m) => (
-                  <li key={m.module} className="flex items-center gap-3 text-sm">
-                    <span className={`grid size-6 place-items-center rounded-full ${m.achete && m.chapitres > 0 && m.valides === m.chapitres ? "bg-ok/15 text-ok" : "bg-surface-2 text-ink-3"}`}>
-                      {m.achete && m.chapitres > 0 && m.valides === m.chapitres ? <IconeCoche className="size-3.5" /> : null}
-                    </span>
-                    <span className="flex-1 text-ink">{titreModule(m.module)}</span>
-                    <span className="text-ink-3">{m.achete ? `${m.valides}/${m.chapitres} quiz réussis` : "non débloqué"}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {Object.entries(outils.outils)
-                  .filter(([, o]) => o.actif)
-                  .map(([id, o]) => {
-                    const demande = outils.demandes.find((d) => d.outil === id);
-                    return (
-                      <div key={id} className="rounded-xl border border-line p-4">
-                        <p className="font-semibold text-ink">{o.nom}</p>
-                        {demande ? (
-                          <p className="mt-1 text-sm text-ink-2">
-                            Demande {demande.statut === "en_attente" ? "en cours d'examen" : demande.statut === "accordee" ? "acceptée" : "refusée"}
-                            {demande.note ? ` : ${demande.note}` : "."}
-                          </p>
-                        ) : (
-                          <button type="button" className="btn btn-primaire mt-3 w-full" disabled={!outils.eligible} onClick={() => void demander(id)}>
-                            {outils.eligible ? "Demander l'accès" : "Parcours à terminer"}
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-              </div>
-            </>
-          ) : !erreurOutils && fonctionsDisponibles ? (
-            <div className="mt-4 h-16 animate-pulse rounded-xl bg-surface-2" />
-          ) : null}
-        </div>
+      <Section id="outils" titre="Mes outils et licences">
+        <MesOutils uid={u.uid} />
       </Section>
     </div>
   );

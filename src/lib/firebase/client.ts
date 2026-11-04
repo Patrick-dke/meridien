@@ -27,10 +27,14 @@ export const projetFirebase = config.projectId;
 /** Faux tant que l'application web n'est pas enregistrée : les comptes sont alors annoncés comme bientôt disponibles. */
 export const comptesDisponibles = Boolean(config.apiKey && config.projectId);
 /**
- * Fonctions serveur déployées (offre Blaze) : quiz officiels, contact, paiement, administration. Sans elles,
- * ces services sont annoncés « bientôt » au lieu d'échouer ; comptes et progression fonctionnent quand même.
+ * Fonctions serveur déployées (offre Blaze) : quiz officiels, contact, paiement, administration complète. Sans
+ * elles, ces services sont annoncés « bientôt » au lieu d'échouer ; comptes, progression et administration des
+ * accès fonctionnent quand même. Avec les émulateurs, NEXT_PUBLIC_EMULATEURS_SANS_FONCTIONS=1 reproduit ce cas pour
+ * les tests (une variable à part : .env.production fixe NEXT_PUBLIC_FONCTIONS pour toutes les constructions).
  */
-export const fonctionsDisponibles = emulateurs || (comptesDisponibles && process.env.NEXT_PUBLIC_FONCTIONS === "1");
+export const fonctionsDisponibles = emulateurs
+  ? process.env.NEXT_PUBLIC_EMULATEURS_SANS_FONCTIONS !== "1"
+  : comptesDisponibles && process.env.NEXT_PUBLIC_FONCTIONS === "1";
 const HOTE = "127.0.0.1";
 
 let app: Promise<FirebaseApp> | null = null;
@@ -44,7 +48,10 @@ function application() {
 
 export function obtenirAuth() {
   return (auth ??= Promise.all([application(), import("firebase/auth")]).then(([a, m]) => {
-    const instance = m.initializeAuth(a, { persistence: [m.indexedDBLocalPersistence, m.browserLocalPersistence], popupRedirectResolver: m.browserPopupRedirectResolver });
+    const instance = m.initializeAuth(a, {
+      persistence: [m.indexedDBLocalPersistence, m.browserLocalPersistence],
+      popupRedirectResolver: m.browserPopupRedirectResolver,
+    });
     instance.languageCode = "fr";
     if (emulateurs) m.connectAuthEmulator(instance, `http://${HOTE}:9099`, { disableWarnings: true });
     return instance;

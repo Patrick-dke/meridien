@@ -18,8 +18,8 @@ const avecSuite = (chemin: string) => {
 export function ComptesIndisponibles() {
   return (
     <Alerte ton="info">
-      Les comptes Méridien ouvrent très bientôt. En attendant, le parcours « Premiers pas » reste entièrement accessible sans compte, et ta
-      progression est gardée sur cet appareil.
+      Les comptes Méridien ouvrent très bientôt. En attendant, le parcours « Premiers pas » reste entièrement accessible sans compte, et ta progression est
+      gardée sur cet appareil.
     </Alerte>
   );
 }
@@ -121,7 +121,8 @@ export function FormulaireInscription() {
   const [touche, setTouche] = useState(false);
   if (!comptesDisponibles) return <ComptesIndisponibles />;
 
-  const maj = (k: keyof typeof d) => (e: React.ChangeEvent<HTMLInputElement>) => setD({ ...d, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
+  const maj = (k: keyof typeof d) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setD({ ...d, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
   const erreurMdp = touche && d.motDePasse && !motDePasseValide(d.motDePasse) ? "8 caractères au moins, avec une lettre et un chiffre." : null;
   const erreurConfirmation = touche && d.confirmation && d.confirmation !== d.motDePasse ? "Les deux mots de passe ne correspondent pas." : null;
 
@@ -153,7 +154,16 @@ export function FormulaireInscription() {
       <Separateur />
       <form onSubmit={envoyer} className="space-y-4" noValidate>
         <Champ libelle="Nom complet" autoComplete="name" required maxLength={80} value={d.nom} onChange={maj("nom")} />
-        <Champ libelle="Adresse e-mail" type="email" autoComplete="email" inputMode="email" required value={d.email} onChange={maj("email")} aide="Un lien de vérification y sera envoyé." />
+        <Champ
+          libelle="Adresse e-mail"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          required
+          value={d.email}
+          onChange={maj("email")}
+          aide="Un lien de vérification y sera envoyé."
+        />
         <Champ
           libelle="Téléphone (Cameroun)"
           type="tel"
@@ -164,14 +174,29 @@ export function FormulaireInscription() {
           onChange={maj("telephone")}
           aide="Facultatif. Il préremplit le paiement Mobile Money ; aucun SMS ne t'est envoyé."
         />
-        <ChampMotDePasse libelle="Mot de passe" autoComplete="new-password" required value={d.motDePasse} onChange={maj("motDePasse")} erreur={erreurMdp} aide="8 caractères au moins, avec une lettre et un chiffre." />
-        <ChampMotDePasse libelle="Confirmation du mot de passe" autoComplete="new-password" required value={d.confirmation} onChange={maj("confirmation")} erreur={erreurConfirmation} />
+        <ChampMotDePasse
+          libelle="Mot de passe"
+          autoComplete="new-password"
+          required
+          value={d.motDePasse}
+          onChange={maj("motDePasse")}
+          erreur={erreurMdp}
+          aide="8 caractères au moins, avec une lettre et un chiffre."
+        />
+        <ChampMotDePasse
+          libelle="Confirmation du mot de passe"
+          autoComplete="new-password"
+          required
+          value={d.confirmation}
+          onChange={maj("confirmation")}
+          erreur={erreurConfirmation}
+        />
         <label className="flex items-start gap-3 text-sm text-ink-2">
           <input type="checkbox" className="mt-1 size-4 accent-[var(--brand)]" checked={d.conditions} onChange={maj("conditions")} />
           <span>
             J&apos;accepte les{" "}
-            <Link href="/legal/mentions/" className="text-brand underline">
-              conditions
+            <Link href="/legal/conditions/" className="text-brand underline">
+              conditions d&apos;utilisation
             </Link>{" "}
             et la{" "}
             <Link href="/legal/confidentialite/" className="text-brand underline">
@@ -207,7 +232,10 @@ export function FormulaireMotDePasse() {
     setEnCours(true);
     try {
       await demanderReinitialisation(email);
-      setEtat({ ok: true, texte: "Si un compte existe avec cette adresse, un lien de réinitialisation vient d'y être envoyé. Pense à regarder dans les courriers indésirables." });
+      setEtat({
+        ok: true,
+        texte: "Si un compte existe avec cette adresse, un lien de réinitialisation vient d'y être envoyé. Pense à regarder dans les courriers indésirables.",
+      });
     } catch (err) {
       setEtat({ ok: false, texte: (err as Error).message });
     } finally {
@@ -218,7 +246,15 @@ export function FormulaireMotDePasse() {
     <div className="carte p-5 sm:p-7">
       <BandeauTest />
       <form onSubmit={envoyer} className="space-y-4">
-        <Champ libelle="Adresse e-mail du compte" type="email" autoComplete="email" inputMode="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Champ
+          libelle="Adresse e-mail du compte"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         {etat ? <Alerte ton={etat.ok ? "ok" : "erreur"}>{etat.texte}</Alerte> : null}
         <BoutonEnvoi enCours={enCours}>Recevoir le lien</BoutonEnvoi>
       </form>

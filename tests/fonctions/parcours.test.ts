@@ -127,9 +127,22 @@ describe("parcours d'achat simulé", () => {
     expect(await code(appeler("initierPaiement", { module: MODULE, operateur: "mtn", telephone: "670000000", cle: "cle-test-rachat-000001" }))).toBe("functions/already-exists");
 
     const quiz = JSON.parse(c.get("chapitreJson")).quiz as { type: string; bonne?: number; bonnes?: number[]; reponse?: boolean; paires?: unknown[]; etapes?: unknown[] }[];
-    const justes = quiz.map((q) =>
-      q.type === "unique" ? { type: "unique", choix: q.bonne } : q.type === "multiple" ? { type: "multiple", choix: q.bonnes } : q.type === "vraifaux" ? { type: "vraifaux", valeur: q.reponse } : q.type === "association" ? { type: "association", choix: q.paires!.map((_, i) => i) } : { type: "ordre", ordre: q.etapes!.map((_, i) => i) },
-    );
+    const justes = quiz.map((q) => {
+      switch (q.type) {
+        case "unique":
+        case "comparaison":
+          return { type: q.type, choix: q.bonne };
+        case "multiple":
+        case "graphique":
+          return { type: q.type, choix: q.bonnes };
+        case "vraifaux":
+          return { type: "vraifaux", valeur: q.reponse };
+        case "association":
+          return { type: "association", choix: q.paires!.map((_, i) => i) };
+        default:
+          return { type: "ordre", ordre: q.etapes!.map((_, i) => i) };
+      }
+    });
     const r = await appeler<{ score: number; reussi: boolean }>("noterQuiz", { slug: slugPayant, reponses: justes });
     expect(r).toMatchObject({ score: 1, reussi: true });
     const faux = await appeler<{ score: number }>("noterQuiz", { slug: slugPayant, reponses: justes.map(() => ({ type: "unique", choix: 99 })) });

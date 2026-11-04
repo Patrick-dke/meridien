@@ -206,24 +206,19 @@ function Dessin({ motif, teinte, graine }: { motif: Motif; teinte: string; grain
 }
 
 /**
- * Vignette générée pour une académie, un module ou un chapitre : fond nocturne, lueur de la teinte de
- * l'académie et un motif qui évoque le thème. Purement décorative (le titre de la carte suffit).
+ * Vignette générée pour une académie, un module ou un chapitre : une planche de graphique (fond quadrillé) et un
+ * motif de marché qui évoque le thème, tracé dans la teinte de l'académie. Pas de lueur : un schéma, pas un décor.
  */
 export function Vignette({ motif, teinte, graine, className = "" }: { motif: Motif; teinte: string; graine: string; className?: string }) {
   const n = graineDe(graine);
-  const id = `v${n.toString(36)}`;
   return (
     <svg viewBox={`0 0 ${L} ${H}`} className={`h-auto w-full ${className}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <radialGradient id={id} cx="85%" cy="0%" r="90%">
-          <stop offset="0%" stopColor={teinte} stopOpacity={0.32} />
-          <stop offset="100%" stopColor={teinte} stopOpacity={0} />
-        </radialGradient>
-      </defs>
       <rect width={L} height={H} fill="var(--chart)" />
-      <rect width={L} height={H} fill={`url(#${id})`} />
       {[45, 90, 135].map((y) => (
         <line key={y} x1={0} x2={L} y1={y} y2={y} stroke="var(--line)" strokeWidth={1} />
+      ))}
+      {[80, 160, 240].map((x) => (
+        <line key={x} x1={x} x2={x} y1={0} y2={H} stroke="var(--line)" strokeWidth={1} strokeDasharray="2 4" />
       ))}
       <Dessin motif={motif} teinte={teinte} graine={n} />
     </svg>

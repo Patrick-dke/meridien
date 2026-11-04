@@ -11,6 +11,7 @@ let montages = 0;
  */
 export function TransitionPage({ children }: { children: React.ReactNode }) {
   // Côté serveur, jamais d'animation : le HTML statique et la première hydratation restent identiques.
-  const [anime] = useState(() => typeof window !== "undefined" && montages++ > 0);
+  // Avec l'API View Transitions, c'est TransitionsVue qui anime le passage : pas de second fondu ici.
+  const [anime] = useState(() => typeof window !== "undefined" && montages++ > 0 && !("startViewTransition" in document));
   return <div className={anime ? "page-entree" : undefined}>{children}</div>;
 }

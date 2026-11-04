@@ -345,7 +345,7 @@ export const termes: Terme[] = [
     terme: "Ajustement de dividende",
     synonymes: ["dividend adjustment"],
     court: "L'écriture qu'un courtier passe sur un CFD quand l'action ou une valeur de l'indice détache un dividende.",
-    long: "Le jour du détachement, le prix baisse d'environ le montant du dividende. Pour que personne ne soit avantagé, le courtier débite les positions acheteuses et crédite les positions vendeuses d'un montant équivalent, parfois après une retenue.",
+    long: "Le jour du détachement, le prix baisse d'environ le montant du dividende. Pour que personne ne soit avantagé, le courtier crédite les positions acheteuses, qui subissent cette baisse, et débite les positions vendeuses d'un montant équivalent ; le crédit peut être réduit d'une retenue.",
     fiabilite: "fait",
     chapitre: "indices-horaires-couts",
     voirAussi: ["dividende", "cfd", "date-de-detachement"],

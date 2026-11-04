@@ -7,7 +7,8 @@ import type { Chapitre } from "@/content/schema";
 import type { SceneFigure } from "@/lib/chartkit/types";
 import { useSession } from "@/lib/compte/session";
 import { obtenirDb } from "@/lib/firebase/client";
-import type { Narration } from "@/lib/narration";
+import { capsules } from "@/content/verifier";
+import { identifiantNarration, type Narration } from "@/lib/narration";
 import { useDroits } from "@/lib/offre/commercial";
 import { IconeCadenas } from "../ui/Icones";
 import { construireEtapes } from "./EtapesChapitre";
@@ -32,7 +33,7 @@ export function LecteurProtege({ slug, module, titreModule, suivant }: { slug: s
   const s = useSession(true);
   const droits = useDroits();
   const [etatLu, setEtat] = useState<Etat>("chargement");
-  const [contenu, setContenu] = useState<{ c: Chapitre; narration: Narration | null } | null>(null);
+  const [contenu, setContenu] = useState<{ c: Chapitre; narrations: (Narration | null)[] } | null>(null);
   const uid = s.utilisateur?.uid;
 
   const etat: Etat = s.etat === "deconnecte" ? "verrouille" : etatLu;
@@ -40,7 +41,7 @@ export function LecteurProtege({ slug, module, titreModule, suivant }: { slug: s
   useEffect(() => {
     if (!uid) return;
     let actif = true;
-    let urlAudio: string | null = null;
+    const urlsAudio: string[] = [];
     void (async () => {
       const [db, m] = await Promise.all([obtenirDb(), import("firebase/firestore/lite")]);
       try {
@@ -50,18 +51,23 @@ export function LecteurProtege({ slug, module, titreModule, suivant }: { slug: s
         // Stockés en texte JSON : Firestore refuse les tableaux imbriqués (paires, tableaux de cours).
         const chapitre = JSON.parse(d.get("chapitreJson")) as Chapitre;
         ajouterScenes(JSON.parse(d.get("scenesJson") ?? "{}") as Record<string, SceneFigure>);
-        let narration: Narration | null = null;
-        try {
-          const n = await m.getDoc(m.doc(db, "narrations", slug));
-          if (n.exists()) {
-            narration = await narrationDepuis(n.data() as DocNarration, async (i) => (await m.getDoc(m.doc(db, "narrations", slug, "morceaux", String(i)))).get("donnees") as string);
-            urlAudio = narration.audio;
-          }
-        } catch {
-          // Sans narration, la capsule se lit en mode texte, au rythme des sous-titres.
-        }
+        const narrations = await Promise.all(
+          capsules(chapitre).map(async (_, k) => {
+            const id = identifiantNarration(slug, k);
+            try {
+              const n = await m.getDoc(m.doc(db, "narrations", id));
+              if (!n.exists()) return null;
+              const narration = await narrationDepuis(n.data() as DocNarration, async (i) => (await m.getDoc(m.doc(db, "narrations", id, "morceaux", String(i)))).get("donnees") as string);
+              urlsAudio.push(narration.audio);
+              return narration;
+            } catch {
+              // Sans narration, la capsule se lit en mode texte, au rythme des sous-titres.
+              return null;
+            }
+          }),
+        );
         if (!actif) return;
-        setContenu({ c: chapitre, narration });
+        setContenu({ c: chapitre, narrations });
         setEtat("pret");
       } catch (e) {
         if (!actif) return;
@@ -71,11 +77,11 @@ export function LecteurProtege({ slug, module, titreModule, suivant }: { slug: s
     })();
     return () => {
       actif = false;
-      if (urlAudio) URL.revokeObjectURL(urlAudio);
+      for (const u of urlsAudio) URL.revokeObjectURL(u);
     };
   }, [uid, slug]);
 
-  const etapes = useMemo(() => (contenu ? construireEtapes({ c: contenu.c, narration: contenu.narration, suivant }) : null), [contenu, suivant]);
+  const etapes = useMemo(() => (contenu ? construireEtapes({ c: contenu.c, narrations: contenu.narrations, suivant }) : null), [contenu, suivant]);
 
   if (etat === "pret" && etapes) return <LecteurChapitre slug={slug} etapes={etapes} />;
   if (etat === "chargement" || (etat === "verrouille" && s.etat === "connecte" && !droits.pret))

@@ -1,13 +1,26 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
-import type { Question } from "@/content/schema";
-import { estComplete, melangeDeterministe, noter, noterQuiz, reponseVide, SEUIL_REUSSITE, type Reponse } from "@/lib/apprentissage/quiz";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import type { Question, VisuelQuestion } from "@/content/schema";
+import {
+  estComplete,
+  melangeDeterministe,
+  noter,
+  noterQuiz,
+  ordreAffichage,
+  reponseVide,
+  SEUIL_REUSSITE,
+  tirerQuestions,
+  TIRAGE_PAR_DEFAUT,
+  type Reponse,
+} from "@/lib/apprentissage/quiz";
 import { enregistrerQuiz } from "@/lib/progression/store";
 import { useSession } from "@/lib/compte/session";
 import { appeler, comptesDisponibles, fonctionsDisponibles } from "@/lib/firebase/client";
 import Link from "next/link";
 import { typographie } from "@/lib/typographie";
+import { Visuel } from "../figures/Figure";
+import { SelecteurBougies } from "../figures/SelecteurBougies";
 import { IconeCoche, IconeCroix } from "../ui/Icones";
 import { Anneau, Jauge } from "../ui/Progression";
 
@@ -32,30 +45,6 @@ function Correction({ note, explication }: { note: number; explication: string }
         <p className="mt-1 text-[0.95rem] leading-relaxed text-ink">{typographie(explication)}</p>
       </div>
     </div>
-  );
-}
-
-/** Court éclat de réussite : quelques particules qui s'écartent, une seule fois (rien en mouvement réduit). */
-function Eclat() {
-  return (
-    <span className="pointer-events-none absolute left-1/2 top-1/2" aria-hidden="true">
-      {Array.from({ length: 14 }, (_, i) => {
-        const angle = (i / 14) * Math.PI * 2;
-        const d = 70 + (i % 3) * 18;
-        return (
-          <span
-            key={i}
-            className="absolute size-1.5 rounded-full"
-            style={{
-              background: i % 2 ? "var(--cyan)" : "var(--gold)",
-              ["--dx" as string]: `${Math.round(Math.cos(angle) * d)}px`,
-              ["--dy" as string]: `${Math.round(Math.sin(angle) * d)}px`,
-              animation: `eclat 900ms var(--ease-out-soft) ${i * 12}ms both`,
-            }}
-          />
-        );
-      })}
-    </span>
   );
 }
 
@@ -98,35 +87,112 @@ function Option({
   );
 }
 
-function ChampQuestion({
-  q,
-  r,
-  setR,
-  verifiee,
-}: {
-  q: Question;
-  r: Reponse;
-  setR: (r: Reponse) => void;
-  verifiee: boolean;
-}) {
+/** Graphique d'une question (figure, ou l'un des deux graphiques d'une comparaison). */
+function GraphiqueQuestion({ v }: { v: VisuelQuestion }) {
+  return (
+    <figure>
+      <Visuel scene={v.scene} etape={v.etape} />
+      {v.legende ? <figcaption className="mt-2 text-sm text-ink-2">{typographie(v.legende)}</figcaption> : null}
+    </figure>
+  );
+}
+
+/** Ce qui précède les réponses : situation de marché (étude de cas) et graphique à lire. */
+export function EnTeteQuestion({ q }: { q: Question }) {
+  if (!q.contexte && !q.figure) return null;
+  return (
+    <div className="mb-5 space-y-3">
+      {q.contexte ? (
+        <div className="rounded-2xl border border-cyan/30 bg-cyan/5 p-4 text-[0.95rem] leading-relaxed text-ink">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-cyan">Situation</p>
+          {typographie(q.contexte)}
+        </div>
+      ) : null}
+      {q.figure ? (
+        <div className="carte p-3 sm:p-4">
+          <GraphiqueQuestion v={q.figure} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export function ChampQuestion({ q, r, setR, verifiee, graine }: { q: Question; r: Reponse; setR: (r: Reponse) => void; verifiee: boolean; graine: number }) {
   const droite = useMemo(() => (q.type === "association" ? melangeDeterministe(q.paires.length, `${q.id}-droite`) : []), [q]);
+  // Les choix changent d'ordre à chaque tentative ; la réponse garde les index d'origine.
+  const ordre = useMemo(() => (q.type === "unique" || q.type === "multiple" ? ordreAffichage(q.choix.length, graine, q.id) : []), [q, graine]);
+
+  if (q.type === "graphique" && r.type === "graphique") {
+    return (
+      <div className="carte p-3 sm:p-4">
+        <SelecteurBougies
+          scene={q.scene}
+          etape={q.etape}
+          choix={r.choix}
+          onChange={(choix) => setR({ type: "graphique", choix })}
+          desactive={verifiee}
+          bonnes={verifiee ? q.bonnes : undefined}
+        />
+      </div>
+    );
+  }
+  if (q.type === "comparaison" && r.type === "comparaison") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Choisis le graphique A ou B">
+        {q.graphiques.map((g, i) => {
+          const choisi = r.choix === i;
+          const etat = verifiee ? (i === q.bonne ? (choisi ? "juste" : "attendu") : choisi ? "faux" : undefined) : undefined;
+          const bord =
+            etat === "juste"
+              ? "border-ok bg-ok/10"
+              : etat === "faux"
+                ? "border-bad bg-bad/10"
+                : etat === "attendu"
+                  ? "border-ok/60"
+                  : choisi
+                    ? "border-brand bg-brand-soft"
+                    : "border-line-strong hover:border-ink-3";
+          return (
+            <label key={i} className={`block cursor-pointer rounded-2xl border p-3 transition-colors ${bord} ${verifiee ? "cursor-default" : ""}`}>
+              <span className="mb-2 flex items-center gap-2 font-semibold text-ink">
+                <input
+                  type="radio"
+                  name={q.id}
+                  checked={choisi}
+                  disabled={verifiee}
+                  onChange={() => setR({ type: "comparaison", choix: i as 0 | 1 })}
+                  className="size-[1.1rem] accent-[var(--brand-solid)]"
+                />
+                Graphique {i === 0 ? "A" : "B"}
+                {etat === "juste" || etat === "attendu" ? <IconeCoche className="ml-auto size-5 text-ok" /> : null}
+                {etat === "faux" ? <IconeCroix className="ml-auto size-5 text-bad" /> : null}
+              </span>
+              <GraphiqueQuestion v={g} />
+            </label>
+          );
+        })}
+      </div>
+    );
+  }
 
   if (q.type === "unique" && r.type === "unique") {
     return (
       <div className="space-y-2">
-        {q.choix.map((c, i) => (
-          <Option
-            key={i}
-            type="radio"
-            name={q.id}
-            coche={r.choix === i}
-            onChange={() => setR({ type: "unique", choix: i })}
-            desactive={verifiee}
-            etat={verifiee ? (i === q.bonne ? (r.choix === i ? "juste" : "attendu") : r.choix === i ? "faux" : undefined) : undefined}
-          >
-            {typographie(c)}
-          </Option>
-        ))}
+        {ordre
+          .map((i) => [q.choix[i], i] as const)
+          .map(([c, i]) => (
+            <Option
+              key={i}
+              type="radio"
+              name={q.id}
+              coche={r.choix === i}
+              onChange={() => setR({ type: "unique", choix: i })}
+              desactive={verifiee}
+              etat={verifiee ? (i === q.bonne ? (r.choix === i ? "juste" : "attendu") : r.choix === i ? "faux" : undefined) : undefined}
+            >
+              {typographie(c)}
+            </Option>
+          ))}
       </div>
     );
   }
@@ -153,23 +219,25 @@ function ChampQuestion({
     return (
       <div className="space-y-2">
         <p className="text-sm text-ink-3">Plusieurs réponses possibles.</p>
-        {q.choix.map((c, i) => {
-          const coche = r.choix.includes(i);
-          const attendue = q.bonnes.includes(i);
-          return (
-            <Option
-              key={i}
-              type="checkbox"
-              name={`${q.id}-${i}`}
-              coche={coche}
-              onChange={() => setR({ type: "multiple", choix: coche ? r.choix.filter((x) => x !== i) : [...r.choix, i] })}
-              desactive={verifiee}
-              etat={verifiee ? (attendue ? (coche ? "juste" : "attendu") : coche ? "faux" : undefined) : undefined}
-            >
-              {typographie(c)}
-            </Option>
-          );
-        })}
+        {ordre
+          .map((i) => [q.choix[i], i] as const)
+          .map(([c, i]) => {
+            const coche = r.choix.includes(i);
+            const attendue = q.bonnes.includes(i);
+            return (
+              <Option
+                key={i}
+                type="checkbox"
+                name={`${q.id}-${i}`}
+                coche={coche}
+                onChange={() => setR({ type: "multiple", choix: coche ? r.choix.filter((x) => x !== i) : [...r.choix, i] })}
+                desactive={verifiee}
+                etat={verifiee ? (attendue ? (coche ? "juste" : "attendu") : coche ? "faux" : undefined) : undefined}
+              >
+                {typographie(c)}
+              </Option>
+            );
+          })}
       </div>
     );
   }
@@ -275,7 +343,8 @@ function PorteQuiz({ slug, chargement }: { slug: string; chargement: boolean }) 
     <div className="carte p-6 text-center">
       <p className="text-lg font-semibold text-ink">Crée ton compte gratuit pour passer le quiz</p>
       <p className="mx-auto mt-2 max-w-md text-ink-2">
-        Le cours reste ouvert à tous. Le quiz, lui, enregistre un résultat officiel : il te faut un compte, gratuit, sans abonnement. Ta progression sur cet appareil y sera reprise.
+        Le cours reste ouvert à tous. Avec un compte, ton résultat est enregistré, ta progression te suit sur tous tes appareils et les quiz réussis mènent au
+        certificat du module. Ce que tu as déjà fait sur cet appareil y sera repris.
       </p>
       <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
         <Link href={`/inscription/?suite=${suite}`} className="btn btn-primaire">
@@ -289,9 +358,68 @@ function PorteQuiz({ slug, chargement }: { slug: string; chargement: boolean }) 
   );
 }
 
-/** Quiz de chapitre : une question à la fois, correction immédiate, résultat enregistré par concept. */
-export function Quiz({ slug, questions, nomsConcepts }: { slug: string; questions: Question[]; nomsConcepts: Record<string, string> }) {
+const sAbonnerRien = () => () => {};
+const nouvelleGraine = () => crypto.getRandomValues(new Uint32Array(1))[0];
+
+/**
+ * Quiz de chapitre. Chaque tentative tire ses questions dans la banque du chapitre (questions visuelles
+ * comprises), mélange l'ordre des réponses, corrige immédiatement et enregistre le résultat par concept.
+ */
+export function Quiz({
+  slug,
+  questions: banque,
+  tirage = TIRAGE_PAR_DEFAUT,
+  nomsConcepts,
+}: {
+  slug: string;
+  questions: Question[];
+  tirage?: number;
+  nomsConcepts: Record<string, string>;
+}) {
   const session = useSession(true);
+  // Le tirage est aléatoire : rien n'est rendu côté serveur, pour que l'hydratation reste exacte.
+  const monte = useSyncExternalStore(
+    sAbonnerRien,
+    () => true,
+    () => false,
+  );
+  const [graine, setGraine] = useState(nouvelleGraine);
+  const questions = useMemo(() => tirerQuestions(banque, Math.min(tirage, banque.length), graine), [banque, tirage, graine]);
+
+  // Tant que les comptes ne sont pas ouverts, le quiz reste utilisable sur l'appareil (résultat non officiel).
+  if (comptesDisponibles && session.etat !== "connecte") return <PorteQuiz slug={slug} chargement={session.etat === "inconnu"} />;
+  if (!monte) return <div className="carte h-40 animate-pulse" aria-busy="true" />;
+  return (
+    <Tentative
+      key={graine}
+      slug={slug}
+      questions={questions}
+      taille={banque.length}
+      graine={graine}
+      nomsConcepts={nomsConcepts}
+      connecte={session.etat === "connecte"}
+      onRecommencer={() => setGraine(nouvelleGraine())}
+    />
+  );
+}
+
+function Tentative({
+  slug,
+  questions,
+  taille,
+  graine,
+  nomsConcepts,
+  connecte,
+  onRecommencer,
+}: {
+  slug: string;
+  questions: Question[];
+  taille: number;
+  graine: number;
+  nomsConcepts: Record<string, string>;
+  connecte: boolean;
+  onRecommencer: () => void;
+}) {
   const [officiel, setOfficiel] = useState<{ statut: "envoi" | "ok" | "erreur"; message?: string; certificat?: string | null } | null>(null);
   const [reponses, setReponses] = useState<Reponse[]>(() => questions.map(reponseVide));
   const [index, setIndex] = useState(0);
@@ -305,7 +433,7 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
   /** Résultat officiel : recalculé par le serveur à partir du corrigé qu'il détient, puis enregistré sur le compte. */
   const envoyerOfficiel = () => {
     setOfficiel({ statut: "envoi" });
-    appeler<{ reussi: boolean; certificat: string | null }>("noterQuiz", { slug, reponses })
+    appeler<{ reussi: boolean; certificat: string | null }>("noterQuiz", { slug, ids: questions.map((x) => x.id), reponses })
       .then((r) => setOfficiel({ statut: "ok", certificat: r.certificat }))
       .catch((e) => setOfficiel({ statut: "erreur", message: (e as Error).message }));
   };
@@ -315,32 +443,24 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
     if (!enregistre.current) {
       enregistrerQuiz(slug, r.score, r.parConcept, r.reussi);
       enregistre.current = true;
-      if (session.etat === "connecte" && fonctionsDisponibles) envoyerOfficiel();
+      if (connecte && fonctionsDisponibles) envoyerOfficiel();
     }
     setFini(true);
   };
 
-  const recommencer = () => {
-    setReponses(questions.map(reponseVide));
-    setVerifiees(questions.map(() => false));
-    setIndex(0);
-    setFini(false);
-    setOfficiel(null);
-    enregistre.current = false;
-  };
-
-  // Tant que les comptes ne sont pas ouverts, le quiz reste utilisable sur l'appareil (résultat non officiel).
-  if (comptesDisponibles && session.etat !== "connecte") return <PorteQuiz slug={slug} chargement={session.etat === "inconnu"} />;
+  // Nouvelle tentative : nouveau tirage dans la banque, réponses remises à zéro (le composant est recréé).
+  const recommencer = onRecommencer;
 
   if (fini && resultat) {
     return (
       <div className="not-prose space-y-6" aria-live="polite">
-        <div className={`apparition carte relative flex flex-col items-center gap-5 overflow-hidden p-6 text-center sm:flex-row sm:text-left ${resultat.reussi ? "!border-ok/40" : "!border-warn/40"}`}>
+        <div
+          className={`apparition carte relative flex flex-col items-center gap-5 overflow-hidden p-6 text-center sm:flex-row sm:text-left ${resultat.reussi ? "!border-ok/40" : "!border-warn/40"}`}
+        >
           <span className="relative">
             <Anneau valeur={resultat.score} taille={112} epaisseur={9} libelle="Ton score" teinte={resultat.reussi ? "var(--ok)" : "var(--warn)"}>
               <span className="font-mono text-2xl font-semibold text-ink tabular">{pct(resultat.score)}</span>
             </Anneau>
-            {resultat.reussi ? <Eclat /> : null}
           </span>
           <div>
             <p className="text-sm text-ink-2">Ton score</p>
@@ -352,13 +472,16 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
             </p>
           </div>
         </div>
-        {session.etat === "connecte" && !fonctionsDisponibles ? (
+        {connecte && !fonctionsDisponibles ? (
           <p className="rounded-xl border border-line bg-surface px-4 py-3 text-sm" role="status">
             Résultat enregistré dans ta progression, sur ton compte. Les résultats officiels et les certificats arrivent bientôt.
           </p>
         ) : null}
         {officiel ? (
-          <p className={`rounded-xl border px-4 py-3 text-sm ${officiel.statut === "erreur" ? "border-warn/50 bg-warn/10" : "border-line bg-surface"}`} role="status">
+          <p
+            className={`rounded-xl border px-4 py-3 text-sm ${officiel.statut === "erreur" ? "border-warn/50 bg-warn/10" : "border-line bg-surface"}`}
+            role="status"
+          >
             {officiel.statut === "envoi" ? "Enregistrement du résultat officiel sur ton compte…" : null}
             {officiel.statut === "ok" ? (
               <>
@@ -419,6 +542,7 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
         <div className="mb-2 flex items-center justify-between text-sm text-ink-3">
           <span>
             Question {index + 1} sur {questions.length}
+            {taille > questions.length ? <span className="text-ink-3"> · tirée d&apos;une banque de {taille}</span> : null}
           </span>
           <span className="font-mono text-xs">{Math.round((index / questions.length) * 100)} %</span>
         </div>
@@ -433,9 +557,11 @@ export function Quiz({ slug, questions, nomsConcepts }: { slug: string; question
           ))}
         </span>
       </div>
-      <fieldset key={q.id} className={`apparition ${verifiee && note < 0.999 ? "refus" : ""}`}>
+      <fieldset key={q.id} data-question={q.id} className="apparition">
         <legend className="mb-5 text-lg font-semibold leading-snug text-ink sm:text-xl">{typographie(q.enonce)}</legend>
+        <EnTeteQuestion q={q} />
         <ChampQuestion
+          graine={graine}
           q={q}
           r={reponses[index]}
           verifiee={verifiee}

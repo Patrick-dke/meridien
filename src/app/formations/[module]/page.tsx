@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlocAchat, LigneProgramme } from "@/components/offre/Offre";
-import { IconeCible } from "@/components/ui/Icones";
-import { Puce } from "@/components/ui/Puce";
-import { Vignette } from "@/components/ui/Vignette";
+import { duree } from "@/lib/duree";
+import { IconeCoche } from "@/components/ui/Icones";
 import { offre } from "@/content/offre";
 import { presenter, programme } from "@/content/presentation";
 import { typographie } from "@/lib/typographie";
@@ -26,73 +25,124 @@ export default async function PageModule({ params }: PageProps<"/formations/[mod
   const m = offre.find((x) => x.id === module);
   if (!m) notFound();
   const p = presenter(m);
+  const r = p.resume;
   const chapitres = programme(m);
   const precedent = offre.find((x) => x.rang === m.rang - 1);
+  const suivant = offre.find((x) => x.rang === m.rang + 1);
+  const chiffres: [string, string][] = [
+    [String(m.chapitres.length), "chapitres"],
+    ...(r
+      ? ([
+          [duree(r.dureeMin), "de cours"],
+          [String(r.capsules), "capsules vidéo"],
+          [String(r.exercices), "exercices"],
+          [String(r.questions), "questions de quiz"],
+        ] as [string, string][])
+      : []),
+  ];
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <nav aria-label="Fil d'Ariane" className="mb-4 text-sm text-ink-3">
-        <Link href="/formations/" className="hover:text-ink">
+      <nav aria-label="Fil d'Ariane" className="mb-6 text-sm text-ink-3">
+        <Link href="/formations/" className="hover:text-ink hover:underline">
           Formations
         </Link>{" "}
         / {m.titre}
       </nav>
-      <header className="carte relative overflow-hidden p-5 sm:p-8">
-        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 opacity-60 [mask-image:linear-gradient(to_right,transparent,#000)] md:block" aria-hidden="true">
-          <Vignette motif={p.motif} teinte={p.teinte} graine={m.id} className="h-full" />
-        </div>
-        <div className="relative max-w-2xl">
-          <div className="flex flex-wrap gap-2">
-            <Puce ton="cyan">Niveau {m.rang} sur {offre.length}</Puce>
-            <Puce>{m.chapitres.length} chapitres</Puce>
-            {m.gratuit ? <Puce ton="ok">Gratuit, sans compte</Puce> : null}
-          </div>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight text-ink sm:text-[2.6rem]">{typographie(m.titre)}</h1>
-          <p className="mt-3 text-lg text-ink-2">{typographie(m.accroche)}</p>
-        </div>
-      </header>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
-        <div className="min-w-0 space-y-8">
-          <section aria-labelledby="competences">
-            <h2 id="competences" className="text-xl font-semibold text-ink">
+      <div className="grid gap-10 lg:grid-cols-[1fr_21rem]">
+        <div className="min-w-0">
+          <header>
+            <p className="surtitre">
+              Module {m.rang} sur {offre.length} · {m.niveau}
+              {m.gratuit ? " · Introduction gratuite" : ""}
+            </p>
+            <h1 className="mt-2 text-4xl leading-tight text-ink sm:text-5xl" style={{ viewTransitionName: `module-${m.id}` }}>
+              {typographie(m.titre)}
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg text-ink-2">{typographie(m.accroche)}</p>
+            <dl className="mt-8 grid grid-cols-2 border-y border-line-strong sm:grid-cols-5">
+              {chiffres.map(([chiffre, libelle], i) => (
+                <div key={libelle} className={`py-4 ${i % 2 ? "pl-4" : ""} sm:pl-4 ${i ? "sm:border-l sm:border-line" : "sm:pl-0"}`}>
+                  <dt className="sr-only">{libelle}</dt>
+                  <dd>
+                    <span className="block font-mono text-xl text-ink tabular">{chiffre}</span>
+                    <span className="block text-xs text-ink-3">{libelle}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </header>
+
+          <section aria-labelledby="competences" className="mt-12">
+            <h2 id="competences" className="text-2xl text-ink">
               Ce que tu sauras faire
             </h2>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-4 space-y-2.5">
               {m.competences.map((c) => (
-                <li key={c} className="carte flex gap-3 p-4 text-ink-2">
-                  <IconeCible className="mt-0.5 size-5 shrink-0 text-brand" />
+                <li key={c} className="flex gap-3 text-ink">
+                  <IconeCoche className="mt-1 size-4 shrink-0 text-jauge" />
                   {typographie(c)}
                 </li>
               ))}
             </ul>
           </section>
-          <section aria-labelledby="programme">
-            <h2 id="programme" className="text-xl font-semibold text-ink">
+
+          <section aria-labelledby="programme" className="mt-12">
+            <h2 id="programme" className="text-2xl text-ink">
               Programme
             </h2>
             <p className="mt-1 text-sm text-ink-3">
-              Chaque chapitre : introduction, objectifs, capsule vidéo narrée, cours, exemples, illustrations, erreurs fréquentes, résumé, exercices et quiz.
+              Chaque chapitre : capsules vidéo narrées, cours illustré, exemple, exercices sur graphiques, résumé et quiz. Un examen clôt le module.
             </p>
-            <ol className="carte mt-4 divide-y divide-line p-1.5">
+            <ol className="mt-5 divide-y divide-line border-y border-line">
               {chapitres.map((c) => (
                 <LigneProgramme key={c.slug} m={p} slug={c.slug} titre={c.titre} numero={c.numero} />
               ))}
+              <li>
+                <Link href={`/examen/${m.id}/`} className="flex items-center gap-3 px-3 py-3 text-ink hover:bg-surface">
+                  <span className="w-7 shrink-0 font-mono text-sm text-jauge">✓</span>
+                  <span className="flex-1 font-semibold">Examen de fin de module</span>
+                  <span className="text-sm text-ink-3">3 niveaux</span>
+                </Link>
+              </li>
             </ol>
           </section>
-          {precedent ? (
-            <p className="text-sm text-ink-2">
-              Prérequis conseillé :{" "}
-              <Link href={`/formations/${precedent.id}/`} className="text-brand underline">
-                {precedent.titre}
-              </Link>
-              .
-            </p>
+
+          {precedent || suivant ? (
+            <div className="mt-10 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
+              {precedent ? (
+                <p className="text-sm text-ink-2">
+                  <span className="surtitre block">Avant ce module, conseillé</span>
+                  <Link href={`/formations/${precedent.id}/`} className="lien mt-1 inline-block">
+                    {precedent.titre}
+                  </Link>
+                </p>
+              ) : null}
+              {suivant ? (
+                <p className="text-sm text-ink-2 sm:col-start-2">
+                  <span className="surtitre block">Et ensuite</span>
+                  <Link href={`/formations/${suivant.id}/`} className="lien mt-1 inline-block">
+                    {suivant.titre}
+                  </Link>
+                  <span className="mt-1 block">{typographie(suivant.accroche)}</span>
+                </p>
+              ) : null}
+            </div>
           ) : null}
         </div>
+
         <aside className="lg:sticky lg:top-20 lg:self-start">
           <BlocAchat m={p} premierChapitre={m.chapitres[0]} />
           <p className="mt-3 px-1 text-xs leading-relaxed text-ink-3">
-            Formation pédagogique : aucune promesse de gain. Le trading comporte un risque élevé de perte en capital.
+            Avant d&apos;acheter :{" "}
+            <Link href="/legal/conditions/" className="underline underline-offset-2 hover:text-ink">
+              conditions de vente
+            </Link>{" "}
+            et{" "}
+            <Link href="/legal/risques/" className="underline underline-offset-2 hover:text-ink">
+              avertissement sur les risques
+            </Link>
+            .
           </p>
         </aside>
       </div>

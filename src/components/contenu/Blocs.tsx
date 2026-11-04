@@ -1,7 +1,7 @@
 import type { Bloc, Fiabilite } from "@/content/schema";
 import { typographie } from "@/lib/typographie";
 import { Figure } from "../figures/Figure";
-import { CalculateurIntegre } from "../outils/CalculateurIntegre";
+import { CalculateurIntegre } from "../pratique/CalculateurIntegre";
 import { BadgeFiabilite } from "../ui/BadgeFiabilite";
 import { TexteRiche } from "./TexteRiche";
 

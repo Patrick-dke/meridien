@@ -10,7 +10,7 @@ export const chapitre: Chapitre = {
   niveau: 1,
   dureeMin: 11,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Distinguer ordre au marché, ordre limite et ordre stop",
     "Savoir où placer chaque ordre par rapport au prix actuel",
@@ -26,13 +26,13 @@ export const chapitre: Chapitre = {
       {
         duree: 7,
         texte:
-          "Trois grands types d'ordres : au marché, limite et stop. Chacun garantit une chose, jamais tout.",
+          "Il existe trois grands types d'ordres. Au marché, limite, et stop. Chacun garantit une chose, jamais tout.",
         visuel: { type: "titre", titre: "Marché, limite, stop" },
       },
       {
         duree: 8,
         texte:
-          "L'ordre au marché s'exécute tout de suite, au meilleur prix disponible. Tu es sûr d'être servi, pas du prix exact.",
+          "L'ordre au marché s'exécute tout de suite, au meilleur prix disponible. Tu es sûr d'être servi. Pas du prix exact.",
         visuel: {
           type: "points",
           titre: "Ordre au marché",
@@ -46,25 +46,25 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "L'ordre limite fixe ton prix. Un achat limite se place sous le prix actuel : tu n'achètes que si le prix descend jusque-là.",
+          "L'ordre limite, lui, fixe ton prix. Un achat limite se place sous le prix actuel. Tu n'achètes que si le prix descend jusque-là.",
         visuel: { type: "figure", scene: "ordres-achat", etape: 1 },
       },
       {
         duree: 10,
         texte:
-          "L'ordre stop se déclenche quand un prix est franchi. Un achat stop se place au-dessus : tu n'achètes que si le prix monte jusque-là.",
+          "L'ordre stop se déclenche quand un niveau est franchi. Un achat stop se place au-dessus du prix. Tu n'achètes que si le prix monte jusque-là.",
         visuel: { type: "figure", scene: "ordres-achat", etape: 2 },
       },
       {
         duree: 10,
         texte:
-          "À la vente, c'est symétrique : vente limite au-dessus du prix, vente stop en dessous. Le stop loss d'un achat est une vente stop.",
+          "À la vente, c'est symétrique. Vente limite au-dessus du prix, vente stop en dessous. Et le stop loss d'un achat, c'est justement une vente stop.",
         visuel: { type: "figure", scene: "ordres-vente", etape: 2 },
       },
       {
         duree: 8,
         texte:
-          "Retiens les garanties : le marché garantit l'exécution, la limite garantit le prix, le stop garantit seulement le déclenchement.",
+          "Retiens ce qui est garanti. Le marché garantit l'exécution. La limite garantit le prix. Le stop, seulement le déclenchement.",
         visuel: {
           type: "points",
           titre: "Ce qui est garanti",
@@ -78,8 +78,8 @@ export const chapitre: Chapitre = {
       {
         duree: 10,
         texte:
-          "Une fois déclenché, un ordre stop devient un ordre au marché. Dans un marché rapide, il peut donc être exécuté plus loin que prévu.",
-        visuel: { type: "titre", titre: "Stop déclenché = ordre au marché" },
+          "Regarde ce qui arrive en cas de saut de prix. Une fois déclenché, le stop devient un ordre au marché. Il est servi plus loin que prévu.",
+        visuel: { type: "figure", scene: "pp-achat-stop-gap", etape: 2 },
       },
     ],
   },
@@ -113,6 +113,12 @@ export const chapitre: Chapitre = {
           ],
         },
         {
+          type: "figure",
+          scene: "pp-achat-limite",
+          legende:
+            "Achat limite placé à 49,00 € quand le prix est à 50,00 € : l'ordre attend. Le prix descend jusqu'à 49,00 € à la neuvième bougie, l'ordre est exécuté à ce prix, puis le prix remonte.",
+        },
+        {
           type: "encadre",
           variante: "retenir",
           texte:
@@ -143,6 +149,13 @@ export const chapitre: Chapitre = {
           fiabilite: "fait",
           texte:
             "Une fois déclenché, l'ordre stop est exécuté au marché : en cas de mouvement brutal ou de [[gap|gap]], le prix obtenu peut être nettement moins bon que le niveau du stop. Le chapitre sur les coûts y revient.",
+        },
+        {
+          type: "figure",
+          scene: "pp-achat-stop-gap",
+          fiabilite: "calcul",
+          legende:
+            "Achat stop à 51,00 € : après une interruption, le marché rouvre directement à 51,40 €. L'ordre déclenché devient un ordre au marché et il est exécuté à ce premier prix disponible, 0,40 € plus cher que prévu.",
         },
       ],
     },
@@ -219,6 +232,12 @@ export const chapitre: Chapitre = {
         ],
       },
       {
+        type: "figure",
+        scene: "pp-trois-ordres",
+        legende:
+          "Les trois ordres sur le même graphique. L'achat au marché est servi tout de suite, vers 50 € ; l'achat stop à 51,50 € est déclenché pendant la hausse, à la onzième bougie ; l'achat limite à 48,50 € n'est jamais atteint.",
+      },
+      {
         type: "p",
         texte:
           "Aucun n'a « raison » : chacun a choisi entre certitude d'exécution et maîtrise du prix, selon son scénario.",
@@ -270,10 +289,22 @@ export const chapitre: Chapitre = {
         "Écart : 51,40 − 51,00 = 0,40 € par action, soit 0,40 × 100 = 40,00 € de plus. Un ordre stop devient un ordre au marché : il est servi au premier prix disponible.",
       concepts: ["ordre-stop", "ordre-marche"],
     },
+    {
+      id: "pp-08-e3",
+      type: "graphique",
+      consigne:
+        "Un achat stop est placé à 51,50 € (trait pointillé). Touche la bougie qui le déclenche : la première dont le plus haut atteint ce prix.",
+      scene: "pp-e-achat-stop",
+      bonnes: [10],
+      corrige:
+        "Le déclenchement a lieu à la première bougie dont le plus haut atteint 51,50 € : celle qui monte jusqu'à 51,85 €. La bougie d'avant s'arrête à 51,45 €, juste en dessous. Déclenché, l'ordre devient un ordre au marché : il est servi vers 51,50 €, ou un peu plus cher si le marché va vite.",
+      concepts: ["ordre-stop"],
+    },
   ],
   quiz: [
     {
       id: "c08-q1",
+      difficulte: 1,
       type: "association",
       enonce: "Associe chaque ordre à ce qu'il garantit.",
       paires: [
@@ -287,6 +318,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c08-q2",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Le prix est à 50 €. Tu veux acheter seulement si le prix redescend à 48 €. Quel ordre places-tu ?",
@@ -303,6 +335,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c08-q3",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Le prix est à 50 €. Tu veux acheter seulement si le prix franchit 52 €. Quel ordre places-tu ?",
@@ -319,6 +352,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c08-q4",
+      difficulte: 2,
       type: "vraifaux",
       enonce:
         "Une fois déclenché, un ordre stop est toujours exécuté exactement à son niveau.",
@@ -329,6 +363,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c08-q5",
+      difficulte: 2,
       type: "unique",
       enonce: "Le stop loss d'une position acheteuse est :",
       choix: [
@@ -344,6 +379,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c08-q6",
+      difficulte: 2,
       type: "multiple",
       enonce: "Parmi ces placements, lesquels sont corrects ?",
       choix: [
@@ -356,6 +392,70 @@ export const chapitre: Chapitre = {
       explication:
         "L'achat stop se place au-dessus du prix actuel ; les trois autres placements sont corrects.",
       concepts: ["ordre-limite", "ordre-stop"],
+    },
+    {
+      id: "c08-q7",
+      type: "graphique",
+      difficulte: 2,
+      enonce: "Un achat limite est placé à 24,50 € (trait horizontal). Touche la bougie qui l'exécute.",
+      scene: "pp-q-limite-execution",
+      bonnes: [7],
+      explication:
+        "C'est la seule bougie dont le plus bas atteint 24,50 € : elle descend jusqu'à 24,45 €. L'ordre est servi à 24,50 €, ou mieux. Les bougies voisines s'en approchent sans le toucher : un ordre limite peut attendre longtemps, voire ne jamais être servi.",
+      concepts: ["ordre-limite"],
+    },
+    {
+      id: "c08-q8",
+      type: "unique",
+      difficulte: 2,
+      figure: { scene: "pp-q-niveaux-ab", legende: "L'action cote 50,40 € ; A est au-dessus, B en dessous." },
+      enonce:
+        "Tu détiens cette action. Tu veux la vendre automatiquement si le prix baisse jusqu'au niveau B, pour limiter ta perte. Quel ordre places-tu ?",
+      choix: ["Une vente stop en B", "Une vente limite en B", "Une vente stop en A", "Une vente limite en A"],
+      bonne: 0,
+      explication:
+        "Pour sortir si le prix baisse, on place une vente stop sous le prix actuel, en B : c'est un stop loss. Une vente limite en B serait exécutée tout de suite, car elle accepte de vendre à 48,90 € ou mieux alors que le marché paie davantage. Une vente limite en A sert à vendre plus cher, si le prix monte.",
+      concepts: ["ordre-stop", "ordre-limite"],
+    },
+    {
+      id: "c08-q9",
+      type: "comparaison",
+      difficulte: 1,
+      enonce:
+        "Le prix est à 50,40 €. Tu veux acheter seulement si le prix monte jusqu'à un niveau choisi. Dans quel graphique l'achat stop est-il bien placé ?",
+      graphiques: [{ scene: "pp-q-stop-place-a" }, { scene: "pp-q-stop-place-b" }],
+      bonne: 1,
+      explication:
+        "Un achat stop se place au-dessus du prix actuel : il se déclenche si le prix monte jusque-là, comme en B. En A, il est sous le prix : selon les plateformes, il est refusé ou déclenché aussitôt, ce qui revient à acheter au marché.",
+      concepts: ["ordre-stop"],
+    },
+    {
+      id: "c08-q10",
+      type: "unique",
+      difficulte: 3,
+      contexte: "Le prix est à 50,00 €. Par erreur, tu places un achat limite à 51,00 € au lieu d'un achat stop.",
+      figure: { scene: "pp-q-limite-au-dessus", legende: "Le prix actuel et l'achat limite placé par erreur." },
+      enonce: "Que se passe-t-il ?",
+      choix: [
+        "L'ordre est exécuté tout de suite, au meilleur prix disponible",
+        "L'ordre attend que le prix monte jusqu'à 51,00 €",
+        "L'ordre attend que le prix redescende sous 50,00 €",
+        "L'ordre est exécuté à 51,00 € quand le prix y arrive",
+      ],
+      bonne: 0,
+      explication:
+        "Un achat limite fixe un prix maximal : 51,00 € ou moins. Le prix actuel, 50,00 €, est déjà en dessous : la condition est remplie et l'ordre est servi aussitôt, vers 50,00 €. Pour acheter seulement si le prix monte à 51,00 €, il fallait un achat stop.",
+      concepts: ["ordre-limite", "ordre-stop"],
+    },
+    {
+      id: "c08-q11",
+      type: "vraifaux",
+      difficulte: 1,
+      enonce: "Un ordre limite peut ne jamais être exécuté.",
+      reponse: true,
+      explication:
+        "Il garantit le prix, pas l'exécution : si le marché n'atteint jamais ton niveau, tu n'es jamais servi. L'achat limite à 48,50 € de l'exemple en est un cas.",
+      concepts: ["ordre-limite"],
     },
   ],
 };

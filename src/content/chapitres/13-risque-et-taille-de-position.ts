@@ -9,7 +9,7 @@ export const chapitre: Chapitre = {
   niveau: 2,
   dureeMin: 14,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Fixer un risque par opération en pourcentage du capital",
     "Calculer une taille de position à partir du stop",
@@ -25,7 +25,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Combien acheter ? La bonne question n'est pas « combien je veux gagner », mais « combien j'accepte de perdre si j'ai tort ».",
+          "Combien acheter ? La bonne question n'est pas : combien je veux gagner. C'est : combien j'accepte de perdre, si j'ai tort.",
         visuel: {
           type: "titre",
           titre: "Combien acheter ?",
@@ -61,7 +61,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Si le stop est touché, tu perds 20 euros, comme prévu. Le stop a fixé la distance ; ta règle a fixé la taille.",
+          "Si le stop est touché, tu perds 20 euros, comme prévu. Le stop a fixé la distance, et ta règle a fixé la taille.",
         visuel: {
           type: "points",
           items: [
@@ -73,7 +73,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Pourquoi si peu ? Parce que même une méthode gagnante enchaîne les pertes. Ici, six d'affilée, avec une méthode pourtant légèrement gagnante.",
+          "Pourquoi si peu ? Parce que même une méthode gagnante enchaîne les pertes. Regarde : six d'affilée, avec une méthode pourtant légèrement gagnante.",
         visuel: { type: "figure", scene: "series-resultats", etape: 2 },
       },
       {
@@ -92,7 +92,7 @@ export const chapitre: Chapitre = {
       {
         duree: 6,
         texte:
-          "Retiens : d'abord le risque, ensuite le stop, enfin la taille. Dans cet ordre, toujours.",
+          "Retiens bien : d'abord le risque, ensuite le stop, enfin la taille. Dans cet ordre, toujours.",
         visuel: { type: "titre", titre: "Risque → stop → taille" },
       },
     ],
@@ -142,6 +142,13 @@ export const chapitre: Chapitre = {
           fiabilite: "calcul",
           texte:
             "Sur le Forex, le principe est le même avec des pips : taille en lots = montant risqué ÷ (stop en pips × valeur d'un pip pour un lot). Avec 2 000 $, 1 % de risque (20 $), un stop de 25 pips et 10 $ par pip et par lot : 20 ÷ (25 × 10) = 0,08 lot.",
+        },
+        {
+          type: "figure",
+          scene: "pp-stop-25-pips",
+          fiabilite: "calcul",
+          legende:
+            "EUR/USD : entrée à 1,0850, stop à 1,0825, juste sous le dernier creux, soit 25 pips. Avec 20 $ de risque et 10 $ par pip pour un lot : 20 ÷ (25 × 10) = 0,08 lot.",
         },
         { type: "outil", outil: "position" },
       ],
@@ -229,6 +236,13 @@ export const chapitre: Chapitre = {
         texte:
           "Si le stop avait été à 49,00 €, la distance aurait été de 1,00 € et la quantité de 20 actions ; à 45,00 €, de 5,00 € et 4 actions. La perte possible reste de 20 € dans tous les cas : c'est la quantité qui s'adapte au stop, jamais l'inverse.",
       },
+      {
+        type: "figure",
+        scene: "pp-taille-deux-stops",
+        fiabilite: "calcul",
+        legende:
+          "Entrée à 50,00 €, deux stops possibles : 49,00 € sous le petit creux récent, ou 45,00 € sous le grand creux. Pour le même risque de 20 € : 20 actions dans le premier cas, 4 dans le second.",
+      },
     ],
   },
   erreurs: [
@@ -282,6 +296,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c13-q1",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Capital de 5 000 €, risque de 1 %. Quel montant acceptes-tu de perdre sur ce trade ?",
@@ -292,6 +307,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c13-q2",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Risque accepté de 50 €, entrée à 80 €, stop à 75 €. Combien d'actions acheter ?",
@@ -303,6 +319,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c13-q3",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Compte de 3 000 $, risque de 1 %, stop de 30 pips, 10 $ par pip pour 1 lot. Quelle taille en lots ?",
@@ -313,6 +330,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c13-q4",
+      difficulte: 1,
       type: "vraifaux",
       enonce:
         "Si le stop est plus éloigné, il faut réduire la quantité pour garder le même risque.",
@@ -323,6 +341,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c13-q5",
+      difficulte: 2,
       type: "ordre",
       enonce: "Remets dans l'ordre la méthode de calcul.",
       etapes: [
@@ -336,6 +355,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c13-q6",
+      difficulte: 3,
       type: "unique",
       enonce:
         "Après six pertes d'affilée à 10 % du capital chacune, il reste environ :",
@@ -344,6 +364,73 @@ export const chapitre: Chapitre = {
       explication:
         "0,9 multiplié six fois par lui-même ≈ 0,531 : il reste environ 53 % du capital.",
       concepts: ["risque-par-trade"],
+    },
+    {
+      id: "c13-q7",
+      type: "graphique",
+      difficulte: 2,
+      enonce:
+        "Tu achètes à la dernière clôture et tu veux placer ton stop juste sous le point le plus bas de ces douze bougies. Survole-les pour lire leurs prix, puis touche la bougie qui forme ce plus bas.",
+      scene: "pp-q-creux-stop",
+      bonnes: [4],
+      explication:
+        "Cette bougie descend à 49,20 €, le plus bas des douze ; sa voisine s'arrête à 49,30 €. Le stop se place juste en dessous, vers 49,10 € : la distance avec l'entrée à 50,90 € donne la perte par action, et donc la taille.",
+      concepts: ["taille-position"],
+    },
+    {
+      id: "c13-q8",
+      type: "unique",
+      difficulte: 2,
+      contexte: "Ton capital est de 400 000 FCFA et tu risques 1 % par trade.",
+      figure: { scene: "pp-q-taille-fcfa", legende: "Entrée prévue à 2 000 FCFA, stop à 1 960 FCFA." },
+      enonce: "Combien d'actions peux-tu acheter au maximum ?",
+      choix: ["100", "200", "40", "10"],
+      bonne: 0,
+      explication:
+        "Montant risqué : 1 % × 400 000 = 4 000 FCFA. Perte par action si le stop est touché : 2 000 − 1 960 = 40 FCFA. Taille : 4 000 ÷ 40 = 100 actions.",
+      concepts: ["taille-position", "risque-par-trade"],
+    },
+    {
+      id: "c13-q9",
+      type: "comparaison",
+      difficulte: 1,
+      enonce:
+        "Même capital, même risque accepté de 20 € par trade. Avec quel plan peux-tu acheter le plus d'actions ?",
+      graphiques: [{ scene: "pp-q-deux-stops-a" }, { scene: "pp-q-deux-stops-b" }],
+      bonne: 0,
+      explication:
+        "Plan A : stop à 1,00 € de l'entrée, 20 ÷ 1 = 20 actions. Plan B : stop à 5,00 €, 20 ÷ 5 = 4 actions. La perte possible reste de 20 € dans les deux cas : c'est la quantité qui s'adapte au stop.",
+      concepts: ["taille-position"],
+    },
+    {
+      id: "c13-q10",
+      type: "unique",
+      difficulte: 3,
+      contexte: "Compte de 5 000 $, risque de 1 % par trade ; un pip vaut 10 $ pour un lot d'EUR/USD.",
+      figure: { scene: "pp-q-taille-forex", legende: "Entrée prévue à 1,0850, stop à 1,0830." },
+      enonce: "Quelle taille de position, en lots, respecte ton risque ?",
+      choix: ["0,25 lot", "2,5 lots", "0,5 lot", "0,05 lot"],
+      bonne: 0,
+      explication:
+        "Montant risqué : 1 % × 5 000 = 50 $. Stop : 1,0850 − 1,0830 = 0,0020, soit 20 pips. Taille : 50 ÷ (20 × 10) = 0,25 lot.",
+      concepts: ["taille-position"],
+    },
+    {
+      id: "c13-q11",
+      type: "multiple",
+      difficulte: 3,
+      enonce:
+        "Ta taille de position est bien calculée. Qu'est-ce qui peut quand même te faire perdre plus que le risque prévu ?",
+      choix: [
+        "Un gap qui fait exécuter le stop plus loin",
+        "Le slippage à l'exécution du stop",
+        "Deux positions corrélées qui perdent ensemble",
+        "Une quantité arrondie vers le bas",
+      ],
+      bonnes: [0, 1, 2],
+      explication:
+        "Gaps, slippage et positions corrélées font dépasser la perte prévue. Arrondir vers le bas fait l'inverse : la perte possible reste un peu sous le risque prévu.",
+      concepts: ["risque-par-trade", "taille-position"],
     },
   ],
 };

@@ -9,7 +9,7 @@ export const chapitre: Chapitre = {
   niveau: 1,
   dureeMin: 11,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Identifier les trois coûts principaux d'une opération",
     "Calculer le coût d'un aller-retour",
@@ -25,7 +25,7 @@ export const chapitre: Chapitre = {
       {
         duree: 10,
         texte:
-          "Un trade coûte de l'argent avant même de rapporter quoi que ce soit. Trois coûts principaux : le spread, la commission et le slippage.",
+          "Un trade coûte de l'argent avant même de rapporter quoi que ce soit. Il y a trois coûts principaux : le spread, la commission et le slippage.",
         visuel: {
           type: "titre",
           titre: "Ce que coûte un trade",
@@ -35,13 +35,13 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Le spread d'abord : tu achètes à l'ask, tu vends au bid. Si tu achètes puis revends aussitôt, tu perds l'écart.",
+          "Le spread, d'abord. Tu achètes au prix vendeur, et tu revends au prix acheteur. Si tu revends aussitôt, tu perds l'écart.",
         visuel: { type: "figure", scene: "carnet-simple" },
       },
       {
         duree: 9,
         texte:
-          "La commission, ensuite : des frais fixes ou en pourcentage, à chaque ordre. Sans commission, le spread est souvent plus large.",
+          "La commission, ensuite : des frais fixes, ou un pourcentage, à chaque ordre. Sans commission, le spread est souvent plus large.",
         visuel: {
           type: "points",
           titre: "La commission",
@@ -55,19 +55,19 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Le slippage, enfin : l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur.",
+          "Le slippage, enfin. C'est l'écart entre le prix demandé et le prix obtenu, quand le marché bouge vite ou manque de profondeur.",
         visuel: { type: "figure", scene: "carnet-mince", etape: 1 },
       },
       {
         duree: 6,
         texte:
-          "Il frappe surtout les ordres au marché et les stops, lors des annonces et des gaps.",
+          "Il frappe surtout les ordres au marché et les stops, pendant les annonces et les gaps.",
         visuel: { type: "figure", scene: "gap-stop", etape: 1 },
       },
       {
         duree: 8,
         texte:
-          "Additionne-les : sur un objectif de 10 pips, un coût total de 2 pips représente déjà un cinquième du gain visé.",
+          "Additionne-les. Sur un objectif de 10 pips, un coût de 2 pips, c'est déjà un cinquième du gain visé.",
         visuel: {
           type: "formule",
           texte: "2 pips ÷ 10 pips = 20 %",
@@ -77,7 +77,7 @@ export const chapitre: Chapitre = {
       {
         duree: 8,
         texte:
-          "Retiens : les coûts sont certains, les gains ne le sont pas. Plus ton objectif est petit, plus ils pèsent.",
+          "Retiens bien : les coûts sont certains, les gains ne le sont pas. Plus ton objectif est petit, plus ils pèsent.",
         visuel: { type: "titre", titre: "Coûts certains, gains incertains" },
       },
     ],
@@ -91,6 +91,13 @@ export const chapitre: Chapitre = {
           fiabilite: "fait",
           texte:
             "Le [[spread|spread]] est l'écart entre le prix vendeur (ask) et le prix acheteur (bid). Comme on achète à l'ask et qu'on vend au bid, une position démarre toujours légèrement en perte : il faut que le prix bouge au moins de la valeur du spread pour revenir à zéro.",
+        },
+        {
+          type: "figure",
+          scene: "pp-spread-depart",
+          fiabilite: "calcul",
+          legende:
+            "Achat à l'ask, 1,0852, alors que le bid est à 1,0850 ; les bougies montrent le bid. La position démarre 2 pips en perte et ne repasse au-dessus de zéro que lorsque le bid dépasse 1,0852, à la neuvième bougie.",
         },
         {
           type: "p",
@@ -152,6 +159,13 @@ export const chapitre: Chapitre = {
           fiabilite: "calcul",
           texte:
             "Ce coût se compare à l'objectif du trade. Un coût de 1,5 pip est négligeable face à un objectif de 100 pips (1,5 %), mais il absorbe 15 % d'un objectif de 10 pips. C'est pourquoi le scalping, aux objectifs minuscules, est le style le plus exigeant en matière de coûts.",
+        },
+        {
+          type: "figure",
+          scene: "pp-couts-objectif",
+          fiabilite: "calcul",
+          legende:
+            "Entrée à 1,08500, objectif à 1,08600 : 10 pips. Les coûts d'un aller-retour, 1,5 pip, en représentent 15 % : le prix doit d'abord les couvrir avant le moindre gain.",
         },
       ],
     },
@@ -256,6 +270,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c10-q1",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Sur EUR/USD, l'ask est à 1,08512 et le bid à 1,08500. Quel est le spread ?",
@@ -267,6 +282,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c10-q2",
+      difficulte: 1,
       type: "vraifaux",
       enonce: "Un ordre limite peut subir un slippage défavorable.",
       reponse: false,
@@ -276,6 +292,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c10-q3",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Spread de 1 pip et commission de 7 $ aller-retour pour 1 lot de EUR/USD, compte en dollars. Quel est le coût total, hors slippage ?",
@@ -287,6 +304,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c10-q4",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Un coût total de 2 pips représente quelle part d'un objectif de 10 pips ?",
@@ -297,6 +315,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c10-q5",
+      difficulte: 2,
       type: "multiple",
       enonce: "Dans quelles situations le slippage est-il le plus probable ?",
       choix: [
@@ -309,6 +328,87 @@ export const chapitre: Chapitre = {
       explication:
         "Annonces, gaps et manque de liquidité provoquent le slippage ; un ordre limite n'en subit pas de défavorable.",
       concepts: ["slippage"],
+    },
+    {
+      id: "c10-q6",
+      type: "graphique",
+      difficulte: 2,
+      enonce:
+        "Tu as acheté EUR/USD à l'ask, 1,0852 ; les bougies montrent le bid. Touche la seule bougie qui clôture avec ta position en gain, hors commission.",
+      scene: "pp-q-retour-zero",
+      bonnes: [6],
+      explication:
+        "Pour revendre, tu passes par le bid. Ta position n'est en gain que si le bid dépasse ton prix d'achat, 1,0852. Seule cette bougie clôture au-dessus, à 1,0853 : toutes les autres clôturent entre 1,0848 et 1,0851, donc en perte du point de vue de ta position.",
+      concepts: ["spread"],
+    },
+    {
+      id: "c10-q7",
+      type: "unique",
+      difficulte: 1,
+      contexte:
+        "Tu achètes 200 actions au marché, puis tu changes d'avis et tu les revends aussitôt au marché. Ce courtier ne prend pas de commission.",
+      figure: { scene: "pp-q-carnet-couts", legende: "Le carnet d'ordres au moment de ton aller-retour." },
+      enonce: "Combien te coûte cet aller-retour ?",
+      choix: ["10 €", "5 €", "20 €", "0 €"],
+      bonne: 0,
+      explication:
+        "Tu achètes au meilleur vendeur, 25,05 €, et tu revends au meilleur acheteur, 25,00 €. Les quantités affichées, 600 et 500 actions, suffisent pour 200 actions. Tu perds le spread, 0,05 € par action : 0,05 × 200 = 10 €.",
+      concepts: ["spread"],
+    },
+    {
+      id: "c10-q8",
+      type: "comparaison",
+      difficulte: 1,
+      enonce:
+        "Deux plans avec les mêmes coûts d'un aller-retour, 1,5 pip. Dans quel plan les coûts absorbent-ils la plus grande part du gain visé ?",
+      graphiques: [{ scene: "pp-q-objectif-court" }, { scene: "pp-q-objectif-long" }],
+      bonne: 0,
+      explication:
+        "Le plan A vise 10 pips : 1,5 ÷ 10 = 15 % de l'objectif part en coûts. Le plan B vise 50 pips : 1,5 ÷ 50 = 3 %. Les coûts sont les mêmes, mais ils pèsent beaucoup plus sur un petit objectif.",
+      concepts: ["spread", "commission"],
+    },
+    {
+      id: "c10-q9",
+      type: "unique",
+      difficulte: 3,
+      contexte:
+        "Tu as acheté 1 lot d'EUR/USD avec un compte en dollars : 1 pip vaut 10 $. Ton stop est à 1,0820. Après le week-end, le marché rouvre à 1,0805.",
+      figure: { scene: "pp-q-gap-stop", legende: "EUR/USD avant et après le week-end." },
+      enonce: "Combien te coûte le slippage sur ce stop ?",
+      choix: ["150 $", "15 $", "50 $", "1 500 $"],
+      bonne: 0,
+      explication:
+        "Une fois atteint, un stop devient un ordre au marché. Le marché rouvre directement à 1,0805, sans passer par 1,0820 : l'exécution se fait vers 1,0805. L'écart vaut 1,0820 − 1,0805 = 0,0015, soit 15 pips × 10 $ = 150 $ de perte en plus de celle prévue.",
+      concepts: ["slippage"],
+    },
+    {
+      id: "c10-q10",
+      type: "unique",
+      difficulte: 2,
+      contexte:
+        "Compte A : spread de 1,8 pip, sans commission. Compte B : spread de 0,3 pip et commission de 7 $ par lot pour l'aller-retour. Tu trades 1 lot d'EUR/USD, où 1 pip vaut 10 $.",
+      enonce: "Quel compte coûte le moins cher par aller-retour ?",
+      choix: [
+        "Le compte B : 10 $ au total",
+        "Le compte A : 18 $ au total",
+        "Les deux coûtent autant",
+        "Le compte A, sans commission",
+      ],
+      bonne: 0,
+      explication:
+        "A : 1,8 pip × 10 $ = 18 $. B : 0,3 pip × 10 $ = 3 $, plus 7 $ de commission, soit 10 $. « Sans commission » ne veut pas dire moins cher : seul le coût total d'un aller-retour compte.",
+      concepts: ["spread", "commission"],
+    },
+    {
+      id: "c10-q11",
+      type: "vraifaux",
+      difficulte: 1,
+      enonce:
+        "Juste après un achat, ta position affiche une petite perte égale au spread, même si le prix n'a pas bougé.",
+      reponse: true,
+      explication:
+        "Tu achètes à l'ask, et ta position se valorise au bid, le prix auquel tu pourrais revendre. L'écart entre les deux, le spread, apparaît tout de suite comme une perte.",
+      concepts: ["spread"],
     },
   ],
 };

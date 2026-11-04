@@ -5,7 +5,7 @@ Plateforme d'apprentissage du trading, gratuite et sans compte : apprendre à li
 ## Ce que contient le site
 
 - **Parcours « Premiers pas »** : 14 chapitres complets (marchés, formation des prix, chandeliers, unités de temps, ordres, stop loss, coûts, pips et lots, levier, taille de position, espérance). Chaque chapitre est une suite de leçons : introduction, capsule narrée de 90 secondes au plus, cours dévoilé notion par notion, illustrations explorables, exemple, erreurs fréquentes, résumé en cartes, quiz corrigé, validation.
-- **Capsules narrées** : voix de synthèse produite localement (Piper), animations et sous-titres synchronisés sur la voix à la phrase près, transcription cliquable, vitesse, son, plein écran.
+- **Capsules narrées** : voix de synthèse produite localement (Kokoro), animations et sous-titres synchronisés sur la voix à la phrase près, transcription cliquable, vitesse, son, plein écran.
 - **Catalogue en cartes** filtrable par niveau, marché, stratégie, durée et avancement ; les chapitres fondamentaux valent pour tous les marchés.
 - **5 académies** (120 chapitres prévus) ; seuls les chapitres publiés s'ouvrent.
 - **Badges de fiabilité** sur chaque bloc : fait établi, calcul, convention, interprétation d'école, hypothèse, résultat mesuré.
@@ -37,20 +37,23 @@ Les tests de contenu valident chaque chapitre (schéma, termes du glossaire, con
 
 ## Narration des capsules
 
-La voix est produite sur la machine, sans service en ligne, avec [Piper](https://pypi.org/project/piper-tts/) et la voix `fr_FR-siwis-medium` (corpus SIWIS, CC BY 4.0). Chaque phrase est synthétisée à part : son minutage est exact, et les animations comme les sous-titres se calent dessus.
+La voix est produite sur la machine, sans service en ligne, avec [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) (licence Apache 2.0) et sa voix française féminine `ff_siwis` (corpus SIWIS, CC BY 4.0), à environ 155 mots par minute. Chaque phrase est synthétisée à part : son minutage est exact, et les animations comme les sous-titres se calent dessus. Le calcul prend à peu près la durée de l'audio sur un processeur ordinaire.
 
-Mise en place, une fois :
+Mise en place, une fois (le modèle, environ 330 Mo, se télécharge au premier lancement) :
 
 ```bash
-python -m venv .outils/voix-env
-.outils/voix-env/Scripts/python -m pip install piper-tts
-cd .outils/voix && ../voix-env/Scripts/python -m piper.download_voices fr_FR-siwis-medium
+python -m venv .outils/voix2-env
+.outils/voix2-env/Scripts/python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+.outils/voix2-env/Scripts/python -m pip install kokoro soundfile
 ```
+
+La vérification (`scripts/voix/verifier.py`) utilise un second environnement, `.outils/voix-env`, avec `faster-whisper`. Piper (`piper-tts`, voix `fr_FR-siwis-medium`) reste utilisable : `VOIX=.outils/voix/fr_FR-siwis-medium.onnx npm run voix`.
 
 Après toute modification du texte d'une capsule (les tests le signalent : « narration périmée ») :
 
 ```bash
-npm run voix        # ffmpeg doit être dans le PATH, ou indiqué par la variable FFMPEG
+npm run voix                          # capsules gratuites ; ffmpeg dans le PATH, ou variable FFMPEG
+npm run voix -- prives price-action   # capsules d'un module payant (prive/)
 ```
 
 Le script écrit `public/audio/capsules/<slug>.mp3` (MP3 mono 48 kbit/s, volume normalisé) et `src/content/narration/<slug>.json` (minutage). `scripts/voix/verifier.py` contrôle chaque piste : flux, durée, volume, et retranscription Whisper comparée au texte.

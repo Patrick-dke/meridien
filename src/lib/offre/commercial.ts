@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { offre } from "@/content/offre";
 import { lirePublic, obtenirDb, projetFirebase } from "@/lib/firebase/client";
 import { useSession } from "@/lib/compte/session";
 
@@ -49,7 +50,10 @@ export function useParametresPublics() {
   return useSyncExternalStore(parametres.abonner, parametres.lire, parametres.serveur);
 }
 
-/** Modules auxquels l'utilisateur connecté a accès (droits actifs, écrits uniquement par le serveur). */
+/** Tous les modules payants : un administrateur les lit tous (règles Firestore), sans droit à son nom. */
+const TOUS_LES_MODULES = new Set(offre.filter((m) => !m.gratuit).map((m) => m.id));
+
+/** Modules auxquels l'utilisateur connecté a accès (droits actifs, écrits par le serveur ou l'administration). */
 export function useDroits(): { pret: boolean; modules: Set<string> } {
   const s = useSession();
   const uid = s.utilisateur?.uid;
@@ -71,6 +75,7 @@ export function useDroits(): { pret: boolean; modules: Set<string> } {
     };
   }, [uid]);
   if (s.etat !== "connecte") return { pret: s.etat === "deconnecte", modules: new Set() };
+  if (s.admin) return { pret: true, modules: TOUS_LES_MODULES };
   return { pret: etat.uid === uid, modules: etat.uid === uid ? etat.modules : new Set() };
 }
 

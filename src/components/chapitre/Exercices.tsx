@@ -1,12 +1,10 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
-import { scenes } from "@/content/scenes";
+import { useId, useState } from "react";
 import type { Exercice } from "@/content/schema";
-import { formatPrix } from "@/lib/chartkit/outils";
 import { typographie } from "@/lib/typographie";
 import { TexteRiche } from "../contenu/TexteRiche";
-import { DROITE, GAUCHE, GraphiqueBougies, L } from "../figures/GraphiqueBougies";
+import { SelecteurBougies } from "../figures/SelecteurBougies";
 import { IconeCoche, IconeCroix } from "../ui/Icones";
 
 type Verdict = "juste" | "faux" | null;
@@ -75,71 +73,24 @@ function Calcul({ e }: { e: Extract<Exercice, { type: "calcul" }> }) {
 }
 
 function Graphique({ e }: { e: Extract<Exercice, { type: "graphique" }> }) {
-  const s = scenes[e.scene];
-  const cadre = useRef<HTMLDivElement>(null);
-  const [survol, setSurvol] = useState<number | undefined>(undefined);
   const [choix, setChoix] = useState<number[]>([]);
   const [verdict, setVerdict] = useState<Verdict>(null);
-  if (!s || s.kind !== "bougies") return null;
-  const n = s.bougies.length;
-  const etape = e.etape ?? Number.POSITIVE_INFINITY;
-  const visibles = s.revele ? (s.revele[Math.min(etape, s.revele.length - 1)] ?? n) : n;
-  const pas = (L - GAUCHE - DROITE) / n;
-  const indice = (clientX: number) => {
-    const r = cadre.current?.getBoundingClientRect();
-    if (!r) return undefined;
-    const i = Math.floor((((clientX - r.left) / r.width) * L - GAUCHE) / pas);
-    return i >= 0 && i < visibles ? i : undefined;
-  };
-  const basculer = (i: number) => {
-    setVerdict(null);
-    setChoix((c) => (c.includes(i) ? c.filter((x) => x !== i) : [...c, i].sort((a, b) => a - b)));
-  };
   const valider = () => {
     const attendu = [...e.bonnes].sort((a, b) => a - b);
     setVerdict(choix.length === attendu.length && choix.every((x, k) => x === attendu[k]) ? "juste" : "faux");
   };
-  const b = survol !== undefined ? s.bougies[survol] : undefined;
   return (
     <div>
-      <div
-        ref={cadre}
-        role="group"
-        tabIndex={0}
-        aria-label={`${s.description} Touche une bougie pour la choisir ; flèches gauche et droite puis Entrée au clavier.`}
-        className="relative cursor-pointer touch-pan-y rounded-xl"
-        onPointerMove={(ev) => setSurvol(indice(ev.clientX))}
-        onPointerLeave={() => setSurvol(undefined)}
-        onClick={(ev) => {
-          const i = indice(ev.clientX);
-          if (i !== undefined) basculer(i);
+      <SelecteurBougies
+        scene={e.scene}
+        etape={e.etape}
+        choix={choix}
+        onChange={(c) => {
+          setVerdict(null);
+          setChoix(c);
         }}
-        onKeyDown={(ev) => {
-          if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
-            ev.preventDefault();
-            const depart = survol ?? (ev.key === "ArrowLeft" ? visibles : -1);
-            setSurvol(Math.max(0, Math.min(visibles - 1, depart + (ev.key === "ArrowRight" ? 1 : -1))));
-          } else if ((ev.key === "Enter" || ev.key === " ") && survol !== undefined) {
-            ev.preventDefault();
-            basculer(survol);
-          }
-        }}
-      >
-        <GraphiqueBougies scene={s} etape={etape} selection={survol} />
-        {choix.map((i) => (
-          <span
-            key={i}
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-1 rounded-md border-2 border-brand bg-brand/10"
-            style={{ left: `${((GAUCHE + pas * i) / L) * 100}%`, width: `${(pas / L) * 100}%` }}
-          />
-        ))}
-      </div>
-      <p className="mt-2 min-h-5 font-mono text-xs text-ink-2" aria-live="polite">
-        {b ? `Bougie ${survol! + 1} · O ${formatPrix(b.o, s.decimales)} · H ${formatPrix(b.h, s.decimales)} · B ${formatPrix(b.l, s.decimales)} · C ${formatPrix(b.c, s.decimales)}` : ""}
-      </p>
-      <div className="mt-2 flex flex-wrap items-center gap-2">
-        <p className="flex-1 text-sm text-ink-2">{choix.length ? `Choisie${choix.length > 1 ? "s" : ""} : ${choix.map((i) => `bougie ${i + 1}`).join(", ")}` : "Aucune bougie choisie."}</p>
+      />
+      <div className="mt-2 flex justify-end">
         <button type="button" className="btn btn-primaire" disabled={!choix.length} onClick={valider}>
           Valider
         </button>

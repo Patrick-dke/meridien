@@ -11,7 +11,6 @@ import { Carte } from "../ui/Carte";
 import { IconeCadenas, IconeCoche, IconeSuivant } from "../ui/Icones";
 import { Jauge } from "../ui/Progression";
 import { Puce } from "../ui/Puce";
-import { Vignette } from "../ui/Vignette";
 
 /** Ce que le serveur de pages transmet d'un module : sa structure, jamais son prix. */
 export type ModulePresente = {
@@ -19,8 +18,12 @@ export type ModulePresente = {
   titre: string;
   accroche: string;
   rang: number;
+  niveau: string;
   gratuit: boolean;
   chapitres: string[];
+  competences: string[];
+  /** Totaux du module (durée, capsules, questions), calculés par npm run contenus:resume. */
+  resume: { chapitres: number; dureeMin: number; capsules: number; questions: number; exercices: number } | null;
   motif: Motif;
   teinte: string;
 };
@@ -53,7 +56,7 @@ export function PuceEtatModule({ etat }: { etat: EtatModule }) {
     case "verrouille":
       return (
         <Puce>
-          <IconeCadenas className="size-3" /> Verrouillé
+          <IconeCadenas className="size-3" /> À débloquer
         </Puce>
       );
     case "achete":
@@ -73,44 +76,51 @@ export function PuceEtatModule({ etat }: { etat: EtatModule }) {
 
 export function Prix({ prix, chargement, gratuit, className = "" }: { prix: number | null; chargement: boolean; gratuit: boolean; className?: string }) {
   if (gratuit) return <span className={className}>Gratuit</span>;
-  if (chargement) return <span className={`inline-block h-[1em] w-24 animate-pulse rounded bg-surface-2 align-middle ${className}`} aria-label="Prix en cours de chargement" />;
-  if (prix === null) return <span className={`${className} text-ink-3`}>Prix bientôt annoncé</span>;
+  if (chargement) return <span className={`squelette inline-block h-[1em] w-24 align-middle ${className}`} aria-label="Tarif en cours de chargement" />;
+  if (prix === null) return <span className={`${className} !font-sans !text-base !font-normal !text-ink-3`}>Tarif à venir</span>;
   return <span className={className}>{formaterPrix(prix)}</span>;
 }
 
 const actions: Record<EtatModule, string> = {
   gratuit: "Commencer",
-  verrouille: "Découvrir",
+  verrouille: "Voir le programme",
   achete: "Commencer",
-  "en-cours": "Reprendre",
+  "en-cours": "Reprendre le cours",
   termine: "Revoir",
-  indisponible: "Découvrir",
+  indisponible: "Voir le programme",
 };
 
+/** Carte d'un module (espace personnel) : niveau, titre, avancement, tarif ou accès. */
 export function CarteModule({ m }: { m: ModulePresente }) {
   const e = useEtatModule(m);
   return (
-    <Carte href={`/formations/${m.id}/`} className="flex h-full flex-col">
-      <div className="relative overflow-hidden rounded-t-[inherit] border-b border-line">
-        <Vignette motif={m.motif} teinte={m.teinte} graine={m.id} className="aspect-[16/7] transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.04]" />
-        <div className="absolute left-3 top-3">
-          <PuceEtatModule etat={e.etat} />
-        </div>
-        <span className="absolute right-3 top-3 rounded-lg bg-bg/70 px-2 py-0.5 font-mono text-xs text-ink-2 backdrop-blur">Niveau {m.rang}</span>
+    <Carte href={`/formations/${m.id}/`} className="flex h-full flex-col p-5">
+      <div className="flex items-center justify-between gap-3">
+        <p className="surtitre">
+          Module {m.rang} · {m.niveau}
+        </p>
+        <PuceEtatModule etat={e.etat} />
       </div>
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
-        <h3 className="text-lg font-semibold leading-snug text-ink">{typographie(m.titre)}</h3>
-        <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-ink-2">{typographie(m.accroche)}</p>
-        <p className="mt-3 text-sm text-ink-3">{m.chapitres.length} chapitres</p>
-        {e.acces && e.commences > 0 ? (
-          <Jauge className="mt-3" valeur={e.termines / m.chapitres.length} libelle={`${e.termines} chapitre${e.termines > 1 ? "s" : ""} terminé${e.termines > 1 ? "s" : ""} sur ${m.chapitres.length}`} />
-        ) : null}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          {e.acces ? <span className="text-sm text-ink-2">{m.gratuit ? "Accès libre" : "Accès débloqué"}</span> : <Prix prix={e.prix} chargement={e.chargementPrix} gratuit={m.gratuit} className="text-lg font-semibold text-ink" />}
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand">
-            {actions[e.etat]} <IconeSuivant className="size-4" />
+      <h3 className="mt-3 text-lg font-semibold leading-snug text-ink">{typographie(m.titre)}</h3>
+      <p className="mb-4 mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-2">{typographie(m.accroche)}</p>
+      {e.acces && e.commences > 0 ? (
+        <Jauge
+          className="mt-4"
+          valeur={e.termines / m.chapitres.length}
+          libelle={`${e.termines} chapitre${e.termines > 1 ? "s" : ""} terminé${e.termines > 1 ? "s" : ""} sur ${m.chapitres.length}`}
+        />
+      ) : null}
+      <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-3">
+        {e.acces ? (
+          <span className="text-sm text-ink-3">
+            {e.termines}/{m.chapitres.length} chapitres
           </span>
-        </div>
+        ) : (
+          <Prix prix={e.prix} chargement={e.chargementPrix} gratuit={m.gratuit} className="font-mono font-medium text-ink" />
+        )}
+        <span className="inline-flex items-center gap-1 text-sm font-semibold text-ink">
+          {actions[e.etat]} <IconeSuivant className="size-4" />
+        </span>
       </div>
     </Carte>
   );
@@ -122,32 +132,48 @@ export function BlocAchat({ m, premierChapitre }: { m: ModulePresente; premierCh
   const s = useSession();
   const urlPaiement = `/paiement/?module=${m.id}`;
   return (
-    <div className="carte p-5 sm:p-6">
+    <div className="carte eleve p-5 sm:p-6">
       <div className="flex items-center justify-between gap-3">
+        <p className="surtitre">{e.acces ? "Ton accès" : m.gratuit ? "Introduction" : "Tarif"}</p>
         <PuceEtatModule etat={e.etat} />
-        <span className="text-sm text-ink-3">{m.chapitres.length} chapitres</span>
       </div>
-      <p className="mt-4 text-sm text-ink-3">{e.acces ? "Ton accès" : "Prix du module"}</p>
-      <p className="text-3xl font-semibold text-ink">
-        {e.acces ? (m.gratuit ? "Gratuit" : "Débloqué") : <Prix prix={e.prix} chargement={e.chargementPrix} gratuit={m.gratuit} />}
+      <p className="mt-2 font-mono text-3xl font-medium text-ink tabular">
+        {e.acces && !m.gratuit ? "Débloqué" : <Prix prix={e.prix} chargement={e.chargementPrix} gratuit={m.gratuit} />}
       </p>
-      {!m.gratuit && !e.acces ? <p className="mt-1 text-sm text-ink-2">Paiement unique, accès sans limite de durée. Orange Money ou MTN MoMo.</p> : null}
+      <p className="mt-1 text-sm text-ink-2">
+        {m.gratuit
+          ? "Gratuit, en entier. Un compte gratuit enregistre ta progression et ouvre les quiz."
+          : e.acces
+            ? "Accès sans limite de durée."
+            : "Paiement unique, accès sans limite de durée. Orange Money ou MTN MoMo."}
+      </p>
       <div className="mt-5 space-y-2.5">
         {e.acces ? (
           <Link href={`/chapitre/${premierChapitre}/`} className="btn btn-primaire btn-grand w-full">
-            {e.etat === "en-cours" ? "Reprendre le module" : e.etat === "termine" ? "Revoir le module" : "Commencer le module"}
+            {e.etat === "en-cours"
+              ? "Reprendre le cours"
+              : e.etat === "termine"
+                ? "Revoir le module"
+                : m.gratuit
+                  ? "Commencer mon parcours"
+                  : "Commencer le module"}
           </Link>
         ) : !fonctionsDisponibles ? (
           <>
-            <p className="rounded-xl border border-line px-4 py-3 text-sm text-ink-2">Le paiement en ligne ouvre très bientôt. Crée ton compte dès maintenant : ta progression y sera gardée.</p>
+            <p className="border-l-2 border-accent bg-accent-soft px-3 py-2.5 text-sm text-ink">
+              Le paiement en ligne ouvre bientôt. En attendant, commence gratuitement avec Premiers pas : ta progression sera conservée.
+            </p>
+            <Link href="/parcours/premiers-pas/" className="btn btn-primaire w-full">
+              Commencer gratuitement
+            </Link>
             {s.etat !== "connecte" ? (
-              <Link href="/inscription/" className="btn btn-primaire btn-grand w-full">
-                Créer mon compte gratuit
+              <Link href="/inscription/" className="btn btn-secondaire w-full">
+                Créer mon compte
               </Link>
             ) : null}
           </>
         ) : e.etat === "indisponible" ? (
-          <p className="rounded-xl border border-line px-4 py-3 text-sm text-ink-2">Ce module n&apos;est pas encore en vente.</p>
+          <p className="border-l-2 border-line-strong px-3 py-2.5 text-sm text-ink-2">Ce module n&apos;est pas encore en vente.</p>
         ) : s.etat === "connecte" ? (
           <Link href={urlPaiement} className="btn btn-primaire btn-grand w-full" aria-disabled={e.prix === null}>
             Débloquer ce module
@@ -155,21 +181,30 @@ export function BlocAchat({ m, premierChapitre }: { m: ModulePresente; premierCh
         ) : (
           <>
             <Link href={`/inscription/?suite=${encodeURIComponent(urlPaiement)}`} className="btn btn-primaire btn-grand w-full">
-              Créer un compte pour l&apos;acheter
+              Créer mon compte et débloquer
             </Link>
             <Link href={`/connexion/?suite=${encodeURIComponent(urlPaiement)}`} className="btn btn-secondaire w-full">
-              J&apos;ai déjà un compte
+              Se connecter
             </Link>
           </>
         )}
       </div>
       <ul className="mt-5 space-y-2 border-t border-line pt-4 text-sm text-ink-2">
-        {["Capsules vidéo narrées de 90 s au plus", "Cours détaillé, exemples et figures interactives", "Exercices corrigés et quiz notés", "Certificat interne à la fin du module"].map((t) => (
+        {["Capsules vidéo narrées", "Cours illustré et graphiques annotés", "Exercices et quiz corrigés", "Examen de fin de module et certificat"].map((t) => (
           <li key={t} className="flex gap-2">
-            <IconeCoche className="mt-0.5 size-4 shrink-0 text-ok" /> {t}
+            <IconeCoche className="mt-0.5 size-4 shrink-0 text-jauge" /> {t}
           </li>
         ))}
       </ul>
+      {!e.acces && !m.gratuit && fonctionsDisponibles ? (
+        <p className="mt-4 border-t border-line pt-4 text-sm text-ink-2">
+          Envie de voir la méthode avant ?{" "}
+          <Link href="/parcours/premiers-pas/" className="lien">
+            Le premier module est gratuit
+          </Link>
+          .
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -182,7 +217,9 @@ export function LigneProgramme({ m, slug, titre, numero }: { m: ModulePresente; 
   const contenu = (
     <>
       <span className="w-7 shrink-0 font-mono text-sm text-ink-3">{String(numero).padStart(2, "0")}</span>
-      <span className="min-w-0 flex-1 text-ink">{typographie(titre)}</span>
+      <span className="min-w-0 flex-1 text-ink" style={{ viewTransitionName: `chapitre-${slug}` }}>
+        {typographie(titre)}
+      </span>
       {e.acces && c?.statut === "termine" ? (
         <IconeCoche className="size-4 shrink-0 text-ok" aria-label="Terminé" />
       ) : e.acces ? (
@@ -195,11 +232,11 @@ export function LigneProgramme({ m, slug, titre, numero }: { m: ModulePresente; 
   return (
     <li>
       {e.acces ? (
-        <Link href={`/chapitre/${slug}/`} className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-surface-2">
+        <Link href={`/chapitre/${slug}/`} className="flex items-center gap-3 px-3 py-3 transition-colors hover:bg-surface-2">
           {contenu}
         </Link>
       ) : (
-        <div className="flex items-center gap-3 px-3 py-2.5">{contenu}</div>
+        <div className="flex items-center gap-3 px-3 py-3">{contenu}</div>
       )}
     </li>
   );

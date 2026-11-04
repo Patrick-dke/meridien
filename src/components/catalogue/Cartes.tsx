@@ -43,12 +43,19 @@ export function CarteChapitre({ f, etapes = 9, rang }: { f: FicheChapitre; etape
   const contenu = (
     <>
       <div className="relative overflow-hidden rounded-t-[inherit] border-b border-line">
-        <Vignette motif={f.motif} teinte={f.teinte} graine={f.slug} className="aspect-[16/8] transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.04]" />
+        <Vignette
+          motif={f.motif}
+          teinte={f.teinte}
+          graine={f.slug}
+          className="aspect-[16/8] transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:scale-[1.04]"
+        />
         <div className="absolute left-3 top-3 flex gap-1.5">
           <PuceEtat etat={etat} />
         </div>
         {rang !== undefined ? (
-          <span className="absolute right-3 top-3 rounded-lg bg-bg/70 px-2 py-0.5 font-mono text-xs text-ink-2 backdrop-blur">{String(rang).padStart(2, "0")}</span>
+          <span className="absolute right-3 top-3 rounded-lg bg-bg/70 px-2 py-0.5 font-mono text-xs text-ink-2 backdrop-blur">
+            {String(rang).padStart(2, "0")}
+          </span>
         ) : null}
       </div>
       <div className="flex flex-1 flex-col p-4">
@@ -71,14 +78,17 @@ export function CarteChapitre({ f, etapes = 9, rang }: { f: FicheChapitre; etape
           <span className={`inline-flex items-center gap-1 text-sm font-semibold ${etat === "bientot" ? "text-ink-3" : "text-brand"}`}>
             {actions[etat]}
             {etat !== "bientot" ? <IconeSuivant className="size-4 transition-transform group-hover:translate-x-0.5" /> : null}
-            {score !== undefined && etat === "termine" ? <span className="ml-2 font-mono text-xs font-normal text-ink-3">meilleur score {Math.round(score * 100)} %</span> : null}
+            {score !== undefined && etat === "termine" ? (
+              <span className="ml-2 font-mono text-xs font-normal text-ink-3">meilleur score {Math.round(score * 100)} %</span>
+            ) : null}
           </span>
         </div>
       </div>
     </>
   );
   if (!f.publie) {
-    return <div className="carte flex h-full flex-col opacity-70">{contenu}</div>;
+    // Chapitre à venir : un contour pointillé plutôt qu'une opacité réduite, qui rendrait les textes illisibles.
+    return <div className="carte flex h-full flex-col border-dashed !bg-transparent">{contenu}</div>;
   }
   return (
     <Carte href={`/chapitre/${f.slug}/`} className="group flex h-full flex-col">

@@ -9,7 +9,7 @@ export const chapitre: Chapitre = {
   niveau: 1,
   dureeMin: 9,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Comprendre ce que représente une unité de temps",
     "Savoir comment des bougies courtes se regroupent en bougies longues",
@@ -25,7 +25,7 @@ export const chapitre: Chapitre = {
       {
         duree: 8,
         texte:
-          "Chaque bougie représente une durée : c'est l'unité de temps. Une minute, quinze minutes, une heure, un jour, une semaine…",
+          "Chaque bougie représente une durée. C'est ce qu'on appelle l'unité de temps. Elle va d'une minute à un mois, ou plus.",
         visuel: {
           type: "titre",
           titre: "L'unité de temps",
@@ -34,12 +34,12 @@ export const chapitre: Chapitre = {
       },
       {
         duree: 5,
-        texte: "Voici huit bougies de quinze minutes : deux heures d'échanges.",
+        texte: "Voici huit bougies de quinze minutes. Deux heures d'échanges.",
         visuel: { type: "figure", scene: "m15-vers-h1", etape: 0 },
       },
       {
         duree: 5,
-        texte: "Regroupons-les par quatre : chaque groupe couvre une heure.",
+        texte: "Regroupons-les par quatre. Chaque groupe couvre une heure.",
         visuel: { type: "figure", scene: "m15-vers-h1", etape: 1 },
       },
       {
@@ -51,13 +51,13 @@ export const chapitre: Chapitre = {
       {
         duree: 7,
         texte:
-          "Résultat : les détails disparaissent, la direction générale apparaît. La première heure monte, la seconde baisse.",
+          "Tu vois ? Les détails disparaissent, la direction apparaît. La première heure monte, la seconde baisse.",
         visuel: { type: "figure", scene: "m15-vers-h1", etape: 2 },
       },
       {
         duree: 8,
         texte:
-          "L'unité de temps dépend de ton horizon. Plus elle est courte, plus le bruit et les frais pèsent.",
+          "Choisis ton unité selon ton horizon. Plus elle est courte, plus le bruit et les frais pèsent lourd.",
         visuel: {
           type: "points",
           titre: "Choisir",
@@ -71,7 +71,7 @@ export const chapitre: Chapitre = {
       {
         duree: 10,
         texte:
-          "Beaucoup de traders lisent le contexte sur une unité longue et cherchent leur entrée sur une plus courte. On y reviendra dans l'analyse technique.",
+          "Beaucoup de traders lisent le contexte sur une unité longue, puis cherchent leur entrée sur une unité plus courte. On y reviendra en analyse technique.",
         visuel: {
           type: "points",
           items: ["Contexte : unité longue", "Entrée : unité courte"],
@@ -133,6 +133,13 @@ export const chapitre: Chapitre = {
           ],
         },
         {
+          type: "figure",
+          scene: "pp-h1-vers-h4",
+          fiabilite: "calcul",
+          legende:
+            "Vingt-quatre bougies d'une heure regroupées par quatre : six bougies de quatre heures. Chacune prend l'ouverture de sa première heure, le plus haut et le plus bas du groupe, et la clôture de sa quatrième heure.",
+        },
+        {
           type: "encadre",
           variante: "retenir",
           texte:
@@ -148,6 +155,12 @@ export const chapitre: Chapitre = {
           fiabilite: "convention",
           texte:
             "Un marché peut monter sur plusieurs semaines tout en baissant sur la journée. Ce n'est pas une contradiction : ce sont deux échelles différentes. Dire « le marché est haussier » n'a de sens qu'en précisant l'unité de temps.",
+        },
+        {
+          type: "figure",
+          scene: "pp-echelles-tendance",
+          legende:
+            "Trente séances d'une action fictive : le prix passe d'environ 40 € à plus de 47 €, puis recule vers 45 € sur les sept dernières. Haussier à l'échelle du mois, baissier à l'échelle de la semaine : les deux lectures sont justes, chacune à son échelle.",
         },
         {
           type: "encadre",
@@ -216,6 +229,13 @@ export const chapitre: Chapitre = {
         ],
       },
       {
+        type: "figure",
+        scene: "pp-exemple-h1",
+        fiabilite: "calcul",
+        legende:
+          "Les quatre bougies du tableau, puis la bougie d'une heure qui les résume : ouverture 1,0850, plus haut 1,0868, plus bas 1,0846, clôture 1,0861.",
+      },
+      {
         type: "p",
         fiabilite: "calcul",
         texte:
@@ -270,10 +290,22 @@ export const chapitre: Chapitre = {
         "Le plus bas de l'heure est le plus bas des quatre : min(99,5 ; 100,5 ; 100,9 ; 100,2) = 99,5. Pour mémoire, cette bougie d'une heure vaut O 100,0 ; H 102,0 ; B 99,5 ; C 100,6.",
       concepts: ["unite-de-temps", "ohlc"],
     },
+    {
+      id: "pp-07-e3",
+      type: "graphique",
+      consigne:
+        "Ces douze bougies de 15 minutes couvrent trois heures, séparées par des pointillés. Touche la bougie qui donne son plus bas à la bougie de la deuxième heure.",
+      scene: "pp-q-m15-heures",
+      bonnes: [7],
+      corrige:
+        "La deuxième heure regroupe les bougies 5 à 8. Leurs plus bas : 1,0915 ; 1,0909 ; 1,0910 ; 1,0905. Le plus bas de l'heure est 1,0905, atteint par la dernière bougie du groupe. La bougie suivante descend encore, à 1,0903, mais elle appartient à la troisième heure.",
+      concepts: ["unite-de-temps", "ohlc"],
+    },
   ],
   quiz: [
     {
       id: "c07-q1",
+      difficulte: 1,
       type: "unique",
       enonce: "Combien de bougies M15 contient une bougie H1 ?",
       choix: ["2", "4", "15", "60"],
@@ -283,6 +315,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c07-q2",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Quatre bougies M15 ont pour plus hauts 1,0858 ; 1,0861 ; 1,0866 et 1,0868. Quel est le plus haut de la bougie H1 correspondante ?",
@@ -294,6 +327,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c07-q3",
+      difficulte: 1,
       type: "ordre",
       enonce: "Classe ces unités de temps de la plus courte à la plus longue.",
       etapes: ["M1", "M15", "H1", "H4", "D1"],
@@ -303,6 +337,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c07-q4",
+      difficulte: 2,
       type: "vraifaux",
       enonce:
         "Un marché peut être haussier en journalier et baissier en M15 au même moment.",
@@ -313,6 +348,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c07-q5",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Pourquoi les unités de temps très courtes sont-elles exigeantes pour un débutant ?",
@@ -325,6 +361,90 @@ export const chapitre: Chapitre = {
       bonne: 1,
       explication:
         "Sur des mouvements de quelques pips, le spread et les commissions représentent une grande part du gain possible.",
+      concepts: ["unite-de-temps"],
+    },
+    {
+      id: "c07-q6",
+      type: "graphique",
+      difficulte: 2,
+      enonce:
+        "Ces douze bougies de 15 minutes couvrent trois heures, séparées par des pointillés. Touche la bougie qui donne son plus haut à la bougie de la première heure.",
+      scene: "pp-q-m15-heures",
+      bonnes: [1],
+      explication:
+        "Le plus haut de la bougie d'une heure est le plus élevé des quatre plus hauts du groupe : 1,0938, atteint par la deuxième bougie de 15 minutes. Peu importe qu'elle ne soit ni la première ni la dernière du groupe.",
+      concepts: ["unite-de-temps", "ohlc"],
+    },
+    {
+      id: "c07-q7",
+      type: "unique",
+      difficulte: 1,
+      figure: { scene: "pp-q-echelles", legende: "Trente séances d'une action fictive, en bougies journalières." },
+      enonce: "Comment décrire ce graphique ?",
+      choix: [
+        "Haussier sur le mois, en repli sur les derniers jours",
+        "Baissier, puisque les dernières séances baissent",
+        "Haussier, et toujours en hausse ces derniers jours",
+        "Sans tendance, puisqu'il monte puis qu'il baisse",
+      ],
+      bonne: 0,
+      explication:
+        "Sur trente séances, le prix passe d'environ 40 € à plus de 47 €, puis recule vers 45 € sur les sept dernières. Les deux mouvements coexistent : une tendance se décrit toujours avec son échelle.",
+      concepts: ["unite-de-temps"],
+    },
+    {
+      id: "c07-q8",
+      type: "unique",
+      difficulte: 2,
+      figure: { scene: "pp-q-m15-heures", legende: "Douze bougies de 15 minutes, soit trois heures." },
+      enonce: "Si l'on regroupe les quatre bougies de la deuxième heure en une bougie d'une heure, comment est-elle ?",
+      choix: [
+        "Baissière, avec une clôture proche de son plus bas",
+        "Haussière, avec une clôture proche de son plus haut",
+        "Baissière, avec une clôture proche de son plus haut",
+        "Haussière, avec une clôture proche de son plus bas",
+      ],
+      bonne: 0,
+      explication:
+        "Ouverture de la première bougie, 1,0927 ; clôture de la dernière, 1,0908 : la bougie d'une heure est baissière. Son plus bas, 1,0905, n'est que 3 pips sous la clôture, pour 25 pips d'amplitude : la clôture est proche du plus bas.",
+      concepts: ["unite-de-temps", "ohlc"],
+    },
+    {
+      id: "c07-q9",
+      type: "comparaison",
+      difficulte: 3,
+      enonce: "Chaque cas montre quatre bougies de 15 minutes. Lequel donne une bougie d'une heure haussière ?",
+      graphiques: [
+        { scene: "pp-q-regroupe-a", etape: 0 },
+        { scene: "pp-q-regroupe-b", etape: 0 },
+      ],
+      bonne: 0,
+      explication:
+        "Seules comptent l'ouverture de la première bougie et la clôture de la dernière. En A, 1,0850 puis 1,0856 : haussière, même si trois bougies sur quatre baissent. En B, 1,0850 puis 1,0845 : baissière, malgré trois bougies haussières.",
+      concepts: ["unite-de-temps", "ohlc"],
+    },
+    {
+      id: "c07-q10",
+      type: "unique",
+      difficulte: 2,
+      contexte:
+        "Mariam travaille en journée et peut regarder les marchés trente minutes chaque soir. Elle veut garder ses positions plusieurs jours.",
+      enonce: "Quelles unités de temps lui conviennent le mieux ?",
+      choix: ["H4 et D1", "M1 et M5", "M5 et M15", "M15 et H1"],
+      bonne: 0,
+      explication:
+        "Des positions de plusieurs jours, suivies une fois par soir : c'est du swing trading, qui se lit en H4 et D1. En M1 ou M5, il faudrait surveiller l'écran en permanence, et les frais pèseraient bien plus.",
+      concepts: ["unite-de-temps"],
+    },
+    {
+      id: "c07-q11",
+      type: "unique",
+      difficulte: 3,
+      enonce: "Une bourse d'actions cote de 9 h 30 à 16 h. Combien de bougies M15 compte une séance complète ?",
+      choix: ["24", "26", "96", "390"],
+      bonne: 1,
+      explication:
+        "De 9 h 30 à 16 h, il y a 6 h 30, soit 390 minutes ; 390 ÷ 15 = 26 bougies. 96 vaut pour un marché ouvert 24 heures sur 24, et 390 est le nombre de bougies M1 de la séance.",
       concepts: ["unite-de-temps"],
     },
   ],

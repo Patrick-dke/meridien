@@ -3,8 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 /** Tests de bout en bout sur le site exporté (npm run build), servi comme en production. */
 export default defineConfig({
   testDir: "e2e",
-  // Le parcours commercial a sa propre configuration (environnement de test, émulateurs).
-  testIgnore: ["emulateurs/**"],
+  // Le parcours commercial et l'administration sans fonctions ont leur propre configuration (émulateurs).
+  testIgnore: ["emulateurs/**", "sans-fonctions/**"],
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",

@@ -4,7 +4,9 @@
  */
 export { etatPaiement, initierPaiement, reconcilier, verifierPaiement, webhookPaiement } from "./paiement";
 export { noterQuiz } from "./quiz";
+export { examen } from "./examens";
 export { outils } from "./outils";
+export { verifierLicence } from "./licences";
 export { envoyerMessage } from "./contact";
 export { deconnecterPartout, revendiquerAdmin } from "./comptes";
 export { admin } from "./admin";

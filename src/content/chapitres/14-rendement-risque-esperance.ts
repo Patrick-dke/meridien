@@ -9,7 +9,7 @@ export const chapitre: Chapitre = {
   niveau: 2,
   dureeMin: 14,
   statut: "publie",
-  misAJour: "2026-10-26",
+  misAJour: "2026-10-27",
   objectifs: [
     "Calculer un ratio rendement/risque et son seuil de rentabilité",
     "Comprendre pourquoi taux de réussite et ratio se lisent ensemble",
@@ -31,7 +31,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Le ratio rendement sur risque compare ce que tu vises à ce que tu risques. 4,40 visés pour 2,20 risqués : un ratio de 2.",
+          "Le ratio rendement risque compare ton gain visé à ta perte acceptée. Viser 4 euros 40 pour risquer 2 euros 20, c'est un ratio de 2.",
         visuel: {
           type: "formule",
           texte: "Ratio = gain visé ÷ perte acceptée",
@@ -53,7 +53,7 @@ export const chapitre: Chapitre = {
       {
         duree: 11,
         texte:
-          "L'espérance combine les deux. Avec 40 % de réussite, des gains de 2R et des pertes de 1R : 0,8 moins 0,6, soit plus 0,2R par trade.",
+          "L'espérance combine les deux. Avec 40 % de gains à 2 R, et 60 % de pertes à 1 R, tu obtiens plus 0,2 R par trade.",
         visuel: {
           type: "formule",
           texte: "0,4 × 2R − 0,6 × 1R = +0,2R",
@@ -69,7 +69,7 @@ export const chapitre: Chapitre = {
       {
         duree: 9,
         texte:
-          "Retiens : une méthode se juge sur des dizaines de trades, frais compris. Jamais sur trois trades, ni sur une capture d'écran.",
+          "Retiens bien : une méthode se juge sur des dizaines de trades, frais compris. Jamais sur trois trades, ni sur une capture d'écran.",
         visuel: {
           type: "titre",
           titre: "Mesurer, pas supposer",
@@ -87,6 +87,13 @@ export const chapitre: Chapitre = {
           fiabilite: "calcul",
           texte:
             "Le [[ratio-rendement-risque|ratio rendement/risque]] (R:R) compare le gain visé à la perte acceptée sur un trade. Entrée à 50,00 €, stop à 47,80 €, objectif à 54,40 € : 4,40 € visés pour 2,20 € risqués, soit un ratio de 2. On dit aussi que l'objectif est à 2R, en prenant le risque comme [[r-unite|unité R]].",
+        },
+        {
+          type: "figure",
+          scene: "pp-unites-r",
+          fiabilite: "calcul",
+          legende:
+            "Entrée à 50,00 €, stop à 48,00 € : le risque de 2,00 € par action devient l'unité R. Les objectifs se lisent en multiples de R : 52,00 € à +1R, 54,00 € à +2R, 56,00 € à +3R.",
         },
         {
           type: "formule",
@@ -149,6 +156,20 @@ export const chapitre: Chapitre = {
           type: "p",
           texte:
             "Les méthodes A et B ont la même espérance avec des profils opposés : l'une gagne souvent un peu, l'autre rarement beaucoup. La méthode D gagne gros quand elle gagne, mais trop rarement : elle perd de l'argent.",
+        },
+        {
+          type: "figure",
+          scene: "pp-serie-a",
+          fiabilite: "calcul",
+          legende:
+            "Méthode A sur vingt trades : 12 gains de 1R et 8 pertes de 1R, soit +4R. Elle gagne souvent un peu, avec au plus 2 pertes d'affilée.",
+        },
+        {
+          type: "figure",
+          scene: "pp-serie-b",
+          fiabilite: "calcul",
+          legende:
+            "Méthode B sur vingt trades : 8 gains de 2R et 12 pertes de 1R, soit +4R aussi. Elle gagne rarement mais beaucoup, avec jusqu'à 3 pertes d'affilée.",
         },
         {
           type: "encadre",
@@ -276,6 +297,7 @@ export const chapitre: Chapitre = {
   quiz: [
     {
       id: "c14-q1",
+      difficulte: 1,
       type: "unique",
       enonce:
         "Entrée à 100 €, stop à 98 €, objectif à 106 €. Quel est le ratio rendement/risque ?",
@@ -286,6 +308,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c14-q2",
+      difficulte: 2,
       type: "unique",
       enonce:
         "Avec un ratio de 3, quel est le taux de réussite minimal pour ne pas perdre, sans frais ?",
@@ -296,6 +319,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c14-q3",
+      difficulte: 2,
       type: "unique",
       enonce:
         "50 % de réussite, gains moyens de 1,5R, pertes moyennes de 1R. Quelle est l'espérance par trade ?",
@@ -306,6 +330,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c14-q4",
+      difficulte: 1,
       type: "vraifaux",
       enonce: "Une méthode qui gagne 80 % du temps est forcément rentable.",
       reponse: false,
@@ -315,6 +340,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c14-q5",
+      difficulte: 2,
       type: "unique",
       enonce: "30 % de réussite, gains de 2R, pertes de 1R. La méthode est :",
       choix: [
@@ -330,6 +356,7 @@ export const chapitre: Chapitre = {
     },
     {
       id: "c14-q6",
+      difficulte: 2,
       type: "multiple",
       enonce: "Que faut-il pour juger sérieusement une méthode ?",
       choix: [
@@ -341,6 +368,81 @@ export const chapitre: Chapitre = {
       bonnes: [0, 1, 3],
       explication:
         "Trois trades ne prouvent rien ; il faut un échantillon important et des chiffres frais compris.",
+      concepts: ["esperance"],
+    },
+    {
+      id: "c14-q7",
+      type: "graphique",
+      difficulte: 2,
+      enonce:
+        "Achat à 50,00 € avec un stop à 48,00 €. Ton take profit est placé à 2R. Touche la bougie qui l'atteint.",
+      scene: "pp-q-objectif-2r",
+      bonnes: [11],
+      explication:
+        "1R = 50,00 − 48,00 = 2,00 €, donc 2R place l'objectif à 50,00 + 2 × 2,00 = 54,00 €. Seule cette bougie monte jusque-là, avec un plus haut à 54,15 € ; les autres s'arrêtent sous 54,00 €.",
+      concepts: ["rendement-risque"],
+    },
+    {
+      id: "c14-q8",
+      type: "unique",
+      difficulte: 2,
+      figure: { scene: "pp-q-serie", etape: 0, legende: "Vingt trades qui visent 2R pour 1R de risque." },
+      enonce: "Quel est le taux de réussite de ces vingt trades, et la méthode est-elle au-dessus de son seuil de rentabilité ?",
+      choix: [
+        "30 %, sous le seuil de 33,3 %",
+        "30 %, au-dessus du seuil de 25 %",
+        "40 %, au-dessus du seuil de 33,3 %",
+        "60 %, au-dessus du seuil de 50 %",
+      ],
+      bonne: 0,
+      explication:
+        "6 barres vertes sur 20 : 6 ÷ 20 = 30 %. Pour un ratio de 2, le seuil est 1 ÷ (1 + 2) = 33,3 % : la méthode est en dessous. Total : 6 × 2R − 14 × 1R = −2R.",
+      concepts: ["taux-reussite", "rendement-risque"],
+    },
+    {
+      id: "c14-q9",
+      type: "comparaison",
+      difficulte: 3,
+      enonce: "Laquelle de ces deux séries de vingt trades a le meilleur résultat total ?",
+      graphiques: [
+        { scene: "pp-q-serie-a", etape: 0 },
+        { scene: "pp-q-serie-b", etape: 0 },
+      ],
+      bonne: 1,
+      explication:
+        "A gagne 13 fois sur 20, soit 65 %, mais seulement 0,5R à chaque fois : 13 × 0,5R − 7 × 1R = −0,5R. B ne gagne que 7 fois, soit 35 %, mais 2R à chaque fois : 7 × 2R − 13 × 1R = +1R. Le taux de réussite seul ne dit rien.",
+      concepts: ["esperance", "taux-reussite"],
+    },
+    {
+      id: "c14-q10",
+      type: "unique",
+      difficulte: 3,
+      contexte:
+        "Ta méthode vise 1,5R pour 1R de risque. Sur 200 trades notés dans ton journal, elle a gagné 45 % du temps.",
+      figure: { scene: "seuil-rentabilite", legende: "Le taux de réussite minimal pour chaque ratio, avant frais." },
+      enonce: "Avant frais, où se situe-t-elle par rapport à son seuil, et quelle est son espérance par trade ?",
+      choix: [
+        "Au-dessus d'un seuil de 40 %, à +0,125R",
+        "Au-dessus d'un seuil de 33 %, à +0,25R",
+        "Sous un seuil de 50 %, à −0,05R",
+        "Sous un seuil de 60 %, à −0,10R",
+      ],
+      bonne: 0,
+      explication:
+        "Seuil : 1 ÷ (1 + 1,5) = 40 %, et 45 % est au-dessus. Espérance : 0,45 × 1,5R − 0,55 × 1R = 0,675R − 0,55R = +0,125R par trade, avant frais.",
+      concepts: ["rendement-risque", "esperance", "taux-reussite"],
+    },
+    {
+      id: "c14-q11",
+      type: "unique",
+      difficulte: 3,
+      contexte:
+        "Ta méthode gagne 55 % du temps, avec des gains de 1R et des pertes de 1R. Chaque trade coûte 0,15R de frais, qu'il gagne ou qu'il perde.",
+      enonce: "Quelle est son espérance par trade, frais compris ?",
+      choix: ["−0,05R", "+0,10R", "+0,25R", "−0,15R"],
+      bonne: 0,
+      explication:
+        "Avant frais : 0,55 × 1R − 0,45 × 1R = +0,10R. Les frais touchent chaque trade : 0,10R − 0,15R = −0,05R. Une méthode gagnante sur le papier devient perdante une fois les coûts comptés.",
       concepts: ["esperance"],
     },
   ],

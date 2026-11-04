@@ -28,13 +28,17 @@ export function documentsRecherche(): DocumentRecherche[] {
     docs.push({ id: `t:${t.slug}`, type: "Glossaire", titre: t.terme, texte: [...t.synonymes, t.court].join(" "), url: `/glossaire/${t.slug}/` });
   }
   docs.push(
-    { id: "o:position", type: "Outil", titre: "Calculateur de taille de position", texte: "risque lots actions stop", url: "/outils/#position" },
-    { id: "o:rr", type: "Outil", titre: "Calculateur de rendement/risque", texte: "ratio seuil de rentabilité frais", url: "/outils/#rendement-risque" },
-    { id: "o:pips", type: "Outil", titre: "Calculateur de pips", texte: "valeur du pip lot devise conversion", url: "/outils/#pips" },
-    { id: "o:esperance", type: "Outil", titre: "Espérance et séries de pertes", texte: "taux de réussite probabilité série", url: "/outils/#esperance" },
+    { id: "o:position", type: "Outil", titre: "Calculateur de taille de position", texte: "risque lots actions stop", url: "/pratique/#position" },
+    { id: "o:rr", type: "Outil", titre: "Calculateur de rendement/risque", texte: "ratio seuil de rentabilité frais", url: "/pratique/#rendement-risque" },
+    { id: "o:pips", type: "Outil", titre: "Calculateur de pips", texte: "valeur du pip lot devise conversion", url: "/pratique/#pips" },
+    { id: "o:esperance", type: "Outil", titre: "Espérance et séries de pertes", texte: "taux de réussite probabilité série", url: "/pratique/#esperance" },
+    { id: "o:compte", type: "Outil", titre: "Compte d'entraînement", texte: "simulateur démo marché simulé ordres stop marge levier FCFA", url: "/pratique/#compte" },
+    { id: "o:journal", type: "Outil", titre: "Journal de trading", texte: "statistiques taux de réussite drawdown espérance export csv", url: "/pratique/#journal" },
+    { id: "p:outils", type: "Page", titre: "Indicateurs et robots", texte: "TradingView MetaTrader 5 MT5 expert advisor licence indicateur", url: "/outils/" },
+    { id: "p:formations", type: "Page", titre: "Formations et tarifs", texte: "modules prix acheter débloquer Orange Money MTN MoMo", url: "/formations/" },
     { id: "p:parcours", type: "Page", titre: "Parcours « Premiers pas »", texte: "débuter les 14 chapitres", url: "/parcours/premiers-pas/" },
     { id: "p:tdb", type: "Page", titre: "Tableau de bord", texte: "progression recommandations concepts", url: "/tableau-de-bord/" },
-    { id: "p:methode", type: "Page", titre: "Méthode et badges de fiabilité", texte: "fait établi interprétation d'école hypothèse", url: "/methode/" },
+    { id: "p:methode", type: "Page", titre: "Méthode et mentions de fiabilité", texte: "fait établi interprétation d'école hypothèse", url: "/methode/" },
     { id: "p:reglages", type: "Page", titre: "Réglages et données", texte: "daltonien mode léger export suppression", url: "/parametres/" },
   );
   return docs;

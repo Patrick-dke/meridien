@@ -8,11 +8,11 @@ Ce document décrit ce qui a été construit pour vendre les formations, ce qui 
 | --- | --- | --- |
 | Comptes e-mail + mot de passe, vérification de l'adresse, mot de passe oublié | Vérifié (navigateur + tests automatiques) | **Ouvert** le 27/10/2026 (application web enregistrée, fournisseur activé) ; pas encore éprouvé par une vraie inscription |
 | « Continuer avec Google » | Code prêt ; non testable dans l'émulateur sans fenêtre Google | **Activé** ; domaines autorisés : meridien-academie.web.app, meridien-academie.firebaseapp.com, patrick-dke.github.io ; pas encore éprouvé |
-| Prix en base, grille 10 000 FCFA par niveau | Vérifié | Base créée (europe-west1, protégée contre la suppression) ; collection `modules` encore vide (« prix bientôt annoncé ») : elle se remplit depuis l'administration, qui exige les fonctions |
+| Prix en base, grille 10 000 FCFA par niveau | Vérifié | Base créée (europe-west1, protégée contre la suppression) ; collection `modules` encore vide (« Tarif à venir ») : elle se remplit depuis Administration → Modules et prix, disponible sans fonctions depuis le 04/11/2026 |
 | Contenus payants protégés côté serveur | Vérifié : règles Firestore (14 tests) + parcours complet ; contrôle de fuite du site publié : aucune | Règles déployées et vérifiées sur la vraie base (lecture publique des prix seulement, tout le reste refusé sans compte) ; contenus pas encore publiés |
 | Paiement Mobile Money (Orange Money, MTN MoMo) | **Simulation uniquement** : réussite, échec, expiration, idempotence, anti-doublon, webhook authentifié, relecture du statut auprès du prestataire | **Aucun paiement réel n'a été effectué.** Adaptateur Fapshi écrit d'après sa documentation, jamais appelé (pas de compte ni de clés) |
 | Quiz notés par le serveur, certificats | Vérifié | Fonctions à déployer (offre Blaze) |
-| Administration, journal d'audit | Vérifié | Fonctions à déployer, premier administrateur à désigner |
+| Administration, journal d'audit | Vérifié, avec et sans fonctions (règles : 24 tests ; parcours navigateur `e2e:sans-fonctions`) | Sans fonctions : utilisateurs, accès aux modules, prix, contenus, journal. Premier administrateur à désigner (section 5). Paiements, outils, examens, messages : fonctions à déployer |
 | Outils MT5 : éligibilité et demandes | Vérifié (calcul d'éligibilité, demande, traitement) | Fichiers des outils à remettre par l'équipe après accord |
 | Narration des 106 capsules payantes | Produite (Piper, voix locale) ; vérification Whisper : voir `.outils/voix/verification-prives.log` | Publiée avec les contenus |
 
@@ -26,17 +26,18 @@ Ce document décrit ce qui a été construit pour vendre les formations, ce qui 
 
 | Collection | Contenu | Lecture | Écriture |
 | --- | --- | --- | --- |
-| `modules` | titre, rang, prix (FCFA), publié | publique | serveur (administration) |
+| `modules` | titre, rang, prix (FCFA), publié | publique | serveur, ou administration avec trace au journal |
 | `parametres/public` | paiements ouverts, contact publié | publique | serveur |
 | `parametres/paiement`, `outils`, `contact` | compte bénéficiaire, conditions MT5, canaux | personne (serveur seul) | serveur |
-| `utilisateurs/{uid}` | nom, e-mail, téléphone, photo, statut | propriétaire | propriétaire (coordonnées seulement) |
-| `progressions/{uid}` | progression d'apprentissage | propriétaire | propriétaire |
+| `utilisateurs/{uid}` | nom, e-mail, téléphone, photo, statut | propriétaire, administration | propriétaire (coordonnées seulement) |
+| `progressions/{uid}` | progression d'apprentissage | propriétaire, administration | propriétaire |
 | `commandes`, `transactions` | Utilisateur → Commande → Transaction | propriétaire | serveur |
-| `droits/{uid}_{module}` | droit d'accès (module acheté) | propriétaire | serveur |
-| `contenus`, `narrations` | chapitres payants, audio | titulaire d'un droit actif | administration |
+| `droits/{uid}_{module}` | droit d'accès (module acheté ou accordé) | propriétaire, administration | serveur, ou administration (accord, révocation) avec trace au journal |
+| `contenus`, `narrations` | chapitres payants, audio | titulaire d'un droit actif, administration | administration |
 | `corriges` | réponses des quiz | administration | administration |
 | `evaluations`, `certificats` | résultats officiels | propriétaire (certificat : par numéro) | serveur |
-| `journalAudit` | qui a fait quoi, quand, pourquoi | administration | serveur, **ajout seul** |
+| `journalAudit` | qui a fait quoi, quand, pourquoi | administration | serveur, ou administration pour la trace de sa propre action ; **ajout seul** |
+| `admins/{uid}` | rôle d'administrateur | son titulaire, administration | serveur ou console Firebase, jamais le navigateur |
 
 - **Fonctions serveur** (`functions/`, région europe-west1) : `etatPaiement`, `initierPaiement`, `verifierPaiement`, `webhookPaiement`, `reconcilier` (toutes les 10 min), `noterQuiz`, `outils`, `envoyerMessage`, `revendiquerAdmin`, `deconnecterPartout`, `admin` (point d'entrée unique de l'administration, rôle vérifié à chaque appel).
 
@@ -73,6 +74,7 @@ Numéros de test (simulation et bac à sable Fapshi) : se terminant par 0 ou 2 �
 npm run test:regles        # règles Firestore (émulateur)
 npm run test:fonctions     # parcours complet côté serveur (émulateurs)
 npm run e2e:emulateurs     # parcours commercial dans le navigateur (site construit dans out-test/)
+npm run e2e:sans-fonctions # administration sans fonctions (NEXT_PUBLIC_EMULATEURS=1 NEXT_PUBLIC_EMULATEURS_SANS_FONCTIONS=1, site dans out-sans-fonctions/)
 npm run contenus:preparer  # fichier de publication des contenus payants (dossier prive/ requis)
 npm run verifier:fuites    # aucun contenu payant dans le site exporté
 npm run voix -- prives     # narration des capsules payantes (audio dans prive/, jamais dans public/)
@@ -105,14 +107,17 @@ Alternatives étudiées : CamPay (≈ 2 % à l'encaissement, 1 % au retrait), No
 
 ## 5. Administration
 
-- **Premier administrateur** : renseigner `ADMIN_EMAILS` (configuration serveur), se connecter avec cette adresse vérifiée, ouvrir `/admin/` et cliquer « Activer mon accès administrateur » (refusé pour toute adresse non listée). Les suivants se nomment depuis Administration → Utilisateurs.
+- **Premier administrateur, sans fonctions** (offre gratuite) : créer son compte sur le site, ouvrir `/admin/` : la page affiche l'identifiant du compte. Dans la console Firebase → Firestore Database → Données, créer la collection `admins` et un document dont l'identifiant est cet identifiant, avec un champ `email` (texte). Recharger `/admin/`. Aucun compte ne peut se nommer lui-même depuis le navigateur : les règles refusent toute écriture dans `admins`.
+- **Premier administrateur, avec fonctions** : renseigner `ADMIN_EMAILS` au déploiement (ne pas l'écrire dans `functions/.env.meridien-academie`, qui est versionné dans le dépôt public), se connecter avec cette adresse vérifiée, ouvrir `/admin/` et cliquer « Activer mon accès administrateur » (refusé pour toute adresse non listée). Les suivants se nomment depuis Administration → Utilisateurs.
+- **Ce que voit un administrateur** : tous les modules payants, sans droit à son nom (règles Firestore) ; les pages du site les affichent « Débloqué ».
+- **Accorder ou révoquer un accès** : Administration → Utilisateurs → rechercher (e-mail, nom ou téléphone) → fiche → « Accorder l'accès » ou « Révoquer ». Un motif est demandé. Sans fonctions, le droit et son entrée au journal s'écrivent dans le même lot : les règles refusent un droit sans trace, une trace d'un autre administrateur, une trace réutilisée ou une heure falsifiée (l'entrée porte l'heure du serveur). Une révocation désactive le droit sans l'effacer.
 - **Modules et prix** : Administration → Modules et prix. « Créer les modules manquants » applique la grille initiale (niveau 2 = 10 000 FCFA, puis +10 000 par niveau) aux seuls modules absents. Chaque changement de prix exige un motif et s'inscrit au journal.
 - **Paiements → Compte bénéficiaire** : prestataire, opérateur, nom du titulaire, compte marchand, numéro de retrait, statut. Ces données restent côté serveur. Les clés d'API, elles, sont dans Secret Manager, jamais en base ni dans le site.
 - **Contact** : aucune coordonnée n'est affichée tant qu'elle n'est pas saisie. Le canal WhatsApp Business est prévu dans `functions/src/contact.ts` (non connecté : il faut un numéro professionnel validé par Meta et un jeton d'API).
 
 ## 6. Mise en service : étapes qui demandent ton intervention
 
-Tant que les fonctions serveur ne sont pas déployées (`NEXT_PUBLIC_FONCTIONS=0` dans `.env.production`), le site ouvre les comptes et la progression synchronisée, et annonce « bientôt » pour les quiz officiels et certificats, le contact, le paiement et l'administration. Après l'étape 5, passer `NEXT_PUBLIC_FONCTIONS=1`.
+Tant que les fonctions serveur ne sont pas déployées (`NEXT_PUBLIC_FONCTIONS=0` dans `.env.production`), le site ouvre les comptes, la progression synchronisée et l'administration des accès, des prix et des contenus ; il annonce « bientôt » pour les quiz officiels et certificats, le contact et le paiement. Après l'étape 5, passer `NEXT_PUBLIC_FONCTIONS=1`.
 
 Chaque étape est réversible sauf mention contraire. Je ne les ai pas faites : elles touchent ton compte, ta sécurité, ton argent ou la publication commerciale.
 
@@ -127,7 +132,7 @@ Chaque étape est réversible sauf mention contraire. Je ne les ai pas faites : 
    firebase functions:secrets:set FAPSHI_WEBHOOK_SECRET
    firebase deploy --only functions
    ```
-   Dans `functions/.env.meridien-academie` : `ADMIN_EMAILS=<ton adresse>`, puis `PAIEMENT_FOURNISSEUR=fapshi` avec `FAPSHI_ENV=sandbox` pour les essais.
+   Au déploiement : `ADMIN_EMAILS=<ton adresse>` (sans la commiter), puis `PAIEMENT_FOURNISSEUR=fapshi` avec `FAPSHI_ENV=sandbox` pour les essais.
 6. **Ouvrir un compte marchand Fapshi** (vérification d'identité avec une pièce camerounaise, ≈ 48 h) ; récupérer les identifiants d'API du bac à sable, déclarer l'URL du webhook (`https://europe-west1-meridien-academie.cloudfunctions.net/webhookPaiement`) et son secret. Faire des essais avec les numéros de test, en administrateur.
 7. **Passer en production** : demander à Fapshi l'activation du paiement direct (sinon `FAPSHI_MODE=lien`), passer `FAPSHI_ENV=live`, redéployer, faire **un vrai paiement de faible montant** depuis ton propre téléphone, vérifier le reçu, l'accès et le journal. Seulement ensuite : Administration → Paramètres → « Paiements ouverts au public ».
 8. **Sauvegarder `prive/`** dans un dépôt GitHub **privé** (ou une sauvegarde chiffrée), puis publier les contenus depuis l'administration.

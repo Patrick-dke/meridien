@@ -19,5 +19,7 @@ export const FAPSHI_API_USER = defineSecret("FAPSHI_API_USER");
 export const FAPSHI_API_KEY = defineSecret("FAPSHI_API_KEY");
 export const FAPSHI_WEBHOOK_SECRET = defineSecret("FAPSHI_WEBHOOK_SECRET");
 export const secretsPaiement = [FAPSHI_API_USER, FAPSHI_API_KEY, FAPSHI_WEBHOOK_SECRET];
+/** Clé de signature des réponses de licence ; la même valeur est compilée dans le robot (voir docs/outils-licences.md). */
+export const LICENCE_SIGNATURE = defineSecret("LICENCE_SIGNATURE");
 
 export const enEmulation = () => process.env.FUNCTIONS_EMULATOR === "true";

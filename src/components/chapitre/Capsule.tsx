@@ -372,7 +372,6 @@ export function Capsule({ titre, scenes, narration }: { titre: string; scenes: S
           onClick={basculer}
           role="presentation"
         >
-          <div className="grille-ciel pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
           <div ref={scene} data-pause={enPause ? "true" : "false"} key={`${index}-${montage}`} className="capsule-scene absolute inset-0 pb-14">
             <VisuelAnime visuel={scenes[index].visuel} precedent={scenes[index - 1]?.visuel} duree={m.fin - m.debut} phrases={phrasesRelatives} decalage={decalage} />
           </div>
@@ -387,7 +386,7 @@ export function Capsule({ titre, scenes, narration }: { titre: string; scenes: S
 
           {repos ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-black/30 to-black/60">
-              <span className="relative flex size-20 items-center justify-center rounded-full bg-brand-solid text-white shadow-[0_0_0_10px_rgb(106_92_246/0.18),0_20px_50px_-10px_rgb(106_92_246/0.8)] transition-transform hover:scale-105">
+              <span className="relative flex size-20 items-center justify-center rounded-full bg-accent text-[#17160f]">
                 <IconeLecture className="ml-1 size-9" />
               </span>
               <span className="rounded-full bg-black/50 px-3 py-1 text-sm text-white/90 backdrop-blur">
@@ -449,7 +448,7 @@ export function Capsule({ titre, scenes, narration }: { titre: string; scenes: S
             type="button"
             onClick={basculer}
             aria-label={etat === "lecture" ? "Mettre en pause" : "Lire la capsule"}
-            className="inline-flex size-11 items-center justify-center rounded-full bg-brand-solid text-white transition-transform hover:bg-[#5f51f3] active:scale-95"
+            className="inline-flex size-11 items-center justify-center rounded-full bg-brand-solid text-on-solid transition-colors hover:bg-[var(--brand-solid-hover)]"
           >
             {etat === "lecture" ? <IconePause className="size-5" /> : <IconeLecture className="ml-0.5 size-5" />}
           </button>

@@ -49,7 +49,8 @@ export function auditer(
   t?: Transaction,
 ) {
   const ref = db.collection("journalAudit").doc();
-  const donnees = { ...entree, date: maintenant() };
+  // Firestore refuse « undefined » : un motif ou des détails absents ne doivent pas faire échouer l'action journalisée.
+  const donnees = { ...Object.fromEntries(Object.entries(entree).filter(([, v]) => v !== undefined)), date: maintenant() };
   if (t) t.set(ref, donnees);
   else return ref.set(donnees);
 }

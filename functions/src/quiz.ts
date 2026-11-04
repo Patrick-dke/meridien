@@ -10,16 +10,21 @@ type Question =
   | { id: string; type: "multiple"; bonnes: number[]; concepts: string[] }
   | { id: string; type: "vraifaux"; reponse: boolean; concepts: string[] }
   | { id: string; type: "association"; paires: unknown[]; concepts: string[] }
-  | { id: string; type: "ordre"; etapes: unknown[]; concepts: string[] };
+  | { id: string; type: "ordre"; etapes: unknown[]; concepts: string[] }
+  | { id: string; type: "graphique"; bonnes: number[]; concepts: string[] }
+  | { id: string; type: "comparaison"; bonne: 0 | 1; concepts: string[] };
 
 type Reponse =
   | { type: "unique"; choix: number | null }
   | { type: "multiple"; choix: number[] }
   | { type: "vraifaux"; valeur: boolean | null }
   | { type: "association"; choix: number[] }
-  | { type: "ordre"; ordre: number[] };
+  | { type: "ordre"; ordre: number[] }
+  | { type: "graphique"; choix: number[] }
+  | { type: "comparaison"; choix: 0 | 1 | null };
 
 export const SEUIL_REUSSITE = 0.8;
+export const TIRAGE_PAR_DEFAUT = 6;
 
 const entiers = (x: unknown): x is number[] => Array.isArray(x) && x.length <= 20 && x.every((v) => Number.isInteger(v));
 
@@ -30,13 +35,16 @@ export function noter(q: Question, r: Reponse | undefined): number {
       return r.type === "unique" && r.choix === q.bonne ? 1 : 0;
     case "vraifaux":
       return r.type === "vraifaux" && r.valeur === q.reponse ? 1 : 0;
-    case "multiple": {
-      if (r.type !== "multiple" || !entiers(r.choix)) return 0;
+    case "multiple":
+    case "graphique": {
+      if ((r.type !== "multiple" && r.type !== "graphique") || !entiers(r.choix)) return 0;
       const choix = [...new Set(r.choix)];
       const justes = choix.filter((c) => q.bonnes.includes(c)).length;
       const fausses = choix.filter((c) => !q.bonnes.includes(c)).length;
       return Math.max(0, (justes - fausses) / q.bonnes.length);
     }
+    case "comparaison":
+      return r.type === "comparaison" && r.choix === q.bonne ? 1 : 0;
     case "association":
       if (r.type !== "association" || !entiers(r.choix) || r.choix.length !== q.paires.length) return 0;
       return r.choix.filter((c, i) => c === i).length / q.paires.length;
@@ -75,11 +83,18 @@ export const noterQuiz = onCall({ region: REGION }, async (req) => {
   if (!corrige?.exists || !reponses) throw new HttpsError("not-found", "Quiz introuvable.");
   const idModule = corrige.get("module") as string;
   if (!(await aAcces(uid, idModule))) throw new HttpsError("permission-denied", "Ce quiz fait partie d'un module que tu n'as pas encore débloqué.");
-  const questions = JSON.parse(corrige.get("quizJson")) as Question[];
+  const banque = JSON.parse(corrige.get("quizJson")) as Question[];
+  // Tirage : la série doit venir de la banque du chapitre, sans doublon, et avoir la taille prévue.
+  const attendues = Math.min(Number(corrige.get("tirage")) || TIRAGE_PAR_DEFAUT, banque.length);
+  const ids = Array.isArray(req.data?.ids) ? (req.data.ids as unknown[]).map(String) : banque.map((q) => q.id);
+  const questions = ids.map((id) => banque.find((q) => q.id === id));
+  if (questions.some((q) => !q) || new Set(ids).size !== ids.length || ids.length < attendues) {
+    throw new HttpsError("invalid-argument", "Série de questions invalide pour ce chapitre.");
+  }
   if (reponses.length !== questions.length) throw new HttpsError("invalid-argument", "Réponds à toutes les questions.");
   await limiter(`quiz:${uid}:${slug}`, 8, 3600, "Tu as fait beaucoup d'essais sur ce quiz. Relis le cours et reviens dans une heure.");
 
-  const r = noterQuizServeur(questions, reponses);
+  const r = noterQuizServeur(questions as Question[], reponses);
   const date = maintenant();
   const ref = db.doc(`evaluations/${uid}_${slug}`);
   await db.runTransaction(async (t) => {

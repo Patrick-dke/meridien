@@ -1,8 +1,9 @@
 rules_version = '2';
 
 // Règles d'accès de Méridien. Principe : le navigateur lit ce qui le concerne et n'écrit que son profil et sa
-// progression. Tout ce qui touche à l'argent, aux droits d'accès, aux évaluations officielles et au journal
-// d'audit est écrit par les fonctions serveur (SDK Admin), qui contournent ces règles.
+// progression. Tout ce qui touche à l'argent, aux évaluations officielles et aux licences est écrit par les
+// fonctions serveur (SDK Admin), qui contournent ces règles. Seule exception : un administrateur peut accorder ou
+// révoquer un accès et régler un prix depuis le navigateur, toujours avec une trace au journal d'audit.
 service cloud.firestore {
   match /databases/{database}/documents {
     function connecte() { return request.auth != null; }
@@ -18,10 +19,37 @@ service cloud.firestore {
     }
     function texte(v, min, max) { return v is string && v.size() >= min && v.size() <= max; }
 
+    // ---- Administration sans fonctions serveur (offre gratuite de Firebase). Un administrateur écrit lui-même un
+    // droit ou un prix, mais seulement dans le même lot qu'une nouvelle entrée du journal d'audit qui le décrit :
+    // l'écriture et sa trace sont indissociables, et la trace porte l'heure du serveur.
+    function entreeJournal(j) { return getAfter(/databases/$(database)/documents/journalAudit/$(j)).data; }
+    function journalise(j, action, cible) {
+      return j is string && j.size() <= 40
+        && !exists(/databases/$(database)/documents/journalAudit/$(j))
+        && existsAfter(/databases/$(database)/documents/journalAudit/$(j))
+        && entreeJournal(j).acteur == request.auth.uid
+        && entreeJournal(j).action == action
+        && entreeJournal(j).cible == cible;
+    }
+
     // ---- Public : catalogue commercial, paramètres affichables, vérification des certificats.
+    function moduleValide(id) {
+      let d = request.resource.data;
+      return id.matches('^[a-z0-9-]{2,60}$')
+        && d.keys().hasOnly(['titre', 'rang', 'ordre', 'gratuit', 'prix', 'devise', 'publie', 'accroche', 'modifieLe', 'modifiePar', 'journal'])
+        && texte(d.titre, 1, 120) && d.rang is int && d.rang >= 1 && d.ordre is int
+        && d.gratuit is bool && d.publie is bool && d.devise == 'XAF'
+        && d.prix is int && d.prix >= 0 && d.prix <= 5000000
+        && (d.gratuit ? d.prix == 0 : (d.prix == 0 || d.prix >= 100))
+        && (!('accroche' in d) || texte(d.accroche, 0, 300))
+        && d.modifiePar == request.auth.uid && d.modifieLe is string
+        && journalise(d.journal, resource == null ? 'module.cree' : 'module.modifie', id);
+    }
     match /modules/{id} {
       allow read: if true;
-      allow write: if false;
+      // Écrits par le serveur ; sans fonctions, par un administrateur, avec la trace du changement au journal.
+      allow create, update: if admin() && moduleValide(id);
+      allow delete: if false;
     }
     match /parametres/public {
       allow read: if true;
@@ -30,6 +58,11 @@ service cloud.firestore {
     match /parametres/{section} {
       // Bénéficiaire, conditions des outils, contact : lus et écrits par l'administration via les fonctions.
       allow read, write: if false;
+    }
+    // Fiches des indicateurs et robots : publiques ; écrites par l'administration via les fonctions.
+    match /catalogueOutils/{id} {
+      allow read: if true;
+      allow write: if false;
     }
     match /certificats/{id} {
       allow get: if true;
@@ -47,7 +80,7 @@ service cloud.firestore {
         && (d.get('photo', null) == null || (d.photo is string && d.photo.size() < 120000 && d.photo.matches('^data:image/(jpeg|webp|png);base64,.*')));
     }
     match /utilisateurs/{uid} {
-      allow read: if moi(uid);
+      allow read: if moi(uid) || admin();
       allow create: if moi(uid)
         && request.resource.data.keys().hasOnly(['nom', 'nomMinuscule', 'email', 'emailMinuscule', 'telephone', 'photo', 'creeLe', 'majLe'])
         && profilValide(request.resource.data);
@@ -59,7 +92,7 @@ service cloud.firestore {
 
     // ---- Progression personnelle (lecture, temps, notes) : écrite par l'apprenant lui-même.
     match /progressions/{uid} {
-      allow read: if moi(uid);
+      allow read: if moi(uid) || admin();
       allow create, update: if moi(uid) && !suspendu()
         && request.resource.data.keys().hasOnly(['etat', 'majLe'])
         && request.resource.data.etat is map
@@ -76,16 +109,50 @@ service cloud.firestore {
       allow read: if connecte() && resource.data.uid == request.auth.uid;
       allow write: if false;
     }
+    // Droit accordé par l'administration (geste commercial, partenaire, paiement vérifié à la main) : à un compte
+    // existant, avec un motif, et journalisé dans le même lot.
+    function droitAccorde(id) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['uid', 'module', 'actif', 'source', 'accordePar', 'accordeLe', 'motif', 'journal'])
+        && d.uid is string && d.module is string && d.module.matches('^[a-z0-9-]{2,60}$')
+        && id == d.uid + '_' + d.module
+        && d.actif == true && d.source == 'administration' && d.accordePar == request.auth.uid
+        && d.accordeLe is string && texte(d.motif, 5, 500)
+        && exists(/databases/$(database)/documents/utilisateurs/$(d.uid))
+        && journalise(d.journal, 'droit.accorde', id);
+    }
+    // Révocation : le droit reste en base, désactivé, avec qui, quand et pourquoi.
+    function droitRevoque(id) {
+      let d = request.resource.data;
+      return resource != null
+        && d.diff(resource.data).affectedKeys().hasOnly(['actif', 'revoqueLe', 'revoquePar', 'motifRevocation', 'journalRevocation'])
+        && d.actif == false && d.revoquePar == request.auth.uid && d.revoqueLe is string
+        && texte(d.motifRevocation, 5, 500)
+        && journalise(d.journalRevocation, 'droit.revoque', id);
+    }
     match /droits/{id} {
       allow read: if connecte() && (resource.data.uid == request.auth.uid || admin());
-      allow write: if false;
+      allow create, update: if admin() && (droitAccorde(id) || droitRevoque(id));
+      allow delete: if false;
     }
     match /evaluations/{id} {
       allow read: if connecte() && resource.data.uid == request.auth.uid;
       allow write: if false;
     }
+    // Résultats d'examen : lus par leur titulaire et l'administration, écrits par les fonctions seulement.
+    // Les tentatives en cours (examensEnCours) contiennent le tirage : aucune règle, donc aucun accès client.
+    match /examens/{id} {
+      allow read: if connecte() && (resource.data.uid == request.auth.uid || admin());
+      allow write: if false;
+    }
     match /demandesOutils/{id} {
-      allow read: if connecte() && resource.data.uid == request.auth.uid;
+      allow read: if connecte() && (resource.data.uid == request.auth.uid || admin());
+      allow write: if false;
+    }
+    // Licences des robots : la clé et les comptes autorisés sont visibles par leur titulaire ; créées et modifiées
+    // par le serveur seulement. Aucune licence ne contient de mot de passe de trading.
+    match /licences/{id} {
+      allow read: if connecte() && (resource.data.uid == request.auth.uid || admin());
       allow write: if false;
     }
 
@@ -110,14 +177,33 @@ service cloud.firestore {
     }
 
     // ---- Administration.
+    // Le premier administrateur se désigne côté serveur (fonction revendiquerAdmin, ou console Firebase sans
+    // fonctions) : aucun compte ne se nomme lui-même depuis le navigateur.
     match /admins/{uid} {
-      allow get: if moi(uid);
+      allow get: if moi(uid) || admin();
       allow write: if false;
     }
+    // Trace d'une écriture faite par un administrateur sans fonctions : elle doit accompagner, dans le même lot,
+    // le droit ou le module qu'elle décrit (pas d'entrée orpheline ni falsifiée).
+    function actionTracee(action, cible, id) {
+      return (action == 'droit.accorde' && getAfter(/databases/$(database)/documents/droits/$(cible)).data.get('journal', '') == id)
+        || (action == 'droit.revoque' && getAfter(/databases/$(database)/documents/droits/$(cible)).data.get('journalRevocation', '') == id)
+        || ((action == 'module.cree' || action == 'module.modifie') && getAfter(/databases/$(database)/documents/modules/$(cible)).data.get('journal', '') == id)
+        || (action == 'contenus.publies' && cible == 'contenus');
+    }
     match /journalAudit/{id} {
-      // Ajout seul, par le serveur : personne ne peut modifier ni effacer une entrée.
+      // Ajout seul : personne ne peut modifier ni effacer une entrée. Le serveur écrit sans passer par ces règles ;
+      // un administrateur n'ajoute que la trace de sa propre action, horodatée par le serveur.
       allow read: if admin();
-      allow write: if false;
+      allow create: if admin()
+        && request.resource.data.keys().hasOnly(['acteur', 'action', 'cible', 'motif', 'details', 'date', 'horodatage'])
+        && request.resource.data.acteur == request.auth.uid
+        && request.resource.data.horodatage == request.time
+        && request.resource.data.date is string
+        && texte(request.resource.data.cible, 1, 200)
+        && (!('motif' in request.resource.data) || texte(request.resource.data.motif, 5, 500))
+        && actionTracee(request.resource.data.action, request.resource.data.cible, id);
+      allow update, delete: if false;
     }
 
     // Tout le reste (messages, limites, simulations…) n'est accessible que par le serveur.

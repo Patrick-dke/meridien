@@ -1,10 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { appeler } from "@/lib/firebase/client";
+import { actionDirecte } from "@/lib/admin/direct";
+import { appeler, fonctionsDisponibles } from "@/lib/firebase/client";
 
-/** Appel d'une action d'administration (fonction `admin`, rôle vérifié côté serveur, écriture journalisée). */
-export const action = <R,>(nom: string, donnees: Record<string, unknown> = {}) => appeler<R>("admin", { action: nom, ...donnees });
+/**
+ * Appel d'une action d'administration : par la fonction `admin` (rôle vérifié côté serveur) quand elle est
+ * déployée, sinon directement dans la base, sous le contrôle des règles Firestore. Chaque écriture est journalisée.
+ */
+export const action = <R,>(nom: string, donnees: Record<string, unknown> = {}) =>
+  fonctionsDisponibles ? appeler<R>("admin", { action: nom, ...donnees }) : actionDirecte<R>(nom, donnees);
 
 export function useAction<R>(nom: string, donnees: Record<string, unknown> = {}) {
   const cle = JSON.stringify(donnees);

@@ -7,13 +7,14 @@ export default function PageRisques() {
   return (
     <PageTexte
       titre="Avertissement sur les risques"
-      maj="26 octobre 2026"
+      maj="2 novembre 2026"
       sections={[
         {
           titre: "Un site d'apprentissage, pas un conseil",
           paragraphes: [
-            "Méridien est une plateforme pédagogique gratuite. Elle ne fournit aucun conseil en investissement personnalisé, aucune recommandation d'achat ou de vente, aucun signal de trading et aucune gestion de compte.",
-            "Les calculateurs effectuent des calculs exacts à partir des hypothèses que tu saisis ; ils ne prédisent rien sur l'évolution des marchés.",
+            "Méridien est une plateforme de formation. Elle ne fournit aucun conseil en investissement personnalisé, aucune recommandation d'achat ou de vente, aucun signal de trading et aucune gestion de compte.",
+            "Les calculateurs effectuent des calculs exacts à partir des hypothèses que tu saisis ; ils ne prédisent rien sur l'évolution des marchés. Le compte d'entraînement rejoue un marché synthétique : ses résultats ne disent rien de ce que tu obtiendrais sur un marché réel.",
+            "Les indicateurs et robots Méridien appliquent des règles ; ils ne garantissent aucun résultat. Teste-les d'abord sur un compte de démonstration.",
           ],
         },
         {

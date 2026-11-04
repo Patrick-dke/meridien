@@ -13,6 +13,8 @@ import { Vignette } from "@/components/ui/Vignette";
 import { chapitre, chapitresPublies, emplacement, fiche, parcours, suivantDansParcours } from "@/content";
 import { libellesMarches, libellesStrategies } from "@/content/identite";
 import { narration } from "@/content/narrations";
+import { capsules } from "@/content/verifier";
+import { identifiantNarration } from "@/lib/narration";
 import { moduleDuChapitre, offre } from "@/content/offre";
 import { typographie } from "@/lib/typographie";
 
@@ -42,7 +44,8 @@ export default async function PageChapitre({ params }: PageProps<"/chapitre/[slu
   const suivant = suivantDansParcours(slug);
   const rangParcours = parcours.indexOf(slug);
 
-  const etapes = construireEtapes({ c, narration: narration(slug), suivant: suivant ? { slug: suivant.slug, titre: suivant.titre } : null });
+  const narrations = capsules(c).map((_, i) => narration(identifiantNarration(slug, i)));
+  const etapes = construireEtapes({ c, narrations, suivant: suivant ? { slug: suivant.slug, titre: suivant.titre } : null });
 
   const f = fiche(slug)!;
   return (
@@ -79,7 +82,9 @@ export default async function PageChapitre({ params }: PageProps<"/chapitre/[slu
               <Puce>{libellesStrategies[f.strategie]}</Puce>
               <Puce>{f.marches.length ? f.marches.map((m) => libellesMarches[m]).join(", ") : "Tous les marchés"}</Puce>
             </div>
-            <h1 className="text-3xl font-semibold leading-tight text-ink sm:text-[2.6rem]">{typographie(c.titre)}</h1>
+            <h1 className="text-3xl font-semibold leading-tight text-ink sm:text-[2.6rem]" style={{ viewTransitionName: `chapitre-${slug}` }}>
+              {typographie(c.titre)}
+            </h1>
             <p className="mt-2 text-lg text-ink-2">{typographie(c.sousTitre)}</p>
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-3">
               <span className="inline-flex items-center gap-1.5">
@@ -145,7 +150,9 @@ function ChapitrePayant({ slug }: { slug: string }) {
             </Puce>
             <Puce>{libellesStrategies[f.strategie]}</Puce>
           </div>
-          <h1 className="text-3xl font-semibold leading-tight text-ink sm:text-[2.6rem]">{typographie(f.titre)}</h1>
+          <h1 className="text-3xl font-semibold leading-tight text-ink sm:text-[2.6rem]" style={{ viewTransitionName: `chapitre-${slug}` }}>
+            {typographie(f.titre)}
+          </h1>
           <p className="mt-2 text-lg text-ink-2">{typographie(m.accroche)}</p>
         </div>
       </header>

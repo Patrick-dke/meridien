@@ -7,13 +7,13 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Méridien — Académie de trading",
     short_name: "Méridien",
-    description: "Apprendre à lire les marchés avec méthode, sans argent réel et sans promesse de gains.",
+    description: "Formation au trading en huit modules. Introduction gratuite, modules suivants à l'unité.",
     lang: "fr",
     start_url: `${basePath}/`,
     scope: `${basePath}/`,
     display: "standalone",
-    background_color: "#0a0d13",
-    theme_color: "#0a0d13",
+    background_color: "#f4f2ed",
+    theme_color: "#f4f2ed",
     categories: ["education", "finance"],
     icons: [
       { src: `${basePath}/icons/icon-192.png`, sizes: "192x192", type: "image/png" },

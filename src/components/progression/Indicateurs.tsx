@@ -38,8 +38,16 @@ export function ProgressionListe({ slugs, libelle }: { slugs: string[]; libelle:
   );
 }
 
-/** Bouton « Reprendre » si une progression existe, sinon « Commencer ». */
-export function BoutonReprendre({ parcours, titres }: { parcours: string[]; titres: Record<string, string> }) {
+/** « Reprendre le cours » si une progression existe, sinon « Commencer » l'introduction gratuite. */
+export function BoutonReprendre({
+  parcours,
+  titres,
+  variante = "primaire",
+}: {
+  parcours: string[];
+  titres: Record<string, string>;
+  variante?: "primaire" | "secondaire";
+}) {
   const p = useProgression();
   const suivant =
     (p.dernierChapitre && p.chapitres[p.dernierChapitre]?.statut !== "termine" ? p.dernierChapitre : undefined) ??
@@ -47,15 +55,15 @@ export function BoutonReprendre({ parcours, titres }: { parcours: string[]; titr
   const commence = Object.keys(p.chapitres).length > 0;
   if (!commence || !suivant) {
     return (
-      <Link href="/commencer/" className="btn btn-primaire btn-grand">
-        Commencer sans compte
+      <Link href="/parcours/premiers-pas/" className={`btn btn-${variante} btn-grand`}>
+        Commencer mon parcours
       </Link>
     );
   }
   return (
-    <Link href={`/chapitre/${suivant}/`} className="btn btn-primaire btn-grand !flex-col !items-start !gap-0">
-      <span className="text-xs font-medium text-white/80">Reprendre</span>
-      <span className="max-w-[16rem] truncate text-base font-semibold">{titres[suivant] ?? "Mon parcours"}</span>
+    <Link href={`/chapitre/${suivant}/`} className={`btn btn-${variante} btn-grand max-w-full !flex-col !items-start !gap-0`}>
+      <span className={`text-xs font-medium ${variante === "primaire" ? "text-on-solid/75" : "text-ink-3"}`}>Reprendre le cours</span>
+      <span className="max-w-[min(16rem,100%)] truncate text-base font-semibold">{titres[suivant] ?? "Mon parcours"}</span>
     </Link>
   );
 }
@@ -78,20 +86,11 @@ export function BoutonHorsLigne({ chemins }: { chemins: string[] }) {
   };
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <button
-        type="button"
-        onClick={lancer}
-        disabled={etat === "encours"}
-        className="rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium text-ink hover:border-ink-3 disabled:opacity-60"
-      >
-        {etat === "encours" ? "Téléchargement…" : "Rendre le parcours disponible hors ligne"}
+      <button type="button" onClick={lancer} disabled={etat === "encours"} className="btn btn-secondaire">
+        {etat === "encours" ? "Téléchargement…" : "Télécharger pour le hors-ligne"}
       </button>
       <span className="text-sm text-ink-3" aria-live="polite">
-        {etat === "ok"
-          ? "C'est fait : les chapitres s'ouvriront même sans connexion."
-          : etat === "impossible"
-            ? "Impossible pour l'instant : recharge la page une fois, puis réessaie."
-            : null}
+        {etat === "ok" ? "Disponible hors ligne." : etat === "impossible" ? "Téléchargement impossible. Recharge la page, puis réessaie." : null}
       </span>
     </div>
   );

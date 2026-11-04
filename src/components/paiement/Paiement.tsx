@@ -167,7 +167,8 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
     const numero = normaliserTelephone(telephone);
     if (!numero) return setErreur("Numéro camerounais attendu : 9 chiffres commençant par 6.");
     const probable = operateurProbable(numero);
-    if (probable && probable !== operateur) return setErreur(`Ce numéro semble être un numéro ${probable === "mtn" ? "MTN" : "Orange"}. Change d'opérateur ou de numéro.`);
+    if (probable && probable !== operateur)
+      return setErreur(`Ce numéro semble être un numéro ${probable === "mtn" ? "MTN" : "Orange"}. Change d'opérateur ou de numéro.`);
     setErreur(null);
     setEnvoi(true);
     try {
@@ -196,7 +197,9 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
       {serveur.environnement === "test" ? (
         <div className="mb-5 rounded-xl border border-warn/60 bg-warn/10 px-4 py-3 text-sm text-ink">
           <p className="font-semibold text-warn">Environnement de test : aucun argent réel ne circule.</p>
-          <p className="mt-1 text-ink-2">Numéros de test : se terminant par 0 ou 2, le paiement réussit ; par 1 ou 3, il échoue ; 6xxxxxx09 expire. Exemple : 670 00 00 00.</p>
+          <p className="mt-1 text-ink-2">
+            Numéros de test : se terminant par 0 ou 2, le paiement réussit ; par 1 ou 3, il échoue ; 6xxxxxx09 expire. Exemple : 670 00 00 00.
+          </p>
         </div>
       ) : null}
       <Etapes actuelle={etape} />
@@ -205,6 +208,7 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
         <div className="min-w-0">
           <p className="text-xs text-ink-3">Module</p>
           <p className="truncate font-semibold text-ink">{m.titre}</p>
+          <p className="text-xs text-ink-3">Paiement unique, accès sans limite de durée</p>
         </div>
         <p className="shrink-0 text-lg font-semibold text-ink">{prix !== null ? formaterPrix(prix) : "…"}</p>
       </div>
@@ -260,8 +264,8 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
           <p className="flex gap-2 rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-ink-2">
             <IconeCadenas className="mt-0.5 size-4 shrink-0 text-ok" />
             <span>
-              Tu valideras le paiement <strong className="text-ink">sur ton téléphone</strong>, avec ton code secret, dans la fenêtre {operateur === "mtn" ? "de MTN" : "d'Orange"}. Méridien ne te demandera jamais ton
-              code secret.
+              Tu valideras le paiement <strong className="text-ink">sur ton téléphone</strong>, avec ton code secret, dans la fenêtre{" "}
+              {operateur === "mtn" ? "de MTN" : "d'Orange"}. Méridien ne te demandera jamais ton code secret.
             </span>
           </p>
           {erreur ? <Alerte>{erreur}</Alerte> : null}
@@ -269,12 +273,21 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
             {envoi ? <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" /> : null}
             Payer {prix !== null ? formaterPrix(prix) : ""}
           </button>
+          <p className="text-center text-xs text-ink-3">
+            Rien n&apos;est prélevé ensuite.{" "}
+            <Link href="/legal/conditions/" className="underline underline-offset-2">
+              Conditions de vente
+            </Link>
+          </p>
         </form>
       ) : null}
 
       {phase === "attente" && operateur ? (
         <div className="text-center" aria-live="polite">
-          <div className="mx-auto grid size-20 place-items-center rounded-full border-4 border-brand/30 border-t-brand motion-safe:animate-spin" aria-hidden="true" />
+          <div
+            className="mx-auto grid size-20 place-items-center rounded-full border-4 border-brand/30 border-t-brand motion-safe:animate-spin"
+            aria-hidden="true"
+          />
           <h2 className="mt-5 text-xl font-semibold text-ink">Valide le paiement sur ton téléphone</h2>
           {tx?.lien ? (
             <p className="mt-2 text-ink-2">
@@ -288,7 +301,8 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
               <li>1. Une demande de paiement arrive sur ton téléphone dans quelques secondes.</li>
               <li>2. Vérifie le montant, puis saisis ton code secret dans la fenêtre de l&apos;opérateur.</li>
               <li>
-                3. Rien ne s&apos;affiche ? Compose <strong className="font-mono text-ink">{OPERATEURS[operateur].ussd}</strong> pour retrouver l&apos;opération en attente.
+                3. Rien ne s&apos;affiche ? Compose <strong className="font-mono text-ink">{OPERATEURS[operateur].ussd}</strong> pour retrouver l&apos;opération
+                en attente.
               </li>
             </ol>
           )}
@@ -300,7 +314,8 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
         <div className="space-y-4 text-center">
           <h2 className="text-xl font-semibold text-ink">Confirmation toujours en attente</h2>
           <p className="text-ink-2">
-            L&apos;opérateur n&apos;a pas encore répondu. Si tu as validé, ton accès s&apos;ouvrira automatiquement dès la confirmation : tu peux fermer cette page. Suis l&apos;état dans Mon compte → Paiements.
+            L&apos;opérateur n&apos;a pas encore répondu. Si tu as validé, ton accès s&apos;ouvrira automatiquement dès la confirmation : tu peux fermer cette
+            page. Suis l&apos;état dans Mon compte → Paiements.
           </p>
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
             <button type="button" className="btn btn-secondaire" onClick={() => setPhase("attente")}>
@@ -319,7 +334,7 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
             <IconeCoche className="size-8" />
           </span>
           <h2 className="mt-4 text-2xl font-semibold text-ink">Paiement confirmé</h2>
-          <p className="mt-2 text-ink-2">« {m.titre} » est débloqué. Le reçu est dans Mon compte → Paiements.</p>
+          <p className="mt-2 text-ink-2">C&apos;est parti : « {m.titre} » est débloqué. Ton reçu t&apos;attend dans Mon compte → Paiements.</p>
           <Link href={`/chapitre/${m.chapitres[0]}/`} className="btn btn-primaire btn-grand mt-6 w-full sm:w-auto">
             Commencer le module
           </Link>
@@ -333,8 +348,10 @@ function Paiement({ m, serveur, dejaAcquis, telephoneProfil }: { m: ModuleOffre;
           </span>
           <h2 className="mt-4 text-2xl font-semibold text-ink">{phase === "expire" ? "Demande expirée" : "Paiement non abouti"}</h2>
           <p className="mt-2 text-ink-2">
-            {phase === "expire" ? "La demande n'a pas été validée à temps." : (motif ?? "L'opérateur a refusé ou annulé l'opération (solde insuffisant, code incorrect ou demande rejetée).")} Aucun accès n&apos;a été accordé
-            et, si rien n&apos;a été validé, rien n&apos;a été prélevé.
+            {phase === "expire"
+              ? "La demande n'a pas été validée à temps."
+              : (motif ?? "L'opérateur a refusé ou annulé l'opération (solde insuffisant, code incorrect ou demande rejetée).")}{" "}
+            Aucun accès n&apos;a été accordé et, si rien n&apos;a été validé, rien n&apos;a été prélevé.
           </p>
           <button type="button" onClick={recommencer} className="btn btn-primaire btn-grand mt-6 w-full sm:w-auto">
             Réessayer
@@ -359,7 +376,9 @@ function VerifierEmail() {
   return (
     <div className="carte space-y-4 p-5 sm:p-7">
       <h2 className="text-xl font-semibold text-ink">Vérifie d&apos;abord ton adresse e-mail</h2>
-      <p className="text-ink-2">Pour protéger ton achat, le paiement s&apos;ouvre une fois ton adresse confirmée. Clique sur le lien reçu à l&apos;inscription, puis reviens ici.</p>
+      <p className="text-ink-2">
+        Pour protéger ton achat, le paiement s&apos;ouvre une fois ton adresse confirmée. Clique sur le lien reçu à l&apos;inscription, puis reviens ici.
+      </p>
       {etat ? <Alerte ton="info">{etat}</Alerte> : null}
       <div className="flex flex-col gap-2 sm:flex-row">
         <button type="button" className="btn btn-primaire" onClick={() => void rafraichirProfil()}>

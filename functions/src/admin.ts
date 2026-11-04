@@ -4,6 +4,10 @@ import { secretsPaiement } from "./config";
 import { fournisseurActif, verifierAupresDuPrestataire } from "./paiement/service";
 import { reconcilierMaintenant } from "./paiement";
 import { masquer, normaliserTelephone } from "./telephone";
+import { lireConfig as lireConfigExamen } from "./examens/regles";
+import { outilDuCatalogue, OutilSchema } from "./catalogue";
+import { cleUnique, creerLicence } from "./licences";
+import { normaliserNumeroCompte, normaliserServeur } from "./licences/regles";
 
 /**
  * Grille tarifaire initiale, appliquée seulement aux modules qui n'ont pas encore de prix :
@@ -18,6 +22,26 @@ function motifObligatoire(v: unknown) {
   const m = texte(v, 500);
   if (m.length < 5) throw new HttpsError("invalid-argument", "Indique un motif (5 caractères au moins) : il est inscrit au journal.");
   return m;
+}
+
+/** Date ISO ou null (« sans expiration »). */
+function dateOuNull(v: unknown) {
+  if (v === null || v === undefined || v === "") return null;
+  const t = new Date(String(v));
+  if (Number.isNaN(t.getTime())) throw new HttpsError("invalid-argument", "Date d'expiration invalide.");
+  return t.toISOString();
+}
+
+/** Comptes MetaTrader 5 autorisés : numéro et serveur, rien d'autre (aucun mot de passe n'est jamais stocké). */
+function lireComptes(v: unknown) {
+  const liste = Array.isArray(v) ? v.slice(0, 10) : [];
+  return liste.map((c) => {
+    const x = (c ?? {}) as Record<string, unknown>;
+    const numero = normaliserNumeroCompte(x.numero);
+    const serveur = normaliserServeur(x.serveur);
+    if (!numero || !serveur) throw new HttpsError("invalid-argument", "Compte invalide : numéro (chiffres) et serveur du courtier.");
+    return { numero, serveur };
+  });
 }
 
 type Contexte = { acteur: string; d: Record<string, unknown> };
@@ -211,13 +235,20 @@ const actions: Record<string, Action> = {
 
   /* ---------------- Paramètres ---------------- */
   async "parametres.lire"() {
-    const [pub, paiement, outils, contact] = await db.getAll(db.doc("parametres/public"), db.doc("parametres/paiement"), db.doc("parametres/outils"), db.doc("parametres/contact"));
+    const [pub, paiement, outils, contact, examens] = await db.getAll(
+      db.doc("parametres/public"),
+      db.doc("parametres/paiement"),
+      db.doc("parametres/outils"),
+      db.doc("parametres/contact"),
+      db.doc("parametres/examens"),
+    );
     const f = fournisseurActif();
     return {
       public: pub.data() ?? {},
       paiement: paiement.data() ?? {},
       outils: outils.data() ?? {},
       contact: contact.data() ?? {},
+      examens: lireConfigExamen(examens.data()),
       serveur: { fournisseur: f?.nom ?? "aucun", environnement: f?.environnement ?? null },
     };
   },
@@ -259,6 +290,14 @@ const actions: Record<string, Action> = {
         };
         await db.doc("parametres/outils").set(donnees, { merge: true });
         journal = donnees;
+        break;
+      }
+      case "examens": {
+        const c = lireConfigExamen(v);
+        if (c.connaissance + c.application + c.transfert < 5) throw new HttpsError("invalid-argument", "Un examen compte au moins 5 questions.");
+        donnees = { ...c, modifieLe: maintenant(), modifiePar: acteur };
+        await db.doc("parametres/examens").set(donnees);
+        journal = c;
         break;
       }
       case "contact": {
@@ -344,8 +383,134 @@ const actions: Record<string, Action> = {
     const decision = d.decision === "accordee" ? "accordee" : d.decision === "refusee" ? "refusee" : null;
     if (!decision) throw new HttpsError("invalid-argument", "Décision attendue : accordee ou refusee.");
     const note = texte(d.note, 1000);
-    await db.doc(`demandesOutils/${id}`).update({ statut: decision, noteAdmin: note || null, traiteLe: maintenant(), traitePar: acteur });
-    await auditer({ acteur, action: `outil.${decision}`, cible: id, motif: note });
+    const ref = db.doc(`demandesOutils/${id}`);
+    const demande = await ref.get();
+    if (!demande.exists) throw new HttpsError("not-found", "Demande introuvable.");
+    if (demande.get("statut") === "accordee") throw new HttpsError("failed-precondition", "Demande déjà accordée.");
+    const expireLe = dateOuNull(d.expireLe);
+    const maj: Record<string, unknown> = { statut: decision, noteAdmin: note || null, traiteLe: maintenant(), traitePar: acteur };
+    if (decision === "accordee") {
+      const outil = await outilDuCatalogue(String(demande.get("outil")));
+      if (outil?.categorie === "robot") {
+        // Robot : la licence reprend les comptes de la demande ; l'installation autonome permet l'ajout au premier lancement.
+        const details = (demande.get("details") ?? {}) as { comptes?: { numero: string; serveur: string }[]; installation?: string };
+        const comptes = details.comptes ?? [];
+        maj.licence = await creerLicence({
+          uid: demande.get("uid"),
+          email: demande.get("email"),
+          outil: outil.id,
+          comptes,
+          maxComptes: Number(d.maxComptes) || Math.max(1, comptes.length),
+          activationAuto: details.installation === "autonome",
+          expireLe,
+          note,
+          demande: id,
+          acteur,
+        });
+      } else {
+        // Indicateur TradingView : l'accès s'ouvre à la main sur TradingView (« Manage access ») avant de valider ici.
+        const details = (demande.get("details") ?? {}) as { identifiantTradingView?: string };
+        maj.acces = { identifiantTradingView: details.identifiantTradingView ?? null, expireLe, ouvertLe: maintenant() };
+      }
+    }
+    await ref.update(maj);
+    await auditer({ acteur, action: `outil.${decision}`, cible: id, motif: note, ...(maj.licence ? { details: { licence: maj.licence } } : {}) });
+    return { ok: true, licence: maj.licence ?? null };
+  },
+
+  /* ---------------- Catalogue des outils ---------------- */
+  async "catalogue.lister"() {
+    return (await db.collection("catalogueOutils").orderBy("ordre").get()).docs.map((x) => ({ ...x.data(), id: x.id }));
+  },
+  async "catalogue.enregistrer"({ acteur, d }) {
+    const r = OutilSchema.safeParse(d.outil);
+    if (!r.success) throw new HttpsError("invalid-argument", `Fiche invalide : ${r.error.issues.map((i) => `${i.path.join(".")} ${i.message}`).join(" ; ")}`);
+    const { id, ...fiche } = r.data;
+    const avant = await db.doc(`catalogueOutils/${id}`).get();
+    await db.doc(`catalogueOutils/${id}`).set({ ...fiche, modifieLe: maintenant(), modifiePar: acteur });
+    await auditer({
+      acteur,
+      action: avant.exists ? "catalogue.modification" : "catalogue.creation",
+      cible: id,
+      details: { statut: fiche.statut, prix: fiche.prix, prixAvant: avant.get("prix") ?? null, modesAcces: fiche.modesAcces, publie: fiche.publie },
+      motif: texte(d.motif),
+    });
+    return { ok: true };
+  },
+
+  /* ---------------- Licences ---------------- */
+  async "examens.lister"({ d }) {
+    const idMod = texte(d.module, 60);
+    // Filtre par module trié en mémoire : pas d'index composite à maintenir pour quelques centaines de résultats.
+    const q = idMod ? db.collection("examens").where("module", "==", idMod).limit(500) : db.collection("examens").orderBy("date", "desc").limit(200);
+    const lignes = (await q.get()).docs.map((x) => x.data()).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const uids = [...new Set(lignes.map((l) => l.uid as string))];
+    const profils = uids.length ? await db.getAll(...uids.map((u) => db.doc(`utilisateurs/${u}`))) : [];
+    const noms = new Map(profils.map((p) => [p.id, (p.get("nom") as string | undefined) ?? (p.get("email") as string | undefined) ?? p.id]));
+    return lignes.map((l) => ({
+      uid: l.uid,
+      nom: noms.get(l.uid) ?? l.uid,
+      module: l.module,
+      meilleurScore: l.meilleurScore,
+      dernierScore: l.dernierScore,
+      tentatives: l.tentatives,
+      reussi: l.reussi,
+      aRevoir: ((l.aRevoir as { slug: string }[] | undefined) ?? []).map((c) => c.slug),
+      date: l.date,
+    }));
+  },
+  async "licences.lister"({ d }) {
+    const uid = texte(d.uid, 128);
+    const q = uid ? db.collection("licences").where("uid", "==", uid) : db.collection("licences").orderBy("creeLe", "desc").limit(200);
+    return (await q.get()).docs.map((x) => ({ id: x.id, ...x.data() }));
+  },
+  async "licences.creer"({ acteur, d }) {
+    let uid = texte(d.uid, 128);
+    const email = texte(d.email, 200).toLowerCase();
+    if (!uid && email) uid = (await auth.getUserByEmail(email).catch(() => null))?.uid ?? "";
+    if (!uid) throw new HttpsError("invalid-argument", "Compte introuvable : indique l'adresse ou l'identifiant de l'utilisateur.");
+    const outil = await outilDuCatalogue(texte(d.outil, 40));
+    if (!outil || outil.categorie !== "robot") throw new HttpsError("invalid-argument", "Les licences concernent les robots MetaTrader 5.");
+    const id = await creerLicence({
+      uid,
+      email: email || (await auth.getUser(uid).catch(() => null))?.email || null,
+      outil: outil.id,
+      comptes: lireComptes(d.comptes),
+      maxComptes: Number(d.maxComptes) || 1,
+      activationAuto: d.activationAuto === true,
+      expireLe: dateOuNull(d.expireLe),
+      note: texte(d.note, 500) || null,
+      acteur,
+    });
+    return { id };
+  },
+  async "licences.modifier"({ acteur, d }) {
+    const id = texte(d.id, 64);
+    const ref = db.doc(`licences/${id}`);
+    const avant = await ref.get();
+    if (!avant.exists) throw new HttpsError("not-found", "Licence introuvable.");
+    const motif = motifObligatoire(d.motif);
+    const maj: Record<string, unknown> = { majLe: maintenant(), majPar: acteur };
+    if (d.statut !== undefined) {
+      if (!["active", "suspendue", "revoquee"].includes(String(d.statut))) throw new HttpsError("invalid-argument", "Statut : active, suspendue ou revoquee.");
+      if (avant.get("statut") === "revoquee") throw new HttpsError("failed-precondition", "Une licence révoquée ne se réactive pas : crée-en une nouvelle.");
+      maj.statut = d.statut;
+    }
+    if (d.comptes !== undefined) maj.comptes = lireComptes(d.comptes).map((c) => ({ ...c, ajouteLe: maintenant() }));
+    if (d.maxComptes !== undefined) maj.maxComptes = Math.max(1, Math.min(10, Number(d.maxComptes) || 1));
+    if (d.activationAuto !== undefined) maj.activationAuto = d.activationAuto === true;
+    if (d.expireLe !== undefined) maj.expireLe = dateOuNull(d.expireLe);
+    if (d.note !== undefined) maj.note = texte(d.note, 500) || null;
+    if (d.telechargement !== undefined) {
+      const lien = texte(d.telechargement, 500);
+      if (lien && !/^https:\/\/[^\s]+$/.test(lien)) throw new HttpsError("invalid-argument", "Lien de téléchargement : une adresse https:// attendue.");
+      maj.telechargement = lien || null;
+    }
+    const regeneree = d.regenerer === true;
+    if (regeneree) maj.cle = await cleUnique();
+    await ref.update(maj);
+    const journal = Object.fromEntries(Object.entries(maj).filter(([k]) => !["majLe", "majPar", "cle"].includes(k)));
+    await auditer({ acteur, action: "licence.modification", cible: id, details: { ...journal, cleRegeneree: regeneree }, motif });
     return { ok: true };
   },
 

@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
 
 test("le calculateur de position donne 10 puis 20 actions selon le stop", async ({ page }) => {
-  await page.goto("/outils/");
+  await page.goto("/pratique/#position");
   const position = page.locator("#position");
   await expect(position.getByText("Quantité (arrondie à l'unité inférieure)").locator("..")).toContainText("10");
   await position.getByLabel("Prix du stop loss").fill("49");
   await expect(position.getByText("Quantité (arrondie à l'unité inférieure)").locator("..")).toContainText("20");
   await position.getByLabel("Prix du stop loss").fill("abc");
-  await expect(position.getByText(/Renseignez tous les champs/)).toBeVisible();
+  await expect(position.getByText(/Renseigne tous les champs/)).toBeVisible();
 });
 
 test("le calculateur de rendement/risque refuse un plan incohérent", async ({ page }) => {
-  await page.goto("/outils/");
+  await page.goto("/pratique/#rendement-risque");
   const rr = page.locator("#rendement-risque");
   await expect(rr.getByText("Ratio rendement/risque").locator("..")).toContainText("2,00 R");
   await rr.getByLabel("Stop loss").fill("52");
@@ -19,10 +19,24 @@ test("le calculateur de rendement/risque refuse un plan incohérent", async ({ p
 });
 
 test("le calculateur d'espérance donne la probabilité exacte de série de pertes", async ({ page }) => {
-  await page.goto("/outils/");
+  await page.goto("/pratique/#esperance");
   const e = page.locator("#esperance");
   await expect(e.getByText("Espérance par trade").locator("..")).toContainText("+0,20 R");
   await expect(e.getByText("Probabilité d'au moins 6 pertes d'affilée").locator("..")).toContainText("87,3 %");
+});
+
+test("les anciennes adresses des calculateurs mènent à la pratique", async ({ page }) => {
+  await page.goto("/outils/#pips");
+  await expect(page).toHaveURL(/\/pratique\/#pips$/);
+  await expect(page.getByRole("tab", { name: "Calculateurs" })).toHaveAttribute("aria-selected", "true");
+});
+
+test("la vitrine présente chaque outil avec ses conditions, sans mot de passe demandé", async ({ page }) => {
+  await page.goto("/outils/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Indicateurs et robots");
+  for (const titre of ["Catégorie", "Plateforme", "Statut"]) await expect(page.getByText(titre, { exact: true }).first()).toBeVisible();
+  await expect(page.getByText(/Ce que la licence ne fait jamais/)).toBeVisible();
+  await expect(page.locator('input[type="password"]')).toHaveCount(0);
 });
 
 test("la recherche trouve un terme et y mène", async ({ page, isMobile }) => {

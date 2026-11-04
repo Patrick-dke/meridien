@@ -75,7 +75,7 @@ export function Commencer() {
           </li>
         </ul>
         <div className="flex flex-wrap gap-3">
-          <Link href="/chapitre/quest-ce-que-le-trading/" className="rounded-xl bg-brand-solid px-5 py-3 font-semibold text-white hover:brightness-110">
+          <Link href="/chapitre/quest-ce-que-le-trading/" className="btn btn-primaire btn-grand">
             Commencer le chapitre 1
           </Link>
           <Link href="/parcours/premiers-pas/" className="rounded-xl border border-line-strong px-5 py-3 font-medium text-ink hover:border-ink-3">
@@ -100,7 +100,7 @@ export function Commencer() {
       <Groupe legende="Ton niveau" options={niveaux} valeur={niveau} onChange={setNiveau} />
       <Groupe legende="Ton temps disponible" options={temps} valeur={rythme} onChange={setRythme} />
       <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" disabled={!complet} className="rounded-xl bg-brand-solid px-6 py-3 font-semibold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40">
+        <button type="submit" disabled={!complet} className="btn btn-primaire btn-grand">
           Voir mon point de départ
         </button>
         <Link href="/chapitre/quest-ce-que-le-trading/" className="text-sm text-ink-2 hover:text-ink">

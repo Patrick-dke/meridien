@@ -5,8 +5,8 @@ test("un débutant suit l'accueil personnalisé jusqu'au quiz, qui demande un co
   // La validation par le quiz, avec un compte, est testée dans e2e/emulateurs (environnement de test).
   test.setTimeout(60_000);
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Apprendre à lire les marchés avec méthode.");
-  await page.getByRole("link", { name: "Commencer sans compte" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Comprends les marchés. Construis ta méthode. Passe à la pratique.");
+  await page.getByRole("link", { name: "Trouver mon point de départ" }).click();
 
   await expect(page).toHaveURL(/\/commencer\/$/);
   await page.getByText("Découvrir", { exact: true }).click();
@@ -46,7 +46,7 @@ test("une capsule se lit, se met en pause et propose sa transcription", async ({
   await page.getByRole("button", { name: "Scène suivante" }).click();
   await page.getByRole("button", { name: "Transcription" }).click();
   await expect(page.getByText("Transcription", { exact: true }).last()).toBeVisible();
-  await expect(page.getByText(/Tu risques 2,20 euros par action/).first()).toBeVisible();
+  await expect(page.getByText(/Tu risques 2 euros 20 par action/).first()).toBeVisible();
 });
 
 test("un terme du glossaire s'ouvre dans le cours et se ferme avec Échap", async ({ page }) => {

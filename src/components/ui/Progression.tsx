@@ -1,7 +1,4 @@
-/**
- * Jauges du méridien. Le dégradé iris → cyan est défini une seule fois dans la mise en page (#degrade-meridien).
- * L'anneau se remplit au premier affichage (animation CSS) puis suit la valeur (transition).
- */
+/** Jauges du méridien : un trait safran sur un fond de filet. L'anneau suit sa valeur par une courte transition. */
 export function Anneau({
   valeur,
   taille = 56,
@@ -16,7 +13,7 @@ export function Anneau({
   epaisseur?: number;
   libelle: string;
   children?: React.ReactNode;
-  /** Couleur unie à la place du dégradé (par exemple l'or de la maîtrise). */
+  /** Couleur du tracé, safran par défaut. */
   teinte?: string;
 }) {
   const v = Math.max(0, Math.min(1, valeur));
@@ -36,13 +33,11 @@ export function Anneau({
           cy={taille / 2}
           r={r}
           fill="none"
-          stroke={teinte ?? "url(#degrade-meridien)"}
+          stroke={teinte ?? "var(--jauge)"}
           strokeWidth={epaisseur}
-          strokeLinecap="round"
           strokeDasharray={circ}
           strokeDashoffset={circ * (1 - v)}
-          className="anneau-trace"
-          style={{ ["--circ" as string]: circ, transition: "stroke-dashoffset 900ms var(--ease-out-soft)" }}
+          style={{ transition: "stroke-dashoffset 400ms var(--ease-out-soft)" }}
         />
       </svg>
       {children ? <span className="absolute inset-0 flex items-center justify-center">{children}</span> : null}
@@ -66,7 +61,7 @@ export function Niveau({ niveau, className = "" }: { niveau: number; className?:
     <span className={`inline-flex items-center gap-1.5 ${className}`}>
       <span className="inline-flex items-end gap-[3px]" aria-hidden="true">
         {[1, 2, 3, 4, 5].map((n) => (
-          <span key={n} className={`w-[4px] rounded-full ${n <= niveau ? "bg-brand" : "bg-line-strong"}`} style={{ height: 5 + n * 2 }} />
+          <span key={n} className={`w-[4px] ${n <= niveau ? "bg-ink" : "bg-line-strong"}`} style={{ height: 5 + n * 2 }} />
         ))}
       </span>
       <span className="text-xs text-ink-3">Niveau {niveau}</span>
@@ -74,14 +69,13 @@ export function Niveau({ niveau, className = "" }: { niveau: number; className?:
   );
 }
 
-/** Dégradés partagés par toutes les jauges : à placer une fois dans la page. */
+/** Ancienne référence #degrade-meridien (figures de capsules) : un aplat safran, plus de dégradé. */
 export function DefinitionsDegrades() {
   return (
     <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
       <defs>
-        <linearGradient id="degrade-meridien" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--brand)" />
-          <stop offset="100%" stopColor="var(--cyan)" />
+        <linearGradient id="degrade-meridien">
+          <stop offset="0%" stopColor="var(--jauge)" />
         </linearGradient>
       </defs>
     </svg>

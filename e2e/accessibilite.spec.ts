@@ -28,6 +28,12 @@ const pages = [
 
 for (const chemin of pages) {
   test(`aucune violation d'accessibilité grave sur ${chemin}`, async ({ page }) => {
+    // Le glossaire complet est une longue page : son analyse dépasse parfois 30 s sur une machine chargée. Les pages qui
+    // chargent Firebase attendent aussi la fin de leurs requêtes : base de production et, sur mobile, bibliothèque Google
+    // de connexion (jusqu'à 60 s sur ce réseau).
+    test.setTimeout(120_000);
+    // État final de la page : une apparition au défilement saisie en pleine animation donnerait un contraste transitoire.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(chemin);
     await page.waitForLoadState("networkidle");
     const resultat = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
