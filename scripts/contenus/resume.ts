@@ -2,12 +2,15 @@
 // publiques. Lit aussi les contenus payants (prive/, hors dépôt) : seuls ces totaux sont publiés, jamais le contenu.
 // Usage : npm run contenus:resume (à relancer après toute modification d'un chapitre).
 import { writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { chapitresPublies } from "../../src/content";
 import { offre } from "../../src/content/offre";
 import type { Chapitre } from "../../src/content/schema";
 
 async function main() {
-  const { chapitresPrives } = (await import("../../prive")) as { chapitresPrives: Chapitre[] };
+  // Chemin calculé : prive/ est absent du dépôt, et donc de la vérification des types en intégration continue.
+  const { chapitresPrives } = (await import(pathToFileURL(join(process.cwd(), "prive", "index.ts")).href)) as { chapitresPrives: Chapitre[] };
   const tous = new Map([...chapitresPublies, ...chapitresPrives].map((c) => [c.slug, c]));
   const resume: Record<string, { chapitres: number; dureeMin: number; capsules: number; questions: number; exercices: number }> = {};
   for (const m of offre) {
