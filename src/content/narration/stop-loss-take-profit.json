@@ -1,114 +1,134 @@
 {
  "slug": "stop-loss-take-profit",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "be4e012c",
- "duree": 60.27,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "545d344a",
+ "duree": 64.339,
  "audio": "/audio/capsules/stop-loss-take-profit.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 8.191,
+   "fin": 8.798,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 4.65,
-     "texte": "Avant d'entrer dans un trade, pose-toi deux questions : où ai-je tort ?"
+     "fin": 3.595,
+     "texte": "Avant d'entrer dans un trade, pose-toi deux questions."
     },
     {
-     "debut": 5.37,
-     "fin": 6.971,
-     "texte": "Et où je sors si j'ai raison ?"
-    }
-   ]
-  },
-  {
-   "debut": 8.191,
-   "fin": 16.411,
-   "phrases": [
-    {
-     "debut": 8.191,
-     "fin": 15.911,
-     "texte": "Le Stop Loss est un ordre qui ferme ta position automatiquement si le prix atteint un niveau de perte fixé à l'avance."
-    }
-   ]
-  },
-  {
-   "debut": 16.411,
-   "fin": 20.37,
-   "phrases": [
-    {
-     "debut": 16.411,
-     "fin": 19.87,
-     "texte": "Le Take Profit la ferme quand le prix atteint ton objectif."
-    }
-   ]
-  },
-  {
-   "debut": 20.37,
-   "fin": 32.248,
-   "phrases": [
-    {
-     "debut": 20.37,
-     "fin": 21.303,
-     "texte": "Un exemple."
+     "debut": 3.915,
+     "fin": 4.953,
+     "texte": "Où ai-je tort ?"
     },
     {
-     "debut": 21.623,
-     "fin": 23.613,
+     "debut": 5.673,
+     "fin": 7.578,
+     "texte": "Et où je sors, si j'ai raison ?"
+    }
+   ]
+  },
+  {
+   "debut": 8.798,
+   "fin": 17.327,
+   "phrases": [
+    {
+     "debut": 8.798,
+     "fin": 16.827,
+     "texte": "Le stop loss est un ordre qui ferme ta position tout seul, si le prix atteint un niveau de perte fixé à l'avance."
+    }
+   ]
+  },
+  {
+   "debut": 17.327,
+   "fin": 22.194,
+   "phrases": [
+    {
+     "debut": 17.327,
+     "fin": 21.694,
+     "texte": "Le take profit, lui, la ferme quand le prix atteint ton objectif."
+    }
+   ]
+  },
+  {
+   "debut": 22.194,
+   "fin": 35.344,
+   "phrases": [
+    {
+     "debut": 22.194,
+     "fin": 23.646,
+     "texte": "Prenons un exemple."
+    },
+    {
+     "debut": 23.966,
+     "fin": 26.353,
      "texte": "Tu achètes une action à 50 euros."
     },
     {
-     "debut": 23.933,
-     "fin": 31.748,
-     "texte": "Ton idée ne tient plus si le prix passe sous 48 : ton Stop Loss va juste en dessous, à 47,80."
+     "debut": 26.673,
+     "fin": 30.092,
+     "texte": "Ton idée ne tient plus si le prix passe sous 48."
+    },
+    {
+     "debut": 30.412,
+     "fin": 34.844,
+     "texte": "Alors ton stop va juste en dessous, à 47 euros 80."
     }
    ]
   },
   {
-   "debut": 32.248,
-   "fin": 43.045,
+   "debut": 35.344,
+   "fin": 45.968,
    "phrases": [
     {
-     "debut": 32.248,
-     "fin": 35.837,
-     "texte": "Ton objectif est à 54,40."
+     "debut": 35.344,
+     "fin": 38.618,
+     "texte": "Ton objectif est à 54 euros 40."
     },
     {
-     "debut": 36.157,
-     "fin": 40.162,
-     "texte": "Tu risques 2,20 euros par action pour en viser le double."
+     "debut": 38.938,
+     "fin": 42.782,
+     "texte": "Tu risques 2 euros 20 par action, pour en viser le double."
     },
     {
-     "debut": 40.482,
-     "fin": 42.545,
-     "texte": "Les deux ordres se posent dès l'entrée."
+     "debut": 43.102,
+     "fin": 45.468,
+     "texte": "Et les deux ordres se posent dès l'entrée."
     }
    ]
   },
   {
-   "debut": 43.045,
-   "fin": 54.208,
+   "debut": 45.968,
+   "fin": 58.68,
    "phrases": [
     {
-     "debut": 43.045,
-     "fin": 47.383,
-     "texte": "L'erreur classique : éloigner son Stop quand le prix s'en approche."
+     "debut": 45.968,
+     "fin": 47.355,
+     "texte": "L'erreur classique ?"
     },
     {
-     "debut": 47.703,
-     "fin": 53.708,
-     "texte": "Et en cas de mouvement brutal, le Stop peut s'exécuter plus loin : c'est le slippage."
+     "debut": 48.075,
+     "fin": 50.87,
+     "texte": "Éloigner son stop quand le prix s'en approche."
+    },
+    {
+     "debut": 51.19,
+     "fin": 56.475,
+     "texte": "Et regarde ce gap : en cas de mouvement brutal, le stop s'exécute plus loin."
+    },
+    {
+     "debut": 56.795,
+     "fin": 58.18,
+     "texte": "C'est le slippage."
     }
    ]
   },
   {
-   "debut": 54.208,
-   "fin": 60.27,
+   "debut": 58.68,
+   "fin": 64.339,
    "phrases": [
     {
-     "debut": 54.208,
-     "fin": 59.67,
-     "texte": "À retenir : ton Stop Loss se décide avant d'entrer, là où ton idée devient fausse."
+     "debut": 58.68,
+     "fin": 63.739,
+     "texte": "À retenir : ton stop se décide avant d'entrer, là où ton idée devient fausse."
     }
    ]
   }

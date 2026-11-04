@@ -1,139 +1,144 @@
 {
  "slug": "risque-et-taille-de-position",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "43d38c8d",
- "duree": 67.287,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "1ae0777e",
+ "duree": 70.276,
  "audio": "/audio/capsules/risque-et-taille-de-position.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 8.14,
+   "fin": 9.25,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 1.202,
+     "fin": 1.625,
      "texte": "Combien acheter ?"
     },
     {
-     "debut": 1.922,
-     "fin": 7.64,
-     "texte": "La bonne question n'est pas « combien je veux gagner », mais « combien j'accepte de perdre si j'ai tort »."
+     "debut": 2.345,
+     "fin": 5.416,
+     "texte": "La bonne question n'est pas : combien je veux gagner."
+    },
+    {
+     "debut": 5.736,
+     "fin": 8.75,
+     "texte": "C'est : combien j'accepte de perdre, si j'ai tort."
     }
    ]
   },
   {
-   "debut": 8.14,
-   "fin": 17.479,
+   "debut": 9.25,
+   "fin": 18.825,
    "phrases": [
     {
-     "debut": 8.14,
-     "fin": 13.35,
+     "debut": 9.25,
+     "fin": 15.008,
      "texte": "D'abord, fixe ton risque par opération : un petit pourcentage de ton capital."
     },
     {
-     "debut": 13.67,
-     "fin": 16.979,
+     "debut": 15.328,
+     "fin": 18.325,
      "texte": "Avec 2 000 euros et 1 %, c'est 20 euros."
     }
    ]
   },
   {
-   "debut": 17.479,
-   "fin": 27.293,
+   "debut": 18.825,
+   "fin": 28.866,
    "phrases": [
     {
-     "debut": 17.479,
-     "fin": 20.793,
+     "debut": 18.825,
+     "fin": 22.267,
      "texte": "Ensuite, place ton stop là où ton idée devient fausse."
     },
     {
-     "debut": 21.113,
-     "fin": 26.793,
+     "debut": 22.587,
+     "fin": 28.366,
      "texte": "Ici, entrée à 50 euros, stop à 48 : 2 euros de risque par action."
     }
    ]
   },
   {
-   "debut": 27.293,
-   "fin": 34.945,
+   "debut": 28.866,
+   "fin": 36.187,
    "phrases": [
     {
-     "debut": 27.293,
-     "fin": 31.625,
+     "debut": 28.866,
+     "fin": 32.827,
      "texte": "Enfin, divise : 20 euros de risque, 2 euros par action."
     },
     {
-     "debut": 31.945,
-     "fin": 34.445,
+     "debut": 33.147,
+     "fin": 35.687,
      "texte": "Tu achètes 10 actions, pas une de plus."
     }
    ]
   },
   {
-   "debut": 34.945,
-   "fin": 43.308,
+   "debut": 36.187,
+   "fin": 44.764,
    "phrases": [
     {
-     "debut": 34.945,
-     "fin": 38.334,
+     "debut": 36.187,
+     "fin": 39.655,
      "texte": "Si le stop est touché, tu perds 20 euros, comme prévu."
     },
     {
-     "debut": 38.654,
-     "fin": 42.808,
-     "texte": "Le stop a fixé la distance ; ta règle a fixé la taille."
+     "debut": 39.975,
+     "fin": 44.264,
+     "texte": "Le stop a fixé la distance, et ta règle a fixé la taille."
     }
    ]
   },
   {
-   "debut": 43.308,
-   "fin": 53.071,
+   "debut": 44.764,
+   "fin": 55.544,
    "phrases": [
     {
-     "debut": 43.308,
-     "fin": 44.31,
+     "debut": 44.764,
+     "fin": 46.078,
      "texte": "Pourquoi si peu ?"
     },
     {
-     "debut": 45.03,
-     "fin": 48.402,
+     "debut": 46.798,
+     "fin": 50.123,
      "texte": "Parce que même une méthode gagnante enchaîne les pertes."
     },
     {
-     "debut": 48.722,
-     "fin": 52.571,
-     "texte": "Ici, six d'affilée, avec une méthode pourtant légèrement gagnante."
+     "debut": 50.443,
+     "fin": 55.044,
+     "texte": "Regarde : six d'affilée, avec une méthode pourtant légèrement gagnante."
     }
    ]
   },
   {
-   "debut": 53.071,
-   "fin": 60.067,
+   "debut": 55.544,
+   "fin": 63.362,
    "phrases": [
     {
-     "debut": 53.071,
-     "fin": 56.682,
+     "debut": 55.544,
+     "fin": 59.801,
      "texte": "Six pertes à 1 % coûtent environ 6 % du capital."
     },
     {
-     "debut": 57.002,
-     "fin": 59.567,
+     "debut": 60.121,
+     "fin": 62.862,
      "texte": "À 10 % par trade, près de la moitié."
     }
    ]
   },
   {
-   "debut": 60.067,
-   "fin": 67.287,
+   "debut": 63.362,
+   "fin": 70.276,
    "phrases": [
     {
-     "debut": 60.067,
-     "fin": 64.635,
-     "texte": "Retiens : d'abord le risque, ensuite le stop, enfin la taille."
+     "debut": 63.362,
+     "fin": 67.599,
+     "texte": "Retiens bien : d'abord le risque, ensuite le stop, enfin la taille."
     },
     {
-     "debut": 64.955,
-     "fin": 66.687,
+     "debut": 67.918,
+     "fin": 69.676,
      "texte": "Dans cet ordre, toujours."
     }
    ]

@@ -1,103 +1,133 @@
 {
  "slug": "trading-et-investissement",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "c671a2c7",
- "duree": 54.514,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "2a2f03f0",
+ "duree": 58.167,
  "audio": "/audio/capsules/trading-et-investissement.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 6.902,
+   "fin": 7.707,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 4.093,
-     "texte": "Trader et investir, c'est acheter des actifs dans les deux cas."
+     "fin": 4.263,
+     "texte": "Trader et investir, dans les deux cas, c'est acheter des actifs."
     },
     {
-     "debut": 4.413,
-     "fin": 6.402,
-     "texte": "Mais ce ne sont pas du tout les mêmes métiers."
+     "debut": 4.583,
+     "fin": 7.207,
+     "texte": "Pourtant, ce sont deux métiers très différents."
     }
    ]
   },
   {
-   "debut": 6.902,
-   "fin": 16.463,
+   "debut": 7.707,
+   "fin": 17.496,
    "phrases": [
     {
-     "debut": 6.902,
-     "fin": 9.607,
-     "texte": "L'investisseur achète pour des années :"
+     "debut": 7.707,
+     "fin": 9.437,
+     "texte": "Regarde l'investisseur."
     },
     {
-     "debut": 9.927,
-     "fin": 15.963,
-     "texte": "il compte sur la croissance d'une entreprise ou de l'économie, et accepte de traverser des baisses."
+     "debut": 9.757,
+     "fin": 11.343,
+     "texte": "Il achète pour des années."
+    },
+    {
+     "debut": 11.663,
+     "fin": 16.996,
+     "texte": "Il compte sur la croissance de l'entreprise, et il accepte de traverser des baisses."
     }
    ]
   },
   {
-   "debut": 16.463,
-   "fin": 27.196,
+   "debut": 17.496,
+   "fin": 27.856,
    "phrases": [
     {
-     "debut": 16.463,
-     "fin": 21.343,
-     "texte": "Le trader travaille sur quelques minutes, quelques heures ou quelques jours :"
+     "debut": 17.496,
+     "fin": 22.298,
+     "texte": "Le trader, lui, travaille sur quelques minutes, quelques heures ou quelques jours."
     },
     {
-     "debut": 21.663,
-     "fin": 26.696,
-     "texte": "il cherche à profiter des variations de prix, dans un sens ou dans l'autre."
+     "debut": 22.618,
+     "fin": 27.356,
+     "texte": "Il cherche à profiter des variations de prix, à la hausse comme à la baisse."
     }
    ]
   },
   {
-   "debut": 27.196,
-   "fin": 36.657,
+   "debut": 27.856,
+   "fin": 37.132,
    "phrases": [
     {
-     "debut": 27.196,
-     "fin": 32.768,
-     "texte": "Conséquence : l'investisseur paie peu de frais, le trader en paie à chaque opération."
+     "debut": 27.856,
+     "fin": 30.768,
+     "texte": "Conséquence : l'investisseur paie peu de frais."
     },
     {
-     "debut": 33.088,
-     "fin": 36.157,
-     "texte": "Et plus on opère souvent, plus ils pèsent."
+     "debut": 31.088,
+     "fin": 33.496,
+     "texte": "Le trader en paie à chaque opération."
+    },
+    {
+     "debut": 33.816,
+     "fin": 36.632,
+     "texte": "Et plus il opère souvent, plus ils pèsent lourd."
     }
    ]
   },
   {
-   "debut": 36.657,
-   "fin": 46.128,
+   "debut": 37.132,
+   "fin": 48.249,
    "phrases": [
     {
-     "debut": 36.657,
-     "fin": 38.619,
+     "debut": 37.132,
+     "fin": 39.02,
      "texte": "Aucun n'est meilleur par nature."
     },
     {
-     "debut": 38.939,
-     "fin": 41.034,
-     "texte": "L'erreur, c'est de mélanger les deux :"
+     "debut": 39.34,
+     "fin": 41.63,
+     "texte": "Le piège, c'est de mélanger les deux."
     },
     {
-     "debut": 41.354,
-     "fin": 45.628,
-     "texte": "garder « pour le long terme » un trade perdant qu'on n'avait jamais prévu de garder."
+     "debut": 41.95,
+     "fin": 43.305,
+     "texte": "Tu vois ce trade ?"
+    },
+    {
+     "debut": 44.025,
+     "fin": 47.749,
+     "texte": "Le stop est ignoré, et la petite perte devient grande."
     }
    ]
   },
   {
-   "debut": 46.128,
-   "fin": 54.514,
+   "debut": 48.249,
+   "fin": 58.167,
    "phrases": [
     {
-     "debut": 46.128,
-     "fin": 53.194,
-     "texte": "Avant de choisir, demande-toi : sur quel horizon, avec quel argent, et combien de temps à y consacrer ?"
+     "debut": 48.249,
+     "fin": 51.376,
+     "texte": "Alors, avant de choisir, pose-toi trois questions."
+    },
+    {
+     "debut": 51.696,
+     "fin": 52.908,
+     "texte": "Quel horizon ?"
+    },
+    {
+     "debut": 53.628,
+     "fin": 54.732,
+     "texte": "Quel argent ?"
+    },
+    {
+     "debut": 55.452,
+     "fin": 56.847,
+     "texte": "Et combien de temps ?"
     }
    ]
   }
