@@ -1,104 +1,124 @@
 {
  "slug": "unites-de-temps",
- "voix": "Piper, voix fr_FR-siwis-medium (synthèse locale)",
- "empreinte": "21894939",
- "duree": 48.29,
+ "voix": "Kokoro-82M, voix ff_siwis (synthèse locale)",
+ "empreinte": "4c0f2e79",
+ "duree": 51.057,
  "audio": "/audio/capsules/unites-de-temps.mp3",
  "scenes": [
   {
    "debut": 0.3,
-   "fin": 8.833,
+   "fin": 8.108,
    "phrases": [
     {
      "debut": 0.3,
-     "fin": 3.893,
-     "texte": "Chaque bougie représente une durée : c'est l'unité de temps."
+     "fin": 2.366,
+     "texte": "Chaque bougie représente une durée."
     },
     {
-     "debut": 4.213,
-     "fin": 8.333,
-     "texte": "Une minute, quinze minutes, une heure, un jour, une semaine…"
+     "debut": 2.686,
+     "fin": 4.913,
+     "texte": "C'est ce qu'on appelle l'unité de temps."
+    },
+    {
+     "debut": 5.233,
+     "fin": 7.608,
+     "texte": "Elle va d'une minute à un mois, ou plus."
     }
    ]
   },
   {
-   "debut": 8.833,
-   "fin": 13.223,
+   "debut": 8.108,
+   "fin": 12.688,
    "phrases": [
     {
-     "debut": 8.833,
-     "fin": 12.723,
-     "texte": "Voici huit bougies de quinze minutes : deux heures d'échanges."
+     "debut": 8.108,
+     "fin": 10.351,
+     "texte": "Voici huit bougies de quinze minutes."
+    },
+    {
+     "debut": 10.671,
+     "fin": 12.188,
+     "texte": "Deux heures d'échanges."
     }
    ]
   },
   {
-   "debut": 13.223,
-   "fin": 17.376,
+   "debut": 12.688,
+   "fin": 16.896,
    "phrases": [
     {
-     "debut": 13.223,
-     "fin": 16.876,
-     "texte": "Regroupons-les par quatre : chaque groupe couvre une heure."
+     "debut": 12.688,
+     "fin": 14.432,
+     "texte": "Regroupons-les par quatre."
+    },
+    {
+     "debut": 14.752,
+     "fin": 16.396,
+     "texte": "Chaque groupe couvre une heure."
     }
    ]
   },
   {
-   "debut": 17.376,
-   "fin": 24.006,
+   "debut": 16.896,
+   "fin": 25.179,
    "phrases": [
     {
-     "debut": 17.376,
-     "fin": 23.506,
+     "debut": 16.896,
+     "fin": 24.679,
      "texte": "La bougie d'une heure prend l'ouverture de la première, le plus haut et le plus bas du groupe, et la clôture de la dernière."
     }
    ]
   },
   {
-   "debut": 24.006,
-   "fin": 32.708,
+   "debut": 25.179,
+   "fin": 33.592,
    "phrases": [
     {
-     "debut": 24.006,
-     "fin": 29.105,
-     "texte": "Résultat : les détails disparaissent, la direction générale apparaît."
+     "debut": 25.179,
+     "fin": 26.014,
+     "texte": "Tu vois ?"
     },
     {
-     "debut": 29.425,
-     "fin": 32.208,
+     "debut": 26.734,
+     "fin": 29.98,
+     "texte": "Les détails disparaissent, la direction apparaît."
+    },
+    {
+     "debut": 30.3,
+     "fin": 33.092,
      "texte": "La première heure monte, la seconde baisse."
     }
    ]
   },
   {
-   "debut": 32.708,
-   "fin": 39.063,
+   "debut": 33.592,
+   "fin": 40.347,
    "phrases": [
     {
-     "debut": 32.708,
-     "fin": 34.755,
-     "texte": "L'unité de temps dépend de ton horizon."
+     "debut": 33.592,
+     "fin": 36.282,
+     "texte": "Choisis ton unité selon ton horizon."
     },
     {
-     "debut": 35.075,
-     "fin": 38.563,
-     "texte": "Plus elle est courte, plus le bruit et les frais pèsent."
+     "debut": 36.602,
+     "fin": 39.847,
+     "texte": "Plus elle est courte, plus le bruit et les frais pèsent lourd."
     }
    ]
   },
   {
-   "debut": 39.063,
-   "fin": 48.29,
+   "debut": 40.347,
+   "fin": 51.057,
    "phrases": [
     {
-     "debut": 39.063,
-     "fin": 45.353,
-     "texte": "Beaucoup de traders lisent le contexte sur une unité longue et cherchent leur entrée sur une plus courte."
+     "debut": 40.347,
+     "fin": 47.687,
+     "texte": "Beaucoup de traders lisent le contexte sur une unité longue, puis cherchent leur entrée sur une unité plus courte."
     },
     {
-     "debut": 45.673,
-     "fin": 47.69,
-     "texte": "On y reviendra dans l'analyse technique."
+     "debut": 48.007,
+     "fin": 50.457,
+     "texte": "On y reviendra en analyse technique."
     }
    ]
   }
